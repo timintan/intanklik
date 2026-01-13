@@ -1,1 +1,1970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Portal Tim INTAN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+    margin:0;
+    font-family:Segoe UI, Arial;
+    background:#f4f6f8;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#0a3d62;
+    color:white;
+    height:100vh;
+    position:fixed;
+    top:0;
+    left:0;
+    overflow-y:auto;
+}
+
+.sidebar h2{
+    text-align:center;
+    padding:20px 0;
+    margin:0;
+    background:#07416f;
+}
+
+.menu{
+    padding:10px 0;
+}
+
+.menu-item{
+    padding:12px 20px;
+    cursor:pointer;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.menu-item:hover{
+    background:#1e90ff;
+}
+
+.submenu{
+    display:none;
+    background:#124d7a;
+}
+
+.submenu div{
+    padding:10px 40px;
+    cursor:pointer;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+.submenu div.active-menu{
+    background:#1e90ff;
+    font-weight:bold;
+    border-radius:6px;
+}
+.submenu div:hover{
+    background:#1e90ff;
+}
+
+/* CONTENT */
+.content{
+    margin-left:260px;
+    padding:25px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.title{
+    font-size:22px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.breadcrumb{
+    color:#777;
+    margin-bottom:12px;
+}
+
+/* GRID BUTTON */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:15px;
+    margin-top:10px;
+}
+
+.btn-doc{
+    background:#2e7d32;
+    padding:18px;
+    color:white;
+    text-align:center;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.2s;
+    text-decoration:none;
+}
+
+.btn-doc:hover{
+    background:#c7a66b;
+}
+/* ===================== */
+/* HOME DASHBOARD */
+/* ===================== */
+
+.home-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.home-card{
+    border-radius:16px;
+    padding:25px;
+    color:white;
+    box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+.home-card{
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.home-card.industri{
+    background:linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.home-card.pertanian{
+    background:linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.home-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.home-logo{
+    width:60px;
+    height:60px;
+    background:white;
+    border-radius:50%;
+    padding:8px;
+}
+
+.home-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.home-list li{
+    background:rgba(255,255,255,.18);
+    padding:12px 15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    font-weight:500;
+}
+.home-list li{
+    cursor:pointer;
+    transition:.2s;
+}
+
+.home-list li:hover{
+    background:rgba(255,255,255,.35);
+    transform:translateX(4px);
+}
+
+
+
+</style>
+<style>
+
+/* hover menu */
+.home-list li:hover{
+    background:rgba(255,255,255,.35);
+    transform:translateX(4px);
+}
+
+/* tampilkan checkbox peserta */
+#pesertaList input[type="checkbox"]{
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 16px;
+    height: 16px;
+    accent-color: #0a3d62;
+}
+.peserta-box{
+    max-width: 600px;
+}
+
+.peserta-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 kolom */
+    gap: 12px 40px;
+    margin-top: 10px;
+}
+
+.peserta-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+.kalender-header{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  font-weight:600;
+  text-align:center;
+  margin-bottom:6px;
+}
+
+.kalender-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.hari{
+  border:1px solid #ddd;
+  min-height:90px;
+  padding:6px;
+  cursor:pointer;
+  background:#fff;
+}
+
+.hari-ada{
+  background:#e3f2fd;
+}
+
+.badge-agenda{
+  background:#0d6efd;
+  color:#fff;
+  font-size:11px;
+  padding:2px 6px;
+  border-radius:6px;
+  display:inline-block;
+  margin-top:4px;
+}
+.kalender-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.kalender-cell{
+  min-height:70px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:6px;
+  position:relative;
+}
+
+.kalender-cell .tgl{
+  font-weight:bold;
+}
+
+.agenda-dots{
+  position:absolute;
+  bottom:6px;
+  left:6px;
+  display:flex;
+  gap:4px;
+}
+
+.agenda-dots .dot{
+  width:8px;
+  height:8px;
+  background:#e74c3c;
+  border-radius:50%;
+}
+.kalender-layout{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.kalender-box, .form-box, .table-box{
+    background:#fff;
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 5px 12px rgba(0,0,0,.08);
+}
+
+.kalender-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.kalender-nav button{
+    background:#0a3d62;
+    color:white;
+    border:none;
+    padding:6px 14px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.kalender-cell{
+    border:1px solid #ddd;
+    border-radius:8px;
+    min-height:80px;
+    padding:6px;
+    cursor:pointer;
+    background:#fff;
+}
+
+.kalender-cell:hover{
+    background:#eef6ff;
+}
+
+.kalender-cell.has-agenda{
+    background:#e3f2fd;
+}
+
+.badge{
+    background:#0d6efd;
+    color:white;
+    font-size:11px;
+    padding:2px 6px;
+    border-radius:6px;
+    display:inline-block;
+    margin-top:4px;
+}
+
+.table-box table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.table-box th{
+    background:#0a3d62;
+    color:white;
+    padding:10px;
+}
+
+.table-box td{
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+/* Matikan tombol panah global */
+.carousel-control-prev,
+.carousel-control-next,
+.carousel-control-prev-icon,
+.carousel-control-next-icon,
+.slider-prev,
+.slider-next,
+.prev,
+.next {
+    display: none !important;
+}
+a[href="#prev"], 
+a[href="#next"],
+button[aria-label="Previous"],
+button[aria-label="Next"] {
+    display:none !important;
+}
+
+
+</style>
+
+</head>
+
+<body onload="initHome()">
+
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Tim Intan</h2>
+
+    <div class="menu">
+<div class="menu-item" onclick="showHome(this)">
+    🏠 Beranda
+</div>
+<div class="menu-item" onclick="show('kalenderPage', this); loadAgenda();">
+📅 Kalender & Agenda
+</div>
+
+
+
+<div class="menu-item" onclick="toggle('capaian')">
+    📈 Capaian Kinerja ▾
+</div>
+
+<div id="capaian" class="submenu">
+    <div onclick="showCapaian('pertanian', this)">
+        Capaian Kinerja Pertanian
+    </div>
+    <div onclick="showCapaian('ipk', this)">
+        Capaian Kinerja Industri, Pertambangan, Energi & Konstruksi
+    </div>
+</div>
+
+
+        <div class="menu-item" onclick="toggle('stat')">
+            📊 Statistik Pertanian ▾
+        </div>
+
+        <div id="stat" class="submenu">
+
+            <!-- TANAMAN PANGAN -->
+            <div onclick="toggle('tp')">🌾 Tanaman Pangan ▾</div>
+            <div id="tp" class="submenu">
+                <div onclick="show('ksaPadi', this)">KSA Padi</div>
+                <div onclick="show('ksaJagung', this)">KSA Jagung</div>
+                <div onclick="show('ubinanPadi', this)">Ubinan Padi</div>
+                <div onclick="show('ubinanPalawija', this)">Ubinan Palawija</div>
+            </div>
+
+            <!-- HORTIKULTURA -->
+            <div onclick="toggle('horti')">🍓 Hortikultura ▾</div>
+            <div id="horti" class="submenu">
+                <div onclick="show('sphSbs', this)">SPH - SBS</div>
+                <div onclick="show('sphBst', this)">SPH - BST</div>
+                <div onclick="show('sphTbf', this)">SPH - TBF</div>
+                <div onclick="show('sphTh', this)">SPH - TH</div>
+                <div onclick="show('vpHorti', this)">VP-Horti</div>
+                <div onclick="show('vnHorti', this)">VN-Horti</div>
+            </div>
+
+            <!-- PERKEBUNAN -->
+            <div onclick="toggle('perkebunan')">🌴 Perkebunan ▾</div>
+            <div id="perkebunan" class="submenu">
+                <div onclick="show('skb', this)">SKB</div>
+                <div onclick="show('dpp', this)">DPP / DUTL</div>
+            </div>
+
+            <!-- PETERNAKAN -->
+            <div onclick="toggle('ternak')">🐄 Peternakan ▾</div>
+            <div id="ternak" class="submenu">
+                <div onclick="show('lptb', this)">Laporan Pemotongan Ternak Bulanan</div>
+                <div onclick="show('ppt', this)">Pendataan Perusahaan Peternakan Tahunan</div>
+            </div>
+
+            <!-- PERIKANAN -->
+            <div onclick="toggle('ikan')">🐟 Perikanan ▾</div>
+            <div id="ikan" class="submenu">
+                <div onclick="show('pptpi1', this)">PP-TPI</div>
+                <div onclick="show('pptpi2', this)">PP-TPI</div>
+                <div onclick="show('ltp', this)">LTP</div>
+                <div onclick="show('ltb', this)">LTB</div>
+            </div>
+
+            <!-- KEHUTANAN -->
+            <div onclick="toggle('hutan')">🌲 Kehutanan ▾</div>
+            <div id="hutan" class="submenu">
+                <div onclick="show('dkt', this)">DKT Prov</div>
+                <div onclick="show('hpht', this)">HPHT</div>
+                <div onclick="show('vtTsl', this)">VT TSL</div>
+            </div>
+
+        </div>
+    </div>
+	<!-- STATISTIK INDUSTRI -->
+<div class="menu-item" onclick="toggle('industri')">
+    🏭 Statistik Industri ▾
+</div>
+
+<div id="industri" class="submenu">
+
+    <div onclick="show('ibsTahunan', this)">
+        Industri Besar Sedang Tahunan
+    </div>
+
+    <div onclick="show('ibsBulanan', this)">
+        Industri Besar Sedang Bulanan
+    </div>
+
+    <div onclick="show('mikroTahunan', this)">
+        Industri Mikro Kecil Tahunan
+    </div>
+
+    <div onclick="show('mikroTriwulan', this)">
+        Industri Mikro Kecil Triwulanan
+    </div>
+
+    <div onclick="show('pengutipanIBS', this)">
+        Pengutipan Industri Besar Sedang (IBS)
+    </div>
+
+    <div onclick="show('updateDPA', this)">
+        Update DPA
+    </div>
+
+</div>
+<div class="menu-item" onclick="toggle('adhoc')">
+    📝 Kegiatan Adhoc ▾
+</div>
+
+<div class="menu-item" onclick="toggle('konstruksi')">
+    🏗️ Statistik Konstruksi ▾
+</div>
+
+<div id="konstruksi" class="submenu">
+    <div onclick="show('konsPengutipan', this)">Pengutipan</div>
+    <div onclick="show('konsUpdating', this)">Updating Direktori Perusahaan</div>
+    <div onclick="show('konsGround', this)">Ground Check</div>
+    <div onclick="show('skth', this)">Survei Konstruksi Tahunan (SKTH)</div>
+    <div onclick="show('sktr', this)">Survei Konstruksi Triwulanan (SKTR)</div>
+</div>
+<div class="menu-item" onclick="toggle('tambang')">
+    ⛏️ Statistik Pertambangan & Energi ▾
+</div>
+
+<div id="tambang" class="submenu">
+    <div onclick="show('airTahunan', this)">Air Bersih Tahunan</div>
+    <div onclick="show('airTriwulanan', this)">Air Bersih Triwulanan</div>
+    <div onclick="show('listrik', this)">Listrik</div>
+    <div onclick="show('captive', this)">Captive Power</div>
+
+    <div onclick="show('galianTahunan', this)">Galian Tahunan</div>
+    <div onclick="show('galianTriwulanan', this)">Galian Triwulanan</div>
+    <div onclick="show('galianUrt', this)">Galian URT</div>
+
+    <div onclick="show('gas', this)">Gas</div>
+    <div onclick="show('migas', this)">Migas</div>
+    <div onclick="show('nonMigas', this)">Non Migas</div>
+    <div onclick="show('geothermal', this)">Geothermal</div>
+    <div onclick="show('udpe', this)">UDPE</div>
+    <div onclick="show('tambangPengutipan', this)">Pengutipan</div>
+</div>
+<div id="adhoc" class="submenu">
+    <div onclick="show('adhoc1', this)">Kegiatan Adhoc 1</div>
+    <div onclick="show('adhoc2', this)">Kegiatan Adhoc 2</div>
+    <div onclick="show('adhoc3', this)">Kegiatan Adhoc 3</div>
+</div>
+<div class="menu-item" onclick="toggle('program')">
+    🔐 Akses Program ▾
+</div>
+
+<div id="program" class="submenu">
+    <div onclick="show('progInpek', this)">Program INPEK</div>
+    <div onclick="show('progPertanian', this)">Program Pertanian</div>
+    <div onclick="show('progManajemen', this)">Program Manajemen</div>
+</div>
+
+
+</div>
+
+
+<!-- CONTENT -->
+<div class="content">
+
+    <div id="home" class="page">
+
+    <div class="home-grid">
+
+        <!-- ===================== -->
+        <!-- INDUSTRI -->
+        <!-- ===================== -->
+        <div class="home-card industri">
+            <div class="home-header">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063822.png" class="home-logo">
+                <h3>Industri, Pertambangan,<br>Energi & Konstruksi</h3>
+            </div>
+
+            <ul class="home-list">
+                <li onclick="openHomeLink('industri','surat')">📥 Surat Masuk</li>
+				<li onclick="openHomeLink('industri','sop')">📄 SOP Kegiatan</li>
+				<li onclick="openHomeLink('industri','wa')">💬 Link Join WA Group</li>
+				<li onclick="openHomeLink('industri','grafik')">📊 Grafik</li>
+            </ul>
+        </div>
+		
+        <!-- ===================== -->
+        <!-- PERTANIAN -->
+        <!-- ===================== -->
+        <div class="home-card pertanian">
+            <div class="home-header">
+                <img src="https://cdn-icons-png.flaticon.com/512/2909/2909764.png" class="home-logo">
+                <h3>Pertanian</h3>
+            </div>
+
+            <ul class="home-list">
+                <li onclick="openHomeLink('pertanian','surat')">📥 Surat Masuk</li>
+				<li onclick="openHomeLink('pertanian','sop')">📄 SOP Kegiatan</li>
+				<li onclick="openHomeLink('pertanian','wa')">💬 Link Join WA Group</li>
+				<li onclick="openHomeLink('pertanian','grafik')">📊 Grafik</li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+<!-- ================== KALENDER & AGENDA PAGE ================== -->
+<div id="kalenderPage" class="page" style="display:none">
+
+  <div class="title">📅 Kalender & Agenda</div>
+  <div class="breadcrumb">Beranda > Kalender & Agenda</div>
+
+  <div class="kalender-layout">
+
+    <!-- KALENDER -->
+    <div class="kalender-box">
+      <div class="kalender-nav">
+        <button onclick="prevMonth()">◀ Bulan Sebelumnya</button>
+        <h3 id="kalenderJudul"></h3>
+        <button onclick="nextMonth()">Bulan Berikutnya ▶</button>
+      </div>
+
+      <div class="kalender-header">
+        <div style="color:red">Min</div>
+        <div>Sen</div><div>Sel</div><div>Rab</div>
+        <div>Kam</div><div>Jum</div><div>Sab</div>
+      </div>
+
+      <div id="kalenderGrid" class="kalender-grid"></div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-box">
+      <h3>📝 Tambah Agenda Baru</h3>
+
+      <label>Tanggal *</label>
+      <input type="date" id="tgl" style="width:100%;padding:8px"><br><br>
+
+      <label>Waktu</label>
+      <input type="time" id="waktu" style="width:100%;padding:8px"><br><br>
+
+      <label>Nama Kegiatan *</label>
+      <input type="text" id="nama" style="width:100%;padding:8px"><br><br>
+
+      <label>Tempat</label>
+      <input type="text" id="tempat" style="width:100%;padding:8px"><br><br>
+
+      <label>Peserta</label>
+	<div id="pesertaList" class="peserta-grid">
+  <label><input type="checkbox" value="Sri Diastuti"> Sri Diastuti</label>
+  <label><input type="checkbox" value="Tri Karjono"> Tri Karjono</label>
+  <label><input type="checkbox" value="Adi Susanto"> Adi Susanto</label>
+  <label><input type="checkbox" value="Lestania Jayanti"> Lestania Jayanti</label>
+  <label><input type="checkbox" value="Etikawati Datiek Pratiwi"> Etikawati Datiek Pratiwi</label>
+  <label><input type="checkbox" value="Al Barkah Triandika"> Al Barkah Triandika</label>
+  <label><input type="checkbox" value="Dian Eka Putri"> Dian Eka Putri</label>
+  <label><input type="checkbox" value="Dina Nur Rahma"> Dina Nur Rahma</label>
+  <label><input type="checkbox" value="Rina Lusi Handayani"> Rina Lusi Handayani</label>
+  <label><input type="checkbox" value="Tsany"> Fadhila Tsany NR</label>
+  <label><input type="checkbox" value="Minanurohman"> Minanur Rohman</label>
+  <label><input type="checkbox" value="Ari Susanto"> Ari Susanto</label>
+  <label><input type="checkbox" value="Rizqi Amalia Hanif"> Rizqi Amalia Hanif</label>
+</div>
+
+      <label>Catatan</label>
+      <textarea id="catatan" style="width:100%;height:70px"></textarea><br>
+
+      <button onclick="submitAgenda()" style="margin-top:10px;width:100%;padding:10px;background:#0a3d62;color:white;border:none;border-radius:6px;">
+        💾 Simpan Agenda
+      </button>
+    </div>
+
+  </div>
+
+  <!-- TABEL -->
+  <div class="table-box">
+    <h3>📋 Daftar Agenda</h3>
+    <table id="agendaTable">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Kegiatan</th>
+          <th>Waktu</th>
+          <th>Tempat</th>
+          <th>Peserta</th>
+          <th>Catatan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+</div>
+<hr class="my-4">
+
+
+
+ 
+
+
+
+    <!-- ============ TEMPLATE HALAMAN ========= -->
+    <!-- Semua halaman pakai template ini saja -->
+    <div id="pageTemplate" class="card page" style="display:none">
+        <div class="title" id="pageTitle"></div>
+        <div class="breadcrumb" id="pagePath"></div>
+
+        <p>Silakan unduh dokumen berikut:</p>
+
+        <div class="grid">
+            <a class="btn-doc" href="#" target="_blank">Pedoman</a>
+            <a class="btn-doc" href="#" target="_blank">Daftar Sampel</a>
+            <a class="btn-doc" href="#" target="_blank">Apresiasi</a>
+            <a class="btn-doc" href="#" target="_blank">Kuesioner</a>
+            <a class="btn-doc" href="#" target="_blank">Backup Data</a>
+            <a class="btn-doc" href="#" target="_blank">Upload Dokumen</a>
+            <a class="btn-doc" href="#" target="_blank">Bahan Ajar</a>
+            <a class="btn-doc" href="#" target="_blank">Berita Acara</a>
+            <a class="btn-doc" href="#" target="_blank">Publikasi</a>
+            <a class="btn-doc" href="#" target="_blank">Paparan</a>
+            <a class="btn-doc" href="#" target="_blank">Fenomena</a>
+            <a class="btn-doc" href="#" target="_blank">Surat</a>
+        </div>
+    </div>
+<div id="capaianPage" class="card page" style="display:none">
+    <div class="title" id="capaianTitle"></div>
+    <div class="breadcrumb" id="capaianPath"></div>
+
+    <label><b>Pilih Sheet:</b></label>
+    <select id="sheetSelect" onchange="loadSheetData()" style="padding:6px; margin:10px 0;">
+    </select>
+
+    <div style="overflow-x:auto">
+        <table id="dataTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+        </table>
+    </div>
+</div>
+
+</div>
+
+
+<script>
+
+// =====================
+// API CAPAIAN KINERJA
+// =====================
+const API_PERTANIAN = "https://script.google.com/macros/s/AKfycbzAyCeRHb66exgIQhWYpGSLFk4TJcACpTxMexXjJatD2OXjGVBJ7PuZyvp0fDOE7WWxfA/exec";
+const API_INDUSTRI  = "https://script.google.com/macros/s/AKfycbynBNdU--bcKUo0bnQTt5N0Be5stEwF288AqbjI_AU7633_SQeUKWuVZaeuhwi28hZh/exec";
+
+// =====================
+// 1️⃣ Judul + Breadcrumb
+// =====================
+const pages = {
+    ksaPadi:"Tanaman Pangan > KSA Padi",
+    ksaJagung:"Tanaman Pangan > KSA Jagung",
+    ubinanPadi:"Tanaman Pangan > Ubinan Padi",
+    ubinanPalawija:"Tanaman Pangan > Ubinan Palawija",
+
+    sphSbs:"Hortikultura > SPH - SBS",
+    sphBst:"Hortikultura > SPH - BST",
+    sphTbf:"Hortikultura > SPH - TBF",
+    sphTh:"Hortikultura > SPH - TH",
+    vpHorti:"Hortikultura > VP-Horti",
+    vnHorti:"Hortikultura > VN-Horti",
+
+    skb:"Perkebunan > SKB",
+    dpp:"Perkebunan > DPP / DUTL",
+
+    lptb:"Peternakan > LPTB",
+    ppt:"Peternakan > Pendataan Perusahaan Peternakan Tahunan",
+
+    pptpi1:"Perikanan > PP-TPI",
+    pptpi2:"Perikanan > PP-TPI",
+    ltp:"Perikanan > LTP",
+    ltb:"Perikanan > LTB",
+
+    dkt:"Kehutanan > DKT Prov",
+    hpht:"Kehutanan > HPHT",
+    vtTsl:"Kehutanan > VT TSL",
+
+	ibsTahunan: "Statistik Industri > Industri Besar Sedang Tahunan",
+	ibsBulanan: "Statistik Industri > Industri Besar Sedang Bulanan",
+	mikroTahunan: "Statistik Industri > Industri Mikro Kecil Tahunan",
+	mikroTriwulan: "Statistik Industri > Industri Mikro Kecil Triwulanan",
+	pengutipanIBS: "Statistik Industri > Pengutipan Industri Besar Sedang (IBS)",
+	updateDPA: "Statistik Industri > Update DPA",
+
+
+// === STATISTIK KONSTRUKSI ===
+konsPengutipan:"Statistik Konstruksi > Pengutipan",
+konsUpdating:"Statistik Konstruksi > Updating Direktori Perusahaan",
+konsGround:"Statistik Konstruksi > Ground Check",
+skth:"Statistik Konstruksi > Survei Konstruksi Tahunan (SKTH)",
+sktr:"Statistik Konstruksi > Survei Konstruksi Triwulanan (SKTR)",
+
+// === STATISTIK PERTAMBANGAN & ENERGI ===
+airTahunan:"Statistik Pertambangan & Energi > Air Bersih Tahunan",
+airTriwulanan:"Statistik Pertambangan & Energi > Air Bersih Triwulanan",
+listrik:"Statistik Pertambangan & Energi > Listrik",
+captive:"Statistik Pertambangan & Energi > Captive Power",
+
+galianTahunan:"Statistik Pertambangan & Energi > Galian Tahunan",
+galianTriwulanan:"Statistik Pertambangan & Energi > Galian Triwulanan",
+galianUrt:"Statistik Pertambangan & Energi > Galian URT",
+
+gas:"Statistik Pertambangan & Energi > Gas",
+migas:"Statistik Pertambangan & Energi > Migas",
+nonMigas:"Statistik Pertambangan & Energi > Non Migas",
+geothermal:"Statistik Pertambangan & Energi > Geothermal",
+udpe:"Statistik Pertambangan & Energi > UDPE",
+tambangPengutipan:"Statistik Pertambangan & Energi > Pengutipan",
+
+    homeMenu : "Beranda",
+
+    adhoc1:"Kegiatan Adhoc > Kegiatan Adhoc 1",
+    adhoc2:"Kegiatan Adhoc > Kegiatan Adhoc 2",
+    adhoc3:"Kegiatan Adhoc > Kegiatan Adhoc 3",
+
+    progInpek:"Akses Program > Program INPEK",
+    progPertanian:"Akses Program > Program Pertanian",
+    progManajemen:"Akses Program > Program Manajemen",
+
+
+};
+
+
+
+// =====================
+// 2️⃣ Link Dokumen Per Kegiatan
+// =====================
+const docs = {
+
+    ksaPadi:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/drive/folders/14HX8n-3A0VOW6WXpIKdIbPGlWz56YZZq?usp=sharing",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/143yDmxwsssA7Z_UxcYoCmPva3yk8k8R_?usp=sharing",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/147iQDfdVm6rKF0VwSQUbmnzMMlFaZlGz?usp=sharing",
+		"Paparan": "https://drive.google.com/drive/folders/14-JocrtwCDvacBWFNPPy00C2C1vvGHk8?usp=sharing",
+		"Kuesioner": "https://drive.google.com/drive/folders/14996zx37sYdrGl9ic2X6stxPjuB2mcfv?usp=sharing",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/13ysynb_7wbNTNWLm5yIB9n0U1nEKlc8I?usp=sharing",
+		"Backup Data":"https://drive.google.com/drive/folders/140XMb8rMTL08Q0witKi2bSdaZtvQznPB?usp=sharing",
+		"Berita Acara":"https://drive.google.com/drive/folders/13xPXSfZt4lY2uWfRH_e5xckXFJzSsynW?usp=sharing",
+		"Fenomena": "https://drive.google.com/drive/folders/13u9PkUp84gayiRHEsyNqnO77MeYcb7rU?usp=sharing",
+		"Apresiasi": "https://drive.google.com/drive/folders/13rmJE9BoR6x0gRES8SWycVH56m2yJLE7?usp=sharing",
+    },
+
+    ksaJagung:{
+        "Surat":
+"https://drive.google.com/drive/folders/1AIfeLAVvj2lI5VBB2QWPz7bSCIlIF9-D?usp=sharing",
+        "Pedoman":
+"https://drive.google.com/drive/folders/152HhzKJ4LPDHE8gf01Wkg9hZVVnyeVbd?usp=sharing",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/14kNiY8g1fasbNHf74xxMRfppA4keV8jL?usp=sharing",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/14kz8cAGF5IPVFXuetiILti1IpEaZkNQz?usp=sharing",
+		"Paparan":
+"https://drive.google.com/drive/folders/14WrTa4ecyk2t8zMBZ42Ktle78E0X8IXk?usp=sharing",
+		"Kuesioner":
+"https://drive.google.com/drive/folders/14yplq-uPn-j-_yWU9x2v-h4k_yuowXMe?usp=sharing",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/14RwMDU57pr3c4bZ13_9avsWIFtbGm6aU?usp=sharing",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/drive/folders/14QojxlvPpPPESzM00BKgvEOhu3RyXSxb?usp=sharing",
+		"Fenomena":
+"https://drive.google.com/drive/folders/14NFuAMrvTV940Fl2aipGnAS4K3N-YGDv?usp=sharing",
+		"Apresiasi":
+"https://drive.google.com/drive/folders/14KzZyw9bFwUFrguBGGbxKIVvuowioc7d?usp=sharing",
+    },
+
+    ubinanPadi:{
+        "Surat":
+"https://drive.google.com/drive/folders/1nk9v0CYpG_ZQLbl8t_Fs1yY8gWRtavHD?usp=sharing",
+        "Pedoman":
+"https://drive.google.com/drive/folders/16EpSsFA2IYInQHomAed4TSXbcJzMWfTL?usp=sharing",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/15zvSftoNOPsg4-F4HYzSpjluxHySuoHs?usp=sharing",
+		"Paparan":
+"https://drive.google.com/drive/folders/15fbF9_Dfcd8yrG0McG2we4Iq_3_e5se6?usp=sharing",
+		"Kuesioner":
+"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/15LL-tkxWkM6MQ5Ro2UdUwx2sg3o3t5qY?usp=sharing",
+		"Backup Data":"https://drive.google.com/drive/folders/15qf2as7Ofjmogk-dxoT8zw7mqnWQuN7_?usp=sharing",
+		"Berita Acara":"https://drive.google.com/drive/folders/15GBmC0gx8ezv_QcJv2yjvZ7DoppzZh9N?usp=sharing",
+		"Fenomena":
+"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
+		"Apresiasi":
+"https://drive.google.com/drive/folders/156v5DLWZ-WUNHleqjwnRKcVCEfuf6_e9?usp=sharing",
+    },
+
+ubinanPalawija:{
+        "Surat": "https://drive.google.com/drive/folders/1nk9v0CYpG_ZQLbl8t_Fs1yY8gWRtavHD?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/16EpSsFA2IYInQHomAed4TSXbcJzMWfTL?usp=sharing",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/1euHr5CesB-y7L-At5c0FnLVYAkFju5KV?usp=sharing",
+		"Paparan": "https://drive.google.com/drive/folders/15fbF9_Dfcd8yrG0McG2we4Iq_3_e5se6?usp=sharing",
+		"Kuesioner":
+"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/15LL-tkxWkM6MQ5Ro2UdUwx2sg3o3t5qY?usp=sharing",
+		"Backup Data":"https://drive.google.com/drive/folders/15qf2as7Ofjmogk-dxoT8zw7mqnWQuN7_?usp=sharing",
+		"Berita Acara":"https://drive.google.com/drive/folders/15GBmC0gx8ezv_QcJv2yjvZ7DoppzZh9N?usp=sharing",
+		"Fenomena":
+"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
+		"Apresiasi": "https://drive.google.com/drive/folders/15P4m3nXXXpoYKhTVntB8WMFw3bBa5Un3?usp=sharing",
+    },
+	
+	sphSbs:{
+        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":
+"https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	sphBst:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	sphTbf:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	sphTh:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	vpHorti:{
+        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/10OZXXQ2u9Tho-ClUBVH8QBwJL6GAigQK?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	vnHorti:{
+        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/10OZXXQ2u9Tho-ClUBVH8QBwJL6GAigQK?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
+    },
+	skb:{
+        "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/19uC8QkS-O830D2ELV9tbnbwNyNVIgeAm?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/19n27H3XvVgakabUtyo6CjhQpD1EpSWJM?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/19ve0AetH51IVBBhTtKzdf2v-poc-WnA5?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/19VcMpU7RaEg-zKy45z822BfbpPnDrzNq?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/19n4D9eo-V2j3t0DAn3lTJIRFwrpDv_Am?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/19V3S1Shl80M7kKb1hdcuzDSQVa1LqQNl?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
+    },
+	dpp:{
+        "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/19uC8QkS-O830D2ELV9tbnbwNyNVIgeAm?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/19n27H3XvVgakabUtyo6CjhQpD1EpSWJM?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/19ve0AetH51IVBBhTtKzdf2v-poc-WnA5?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/19VcMpU7RaEg-zKy45z822BfbpPnDrzNq?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/19n4D9eo-V2j3t0DAn3lTJIRFwrpDv_Am?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/19V3S1Shl80M7kKb1hdcuzDSQVa1LqQNl?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
+    },
+	lptb:{
+        "Surat": "https://drive.google.com/drive/folders/1gKjRtKtmd4k2ExZOfDH7roJsn4kGOeT9?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/16QS4j-bqMMDyy6EQP3-iKdRdZNxVMQTL?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/16K_cLYj9WY94w0673pa-vEkt2ZzeAaUO?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/16Ns3bINtoBCfnTl01AfTPOV-xciWeCkC?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/17Kw5MMJYkfkye4T3cY3N_MiC35JqLXXt?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/16PCUAOzoyID0V9sJGJ0cXkwQbH6rDKET?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/drive/folders/17PDQvTK3uLaGgaujbewiowLKNMeOWOj4?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/1739MLd1DogN7mkGT1hfoAMyEIbSyrWbA?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/16zGK2j00j5VcVqBhKOO1vTFmW0UBs3mH?usp=drive_link",
+		"Apresiasi":"https://drive.google.com/xxx",
+    },
+	ppt:{
+        "Surat": "https://drive.google.com/drive/folders/1gKjRtKtmd4k2ExZOfDH7roJsn4kGOeT9?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/11A8_eGwgL1pO7gNxEe0ZbKF-MbdymiAQ?usp=sharing",
+        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1rH8GMCx821TsuGhwseKcHUR32XkCHB3m/edit?usp=sharing&ouid=114514626323711488284&rtpof=true&sd=true",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/10z37EbY3dt4LTChI6Hca57Zt8FSles_0?usp=sharing",
+		"Paparan": "https://drive.google.com/drive/folders/10ulDnAJJIFS-IUigflU9WhIpo2xrdyf-?usp=sharing",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/1iM4-ehfurTOdtOOI4omqJXVaTkTPGEEH?usp=sharing",
+		"Backup Data":"https://drive.google.com/drive/folders/1RIXTmFY-ou4qZTsK_adNutvBS49BYKsZ?usp=share_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/1S-22BSzUuOSiIcChdwJtr4aKNDRtXNod?usp=share_link",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+    },
+	pptpi1:{
+        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
+        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1BTAPtpmDcnXKSbbWMUb4avWhK-MwfM8p/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
+    },
+	pptpi2:{
+        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
+        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1VBlWsJExqxSUa5uO3q4kTnnNgcK0Lcl1/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
+    },
+	ltp:{
+        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
+        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1OLhpCxmEjGTULdGaltXpkbfKU2d5yzh7/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
+    },
+	ltb:{
+        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
+        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1vEvjq7FSVlLZaBowPZhZhaGyDf1LDZS-/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
+    },
+	dkt:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
+    },
+	hpht:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
+    },
+	vtTsl:{
+        "Surat":"https://drive.google.com/xxx",
+        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
+		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
+		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
+		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
+		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
+		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
+		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
+    },
+	 ibsTahunan:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
+        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-D6RqAQ3tvTj5ftEju_K16_DPE8j2W4i&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1H-4YG63SXONDDDbWuMPCp6QqueAzuM&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GNfG9NiRqN8gzqvwa6uBw4_vIHqUS2D&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-GMzs9Dkq8gpvxS-p4KA2FkA3gNPHdvo&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1ailWuCRKMvUdq3tJbFGQWUwm2IRKRM1i&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-65LhhoQYre2cl_KvxtY7CAdCODUu702&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9idpQqpHNF0CUJ7NP19GzdS1CHWDR6W&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-AETbh1ZinMk-CylTRl2EzIYPa0P40sy&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4qhvKpTa21FX6QNFUAcg-Hkr0ZzwE0E&usp=drive_fs",
+    },
+
+    ibsBulanan:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing ",
+        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-D6RqAQ3tvTj5ftEju_K16_DPE8j2W4i&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GNfG9NiRqN8gzqvwa6uBw4_vIHqUS2D&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-GMzs9Dkq8gpvxS-p4KA2FkA3gNPHdvo&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1nXvtzAlliaXRgfMo4WULOFQybhQBpvAK&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-65LhhoQYre2cl_KvxtY7CAdCODUu702&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9idpQqpHNF0CUJ7NP19GzdS1CHWDR6W&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-AETbh1ZinMk-CylTRl2EzIYPa0P40sy&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4qhvKpTa21FX6QNFUAcg-Hkr0ZzwE0E&usp=drive_fs",
+    },
+
+    mikroTahunan:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
+        "Pedoman": "https://drive.google.com/open?id=1-08YEy-AVZolmzzZLzK3nF7N1CLnm6yz&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-DvVNa-ErpFHunPUk7a9SUql7trVs_NQ&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1u15oPevOc1JZkBsqu5JN1XRdUROQTa&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-H7DK20t4yUUmv4UGPm8mHP0Fi52LSWe&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-F6BSBge6OhDLeZpVZ8Fv2QYnNsy-0sU&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1Wh02zs1hRHL0d_VEQNq7OK4NUagOHzNc&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-5oZ89NMERAYnTbx1T86nPjaejuOjKOa&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9ZpnyPSKD6h-_jjXGXFeiAlWvvaDGuD&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-A7yZ8r97Gqu1dr3qZHLgyGP2_16Xhbm&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4hkAE4gE8u5Bvn7UYlk1uxJJ0Y9eW_3&usp=drive_fs",
+    },
+	updateDPA:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
+        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Paparan": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Kuesioner": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Upload Dokumen":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Backup Data":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Berita Acara":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Fenomena": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Apresiasi": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+    },
+	pengutipanIBS:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
+        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
+        "Daftar Sampel":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Bahan Ajar":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Paparan": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Kuesioner": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1xSEjKCSutXCaT109m1XdK8oBZMY79GaH&usp=drive_fs",
+		"Backup Data":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Berita Acara":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Fenomena": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
+		"Apresiasi": "https://drive.google.com/drive/folders/1MewTyX8reg_hj58GZAjRVLFg0YGbKUoF?usp=sharing",
+    },
+	mikroTriwulan:{
+        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
+        "Pedoman": "https://drive.google.com/open?id=1-08YEy-AVZolmzzZLzK3nF7N1CLnm6yz&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-DvVNa-ErpFHunPUk7a9SUql7trVs_NQ&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1u15oPevOc1JZkBsqu5JN1XRdUROQTa&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-H7DK20t4yUUmv4UGPm8mHP0Fi52LSWe&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-F6BSBge6OhDLeZpVZ8Fv2QYnNsy-0sU&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1CBmTZQm0Jw8E06Q_AZaiIwrI9Mq0U6Wr&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-5oZ89NMERAYnTbx1T86nPjaejuOjKOa&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9ZpnyPSKD6h-_jjXGXFeiAlWvvaDGuD&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-A7yZ8r97Gqu1dr3qZHLgyGP2_16Xhbm&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4hkAE4gE8u5Bvn7UYlk1uxJJ0Y9eW_3&usp=drive_fs",
+    },
+	homeMenu:{
+    "Surat":"https://drive.google.com/xxx"
+},
+
+adhoc1:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+adhoc2:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+adhoc3:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+
+progInpek:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+progPertanian:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+progManajemen:{
+    "Surat":"https://drive.google.com/xxx",
+        "Pedoman":"https://drive.google.com/xxx",
+        "Daftar Sampel":"https://drive.google.com/xxx",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/xxx",
+		"Backup Data":"https://drive.google.com/xxx",
+		"Berita Acara":"https://drive.google.com/xxx",
+		"Fenomena":"https://drive.google.com/xxx",
+		"Apresiasi":"https://drive.google.com/xxx",
+},
+
+konsPengutipan:{
+      "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/xxx",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/open?id=1V-f0U_cqOkOZL63K5dDJNuyeGvvoYQ05&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
+},
+konsUpdating:{
+       "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
+},
+konsGround:{
+       "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
+		"Paparan":"https://drive.google.com/xxx",
+		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
+},
+skth:{
+     "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
+},
+
+sktr:{
+    "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
+		"Kuesioner":"https://drive.google.com/xxx",
+		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
+},
+airTahunan:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+airTriwulanan:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+listrik:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+captive:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+galianTahunan:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+galianTriwulanan:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+galianUrt:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+gas:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+migas:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+nonMigas:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+geothermal:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+udpe:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+tambangPengutipan:{
+    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
+        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
+		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
+		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
+		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
+		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
+		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
+		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
+		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
+		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
+},
+
+
+    // tinggal lanjutkan sendiri ya 👌
+};
+
+
+
+// =====================
+// SHOW HALAMAN UTAMA
+// =====================
+function show(id, el){
+
+    // sembunyikan semua halaman
+    document.querySelectorAll('.page').forEach(p=>{
+        p.style.display = "none";
+    });
+
+    // hapus active menu lama
+    document.querySelectorAll('.submenu div').forEach(d=>{
+        d.classList.remove("active-menu");
+    });
+
+    // aman jika el undefined
+    if(el){
+        el.classList.add("active-menu");
+    }
+
+    // =============================
+    // 1️⃣ KHUSUS KALENDER & AGENDA
+    // =============================
+    if(id === "kalenderPage"){
+        document.getElementById("pageTemplate").style.display = "none";
+        document.getElementById("capaianPage").style.display = "none";
+        document.getElementById("kalenderPage").style.display = "block";
+        return;
+    }
+
+    // =============================
+    // 2️⃣ DEFAULT : TEMPLATE DOKUMEN
+    // =============================
+    let title = Object.keys(pages).includes(id) ? pages[id].split(" > ").pop() : "";
+    document.getElementById("pageTitle").innerText = title;
+    document.getElementById("pagePath").innerText = "Statistik Pertanian > " + pages[id];
+
+    document.getElementById("pageTemplate").style.display = "block";
+
+    // Isi link tombol download
+    const buttons = document.querySelectorAll(".btn-doc");
+
+    buttons.forEach(btn=>{
+        let text = btn.innerText.trim();
+
+        if(docs[id] && docs[id][text]){
+            btn.href = docs[id][text];
+            btn.style.display = "block";
+        } else {
+            btn.href = "#";
+            btn.style.display = "none";
+        }
+    });
+}
+
+
+// =====================
+// CAPAIAN KINERJA
+// =====================
+let activeAPI = "";
+
+function showCapaian(jenis, el){
+
+    document.querySelectorAll('.page').forEach(p=>p.style.display="none");
+    document.querySelectorAll('.submenu div').forEach(d=>d.classList.remove("active-menu"));
+    el.classList.add("active-menu");
+
+    document.getElementById("capaianPage").style.display = "block";
+    document.getElementById("pageTemplate").style.display = "none";
+
+    if(jenis === "pertanian"){
+        document.getElementById("capaianTitle").innerText = "📈 Capaian Kinerja Pertanian";
+        document.getElementById("capaianPath").innerText = "Capaian Kinerja > Pertanian";
+        activeAPI = API_PERTANIAN;
+    }
+    else{
+        document.getElementById("capaianTitle").innerText =
+            "📈 Capaian Kinerja Industri, Pertambangan, Energi & Konstruksi";
+        document.getElementById("capaianPath").innerText =
+            "Capaian Kinerja > Industri, Pertambangan, Energi & Konstruksi";
+        activeAPI = API_INDUSTRI;
+    }
+
+    loadSheetList();
+}
+
+function loadSheetList(){
+    fetch(activeAPI)
+      .then(res => res.json())
+      .then(data => {
+          const sel = document.getElementById("sheetSelect");
+          sel.innerHTML = "";
+
+          if(!data.sheets || data.sheets.length === 0){
+              sel.innerHTML = "<option>Tidak ada sheet</option>";
+              return;
+          }
+
+          data.sheets.forEach(s=>{
+              let opt = document.createElement("option");
+              opt.value = s;
+              opt.textContent = s;
+              sel.appendChild(opt);
+          });
+
+          loadSheetData();
+      });
+}
+
+function loadSheetData(){
+    const sel = document.getElementById("sheetSelect");
+    const sh = sel.value;
+
+    fetch(activeAPI + "?sheet=" + encodeURIComponent(sh))
+      .then(r => r.json())
+      .then(d => {
+          const t = document.getElementById("dataTable");
+          t.innerHTML = "";
+
+          if(!d.data || d.data.length === 0){
+              t.innerHTML = "<tr><td>Data kosong</td></tr>";
+              return;
+          }
+
+          let h = "<tr>";
+          Object.keys(d.data[0]).forEach(k => h += `<th>${k}</th>`);
+          h += "</tr>";
+          t.innerHTML += h;
+
+          d.data.forEach(r=>{
+              let tr = "<tr>";
+              Object.values(r).forEach(v => tr += `<td>${v}</td>`);
+              tr += "</tr>";
+              t.innerHTML += tr;
+          });
+      });
+}
+
+
+// =====================
+// TOGGLE SUBMENU
+// =====================
+function toggle(id){
+    let el = document.getElementById(id);
+    el.style.display = (el.style.display === "block") ? "none" : "block";
+}
+
+
+// =====================
+// INIT HOME
+// =====================
+function initHome(){
+
+    document.querySelectorAll('.page').forEach(p=>{
+        p.style.display = "none";
+    });
+
+    document.getElementById("home").style.display = "block";
+
+    document.querySelectorAll('.submenu div').forEach(d=>{
+        d.classList.remove("active-menu");
+    });
+
+    document.querySelectorAll('.submenu').forEach(s=>{
+        s.style.display = "none";
+    });
+}
+
+
+// =====================
+// SHOW HOME
+// =====================
+function showHome(){
+
+    document.querySelectorAll('.page').forEach(p=>p.style.display = "none");
+    document.getElementById("home").style.display = "block";
+
+    document.querySelectorAll('.submenu div').forEach(d=>d.classList.remove("active-menu"));
+    document.querySelectorAll('.submenu').forEach(s=>s.style.display = "none");
+}
+
+
+// =====================
+// HOME LINKS
+// =====================
+const homeLinks = {
+    industri:{
+        surat:"https://drive.google.com/drive/folders/10pbwo4W4TvhHiw0oViy-r1t5vX6yhm_Q",
+        sop:"http://s.id/SOP-INTAN",
+        wa:"https://chat.whatsapp.com/IX5Q2jeNU3F1MetoEmkQQm",
+        grafik:"https://drive.google.com/ISI_LINK_GRAFIK_INDUSTRI"
+    },
+    pertanian:{
+        surat:"https://drive.google.com/drive/folders/14d5Ir8bIGIRqo8Iv_UMY2dhXQNFXoq8M?usp=sharing",
+        sop:"http://s.id/SOP-INTAN",
+        wa:"https://chat.whatsapp.com/DumHr77mzZt0aYOr8SaWcd",
+        grafik:"https://drive.google.com/ISI_LINK_GRAFIK_PERTANIAN"
+    }
+};
+
+function openHomeLink(sektor, jenis){
+    if(homeLinks[sektor] && homeLinks[sektor][jenis]){
+        window.open(homeLinks[sektor][jenis], '_blank');
+    } else {
+        alert("Link belum tersedia");
+    }
+}
+function submitAgenda(){
+
+    const url = "https://script.google.com/macros/s/AKfycbyRAmUTVSl7iArh_q_sz7NWY1U04VkangKsnwN0nPVRgdEsk6uGS4kc48goaJ0m8-P0/exec";
+
+    const data = {
+        action: "add",
+        date: document.getElementById("tgl").value,
+        title: document.getElementById("nama").value,
+		time: document.getElementById("waktu").value,
+        tempat: document.getElementById("tempat").value,
+        peserta: getPeserta(),
+        catatan: document.getElementById("catatan").value
+    };
+
+    fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data)
+    })
+    .then(()=>{
+        alert("Berhasil disimpan ke Google Sheet ✅");
+    })
+    .catch(()=>{
+        alert("Gagal menyimpan ❌");
+    });
+}
+function getPeserta(){
+
+    let cek = document.querySelectorAll('#pesertaList input[type="checkbox"]:checked');
+    let hasil = [];
+
+    cek.forEach(c => hasil.push(c.value));
+
+    return hasil.join(", ");
+}
+
+
+
+</script>
+<script>
+/* =====================================
+   KONFIGURASI API
+===================================== */
+const AGENDA_API = "https://script.google.com/macros/s/AKfycbyRAmUTVSl7iArh_q_sz7NWY1U04VkangKsnwN0nPVRgdEsk6uGS4kc48goaJ0m8-P0/exec";
+
+/* =====================================
+   STATE
+===================================== */
+let agendaCache = [];
+let editId = null;
+let kalenderBulan = new Date().getMonth();
+let kalenderTahun = new Date().getFullYear();
+
+/* =====================================
+   FORMAT
+===================================== */
+function formatDate(d){
+  if(!d) return "";
+  if(typeof d === "string" && d.length === 10) return d;
+  const t = new Date(d);
+  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
+}
+
+function formatTime(v){
+  if(!v) return "-";
+  if(typeof v === "string" && v.match(/^\d{2}:\d{2}$/)) return v;
+  const d = new Date(v);
+  if(isNaN(d)) return v;
+  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+
+/* =====================================
+   LOAD DATA
+===================================== */
+function loadAgenda(){
+  fetch(AGENDA_API + "?action=get")
+    .then(r=>r.json())
+    .then(data=>{
+      agendaCache = data;
+      renderKalender();
+      renderAgendaTable();
+    });
+}
+
+/* =====================================
+   RENDER KALENDER
+===================================== */
+function renderKalender(){
+  const grid = document.getElementById("kalenderGrid");
+  const title = document.getElementById("kalenderJudul");
+
+  grid.innerHTML = "";
+  title.innerText = new Date(kalenderTahun, kalenderBulan)
+      .toLocaleString("id-ID",{month:"long",year:"numeric"});
+
+  const firstDay = new Date(kalenderTahun, kalenderBulan, 1).getDay();
+  const totalDays = new Date(kalenderTahun, kalenderBulan+1, 0).getDate();
+
+  for(let i=0;i<firstDay;i++){
+    grid.innerHTML += `<div></div>`;
+  }
+
+  for(let d=1; d<=totalDays; d++){
+    const tgl = `${kalenderTahun}-${String(kalenderBulan+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const events = agendaCache.filter(a=>formatDate(a.date)===tgl);
+
+    grid.innerHTML += `
+      <div class="hari ${events.length?'hari-ada':''}" onclick="lihatAgenda('${tgl}')">
+        <strong>${d}</strong>
+        ${events.length?`<div class="badge-agenda">${events.length} kegiatan</div>`:""}
+      </div>`;
+  }
+}
+
+function prevMonth(){
+  kalenderBulan--;
+  if(kalenderBulan<0){ kalenderBulan=11; kalenderTahun--; }
+  renderKalender();
+}
+function nextMonth(){
+  kalenderBulan++;
+  if(kalenderBulan>11){ kalenderBulan=0; kalenderTahun++; }
+  renderKalender();
+}
+
+/* =====================================
+   TABEL AGENDA
+===================================== */
+function renderAgendaTable(){
+  const tbody = document.querySelector("#agendaTable tbody");
+  tbody.innerHTML = "";
+
+  agendaCache.forEach(r=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${formatDate(r.date)}</td>
+        <td>${r.title}</td>
+        <td>${formatTime(r.time)}</td>
+        <td>${r.tempat}</td>
+        <td>${r.peserta}</td>
+        <td>${r.catatan||""}</td>
+        <td>
+          <button onclick="editAgenda('${r.id}')">Edit</button>
+          <button onclick="hapusAgenda('${r.id}')">Hapus</button>
+        </td>
+      </tr>`;
+  });
+}
+
+/* =====================================
+   KLIK TANGGAL
+===================================== */
+function lihatAgenda(tgl){
+  const list = agendaCache.filter(a=>formatDate(a.date)===tgl);
+  if(!list.length){ alert("Tidak ada agenda"); return; }
+
+  let txt = `Agenda ${tgl}\n\n`;
+  list.forEach(a=>{
+    txt += `• ${a.title} (${a.tempat}) ${a.time||""}\n`;
+  });
+  alert(txt);
+}
+
+/* =====================================
+   SIMPAN
+===================================== */
+function getPeserta(){
+  let arr=[];
+  document.querySelectorAll("#pesertaList input:checked").forEach(c=>arr.push(c.value));
+  return arr.join(", ");
+}
+
+function submitAgenda(){
+  const data = {
+    action: editId?"edit":"add",
+    id: editId,
+    date: document.getElementById("tgl").value,
+    title: document.getElementById("nama").value,
+    time: document.getElementById("waktu").value,
+    tempat: document.getElementById("tempat").value,
+    peserta: getPeserta(),
+    catatan: document.getElementById("catatan").value
+  };
+
+  fetch(AGENDA_API,{
+    method:"POST",
+    mode:"no-cors",
+    body:JSON.stringify(data)
+  }).then(()=>{
+    alert("Data tersimpan");
+    editId=null;
+    loadAgenda();
+  });
+}
+
+/* =====================================
+   EDIT & HAPUS
+===================================== */
+function editAgenda(id){
+  fetch(AGENDA_API+"?action=get")
+    .then(r=>r.json())
+    .then(data=>{
+      const row = data.find(r=>r.id==id);
+      editId=id;
+      document.getElementById("tgl").value = formatDate(row.date);
+      document.getElementById("nama").value = row.title;
+      document.getElementById("waktu").value = row.time||"";
+      document.getElementById("tempat").value = row.tempat;
+      document.getElementById("catatan").value = row.catatan||"";
+
+      document.querySelectorAll("#pesertaList input").forEach(c=>c.checked=false);
+      if(row.peserta){
+        row.peserta.split(",").map(p=>p.trim()).forEach(p=>{
+          document.querySelectorAll("#pesertaList input").forEach(c=>{
+            if(c.value===p) c.checked=true;
+          });
+        });
+      }
+    });
+}
+
+function hapusAgenda(id){
+  if(!confirm("Hapus agenda ini?")) return;
+  fetch(AGENDA_API,{
+    method:"POST",
+    mode:"no-cors",
+    body:JSON.stringify({action:"delete",id:id})
+  }).then(()=>loadAgenda());
+}
+
+/* =====================================
+   INIT
+===================================== */
+loadAgenda();
+</script>
+
+</script>
+
+</body>
+</html>
 
