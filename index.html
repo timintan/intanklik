@@ -431,20 +431,54 @@ button[aria-label="Next"] {
   border-left:4px solid #3b82f6;
   border-radius:6px;
 }
-.form-jadwal{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:8px;
-  margin-bottom:15px;
+
+#jadwalPage{
+  margin-left: 260px;
+}
+#jadwalPage{
+  position: relative;
+}
+#jadwalPage {
+  overflow-x: hidden;
 }
 
-.form-jadwal button{
-  grid-column:span 6;
-  padding:8px;
-  background:#2563eb;
+#jadwalPage * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.content {
+  min-width: 0;     /* 🔥 INI KUNCI UTAMA */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.page {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.layout {
+  display: flex;
+}
+
+.layout > * {
+  min-width: 0;   /* 🔥 INI PENENTU */
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.form-grid input, .form-grid button{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+.form-grid button{
+  grid-column:span 2;
+  background:#0a3d62;
   color:#fff;
   border:none;
-  border-radius:6px;
+  cursor:pointer;
 }
 
 
@@ -467,12 +501,9 @@ button[aria-label="Next"] {
 📅 Kalender & Agenda
 </div>
 
-<!-- MENU BARU -->
-   <div class="menu-item"
-     onclick="show('jadwalKegiatan', this)">
-  🗓️ Jadwal Kegiatan
+<div class="menu-item" onclick="showJadwal(this)">
+🗓️ Jadwal Kegiatan
 </div>
-
 
 
 
@@ -887,43 +918,6 @@ button[aria-label="Next"] {
 
 <hr class="my-4">
 
-<div id="jadwalKegiatan" class="card page" style="display:none">
-  <div class="title">Jadwal Kegiatan</div>
-
-  <!-- FORM INPUT -->
-  <div class="form-jadwal">
-    <input type="date" id="startTanggal">
-    <input type="date" id="endTanggal">
-    <input type="text" id="kegiatan" placeholder="Kegiatan">
-    <input type="text" id="tahapan" placeholder="Tahapan Kegiatan">
-    <input type="text" id="subsektor" placeholder="Subsektor">
-    <input type="text" id="pic" placeholder="PIC">
-    <button onclick="tambahJadwal()">Tambah</button>
-  </div>
-
-  <!-- KALENDER -->
-  <div id="fullCalendar"></div>
-
-  <h3>Rekap Jadwal</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Periode</th>
-        <th>Kegiatan</th>
-        <th>Tahapan</th>
-        <th>Subsektor</th>
-        <th>PIC</th>
-      </tr>
-    </thead>
-    <tbody id="jadwalBody"></tbody>
-  </table>
-</div>
-
-
-
-
-
- 
 
 
 
@@ -969,6 +963,95 @@ button[aria-label="Next"] {
   <div class="title" id="programTitle"></div>
   <div class="program-grid" id="programGrid"></div>
 </div>
+
+<div id="jadwalPage" class="card page" style="display:none">
+
+  <div class="title">🗓️ Jadwal Kegiatan</div>
+  <div class="breadcrumb">Beranda > Jadwal Kegiatan</div>
+
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#jadwalForm">
+        ➕ Input Jadwal
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalRekap">
+        📋 Rekap Jadwal
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalKalender">
+        📅 Kalender Jadwal
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- ================= FORM INPUT ================= -->
+    <div class="tab-pane fade show active" id="jadwalForm">
+      <div class="card p-3">
+
+        <h4 class="mb-3">📝 Form Input Jadwal</h4>
+
+        <label>Tanggal Mulai</label>
+        <input type="date" id="jmMulai" class="form-control mb-2">
+
+        <label>Tanggal Selesai</label>
+        <input type="date" id="jmSelesai" class="form-control mb-2">
+
+        <label>Kegiatan</label>
+        <input type="text" id="jmKegiatan" class="form-control mb-2">
+
+        <label>Tahapan Kegiatan</label>
+        <input type="text" id="jmTahapan" class="form-control mb-2">
+
+        <label>Subsektor</label>
+        <input type="text" id="jmSubsektor" class="form-control mb-2">
+
+        <label>PIC</label>
+        <input type="text" id="jmPIC" class="form-control mb-3">
+
+        <button class="btn btn-primary w-100" onclick="simpanJadwal()">
+          💾 Simpan Jadwal
+        </button>
+
+      </div>
+    </div>
+
+    <!-- ================= REKAP ================= -->
+    <div class="tab-pane fade" id="jadwalRekap">
+      <div class="card p-3">
+        <h4>📋 Rekap Jadwal</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tgl Mulai</th>
+              <th>Tgl Selesai</th>
+              <th>Kegiatan</th>
+              <th>Tahapan</th>
+              <th>Subsektor</th>
+              <th>PIC</th>
+            </tr>
+          </thead>
+          <tbody id="jadwalBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= KALENDER ================= -->
+    <div class="tab-pane fade" id="jadwalKalender">
+      <div class="card p-3">
+        <h4>📅 Kalender Jadwal</h4>
+        <div id="kalenderJadwal"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 
 
 
@@ -2313,7 +2396,7 @@ function showProgram(key, el){
    KONFIGURASI API
 ===================================== */
 const AGENDA_API = "https://script.google.com/macros/s/AKfycbyRAmUTVSl7iArh_q_sz7NWY1U04VkangKsnwN0nPVRgdEsk6uGS4kc48goaJ0m8-P0/exec";
-const JADWAL_API = "https://script.google.com/macros/s/AKfycbzsmK3P735p1JodrcWvyg864LZ6V8HgZkF8Qdr4altgVzzeQ6d7NvPvQsxYcVZJEX3Bsg/exec";
+const JADWAL_API = "https://script.google.com/macros/s/AKfycbyRAipJVW54mSWrS7t4Aj4me4BiYC9v1SCIyxL19CZttY-neDVuTF1Qmwv8Sh85qT6W-A/exec";
 /* =====================================
    STATE
 ===================================== */
@@ -2720,6 +2803,120 @@ function hideAllPages(){
     .forEach(p => p.style.display = "none");
 }
 
+function showJadwal(el){
+  hideAllPages();
+  setActiveMenu(el);
+  document.getElementById("jadwalPage").style.display = "block";
+}
+function setActiveMenu(el){
+  document.querySelectorAll(".menu-item")
+    .forEach(m => m.classList.remove("active"));
+
+  el.classList.add("active");
+}
+
+function simpanJadwal(){
+  const page = document.getElementById("jadwalPage");
+
+  const data = {
+    jmMulai: page.querySelector("#jmMulai").value,
+    jmSelesai: page.querySelector("#jmSelesai").value,
+    jmKegiatan: page.querySelector("#jmKegiatan").value,
+    jmTahapan: page.querySelector("#jmTahapan").value,
+    jmSubsektor: page.querySelector("#jmSubsektor").value,
+    jmPIC: page.querySelector("#jmPIC").value
+  };
+
+  if(!data.jmMulai || !data.jmKegiatan){
+    alert("Tanggal Mulai & Kegiatan wajib diisi");
+    return;
+  }
+
+  fetch(JADWAL_API, {
+    method: "POST",
+    body: JSON.stringify(data) // 🔥 TANPA HEADERS
+  })
+  .then(r => r.json())
+  .then(res => {
+    if(res.status === "ok"){
+      alert("✅ Jadwal tersimpan");
+      resetFormJadwal();
+      loadRekapJadwal();
+    } else {
+      alert(res.message || "Gagal menyimpan");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert("❌ Error koneksi API");
+  });
+}
+
+
+function resetFormJadwal(){
+  const page = document.getElementById("jadwalPage");
+  ["jmMulai","jmSelesai","jmKegiatan","jmTahapan","jmSubsektor","jmPIC"]
+    .forEach(id => page.querySelector("#"+id).value = "");
+}
+
+
+function showJadwal(el){
+  hideAllPages();
+  setActiveMenu(el);
+  document.getElementById("jadwalPage").style.display = "block";
+  loadRekapJadwal(); // 🔥 WAJIB
+}
+
+
+function loadRekapJadwal(){
+  fetch(JADWAL_API)
+    .then(r => r.json())
+    .then(data => {
+      console.log("DATA REKAP:", data); // DEBUG
+
+      const tbody = document.getElementById("jadwalBody");
+      if(!tbody){
+        console.warn("jadwalBody tidak ditemukan");
+        return;
+      }
+
+      tbody.innerHTML = "";
+
+      if(!Array.isArray(data) || data.length === 0){
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center">Belum ada data</td>
+          </tr>`;
+        return;
+      }
+
+      data.forEach(d => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${d.jmMulai}</td>
+		  <td>${d.jmSelesai}</td>
+          <td>${d.jmKegiatan}</td>
+          <td>${d.jmTahapan}</td>
+          <td>${d.jmSubsektor}</td>
+          <td>${d.jmPIC}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => {
+      console.error("Gagal load rekap:", err);
+    });
+}
+
+
+
+function loadAgenda(){
+  fetch(AGENDA_API)
+    .then(r=>r.json())
+    .then(data=>{
+      renderCalendar(data); // fungsi kalender kamu
+    });
+}
 
 
 </script>
