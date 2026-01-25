@@ -463,23 +463,6 @@ button[aria-label="Next"] {
 .layout > * {
   min-width: 0;   /* 🔥 INI PENENTU */
 }
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.form-grid input, .form-grid button{
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-.form-grid button{
-  grid-column:span 2;
-  background:#0a3d62;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-}
 
 
 </style>
@@ -2813,109 +2796,6 @@ function setActiveMenu(el){
     .forEach(m => m.classList.remove("active"));
 
   el.classList.add("active");
-}
-
-function simpanJadwal(){
-  const page = document.getElementById("jadwalPage");
-
-  const data = {
-    jmMulai: page.querySelector("#jmMulai").value,
-    jmSelesai: page.querySelector("#jmSelesai").value,
-    jmKegiatan: page.querySelector("#jmKegiatan").value,
-    jmTahapan: page.querySelector("#jmTahapan").value,
-    jmSubsektor: page.querySelector("#jmSubsektor").value,
-    jmPIC: page.querySelector("#jmPIC").value
-  };
-
-  if(!data.jmMulai || !data.jmKegiatan){
-    alert("Tanggal Mulai & Kegiatan wajib diisi");
-    return;
-  }
-
-  fetch(JADWAL_API, {
-    method: "POST",
-    body: JSON.stringify(data) // 🔥 TANPA HEADERS
-  })
-  .then(r => r.json())
-  .then(res => {
-    if(res.status === "ok"){
-      alert("✅ Jadwal tersimpan");
-      resetFormJadwal();
-      loadRekapJadwal();
-    } else {
-      alert(res.message || "Gagal menyimpan");
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    alert("❌ Error koneksi API");
-  });
-}
-
-
-function resetFormJadwal(){
-  const page = document.getElementById("jadwalPage");
-  ["jmMulai","jmSelesai","jmKegiatan","jmTahapan","jmSubsektor","jmPIC"]
-    .forEach(id => page.querySelector("#"+id).value = "");
-}
-
-
-function showJadwal(el){
-  hideAllPages();
-  setActiveMenu(el);
-  document.getElementById("jadwalPage").style.display = "block";
-  loadRekapJadwal(); // 🔥 WAJIB
-}
-
-
-function loadRekapJadwal(){
-  fetch(JADWAL_API)
-    .then(r => r.json())
-    .then(data => {
-      console.log("DATA REKAP:", data); // DEBUG
-
-      const tbody = document.getElementById("jadwalBody");
-      if(!tbody){
-        console.warn("jadwalBody tidak ditemukan");
-        return;
-      }
-
-      tbody.innerHTML = "";
-
-      if(!Array.isArray(data) || data.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center">Belum ada data</td>
-          </tr>`;
-        return;
-      }
-
-      data.forEach(d => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${d.jmMulai}</td>
-		  <td>${d.jmSelesai}</td>
-          <td>${d.jmKegiatan}</td>
-          <td>${d.jmTahapan}</td>
-          <td>${d.jmSubsektor}</td>
-          <td>${d.jmPIC}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    })
-    .catch(err => {
-      console.error("Gagal load rekap:", err);
-    });
-}
-
-
-
-function loadAgenda(){
-  fetch(AGENDA_API)
-    .then(r=>r.json())
-    .then(data=>{
-      renderCalendar(data); // fungsi kalender kamu
-    });
 }
 
 
