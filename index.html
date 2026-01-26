@@ -1025,14 +1025,56 @@ button[aria-label="Next"] {
         <label>Kegiatan</label>
         <input type="text" id="jmKegiatan" class="form-control mb-2">
 
-        <label>Tahapan Kegiatan</label>
-        <input type="text" id="jmTahapan" class="form-control mb-2">
+        
+        
+		<div class="mb-3">
+		<label class="form-label">Tahapan Kegiatan</label>
+		<select id="jmTahapan" class="form-select" required>
+		<option value="">-- Pilih Tahapan --</option>
+		<option>Persiapan</option>
+		<option>Pendataan</option>
+		<option>Pengolahan</option>
+		<option>Publikasi</option>
+		</select>
+		</div>
 
-        <label>Subsektor</label>
-        <input type="text" id="jmSubsektor" class="form-control mb-2">
+        
+			<div class="mb-3">
+			  <label class="form-label">Subsektor</label>
+			  <select id="jmSubsektor" class="form-select" required>
+				<option value="">-- Pilih Subsektor --</option>
+				<option>Tanaman Pangan</option>
+				<option>Hortikultura</option>
+				<option>Perkebunan</option>
+				<option>Peternakan</option>
+				<option>Perikanan</option>
+				<option>Kehutanan</option>
+				<option>Industri</option>
+				<option>Konstruksi</option>
+				<option>Pertambangan dan Energi</option>
+			  </select>
+			</div>
 
-        <label>PIC</label>
-        <input type="text" id="jmPIC" class="form-control mb-3">
+        
+			<div class="mb-3">
+			  <label class="form-label">PIC</label>
+			  <select id="jmPIC" class="form-select" required>
+				<option value="">-- Pilih PIC --</option>
+				<option>Sri Diastuti</option>
+				<option>Tri Karjono</option>
+				<option>Adi Susanto</option>
+				<option>Lestania Jayanti</option>
+				<option>Etikawati Datiek Pratiwi</option>
+				<option>Al Barkah Triandika</option>
+				<option>Dian Eka Putri</option>
+				<option>Dina Nur Rahma</option>
+				<option>Rina Lusi Handayani</option>
+				<option>Fadhila Tsany NR</option>
+				<option>Minanur Rohman</option>
+				<option>Ari Susanto</option>
+				<option>Rizqi Amalia Hanif</option>
+			  </select>
+			</div>
 
         <button class="btn btn-primary w-100" onclick="simpanJadwal()">
           💾 Simpan Jadwal
