@@ -503,12 +503,85 @@ button[aria-label="Next"] {
   margin-left: 260px;
 }
 
+/* ========================= */
+/* RESPONSIVE MOBILE & TABLET */
+/* ========================= */
+@media (max-width: 992px) {
+
+  /* Sidebar disembunyikan */
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    transition: .3s;
+    z-index: 1050;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  /* Konten full */
+  .content,
+  #programPage,
+  #jadwalPage,
+  .jadwal-modal {
+    margin-left: 0 !important;
+  }
+
+  /* Grid disederhanakan */
+  .home-grid,
+  .program-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .kalender-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .peserta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .kalender-grid,
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kalender-header {
+    display: none;
+  }
+}
+@media (max-width: 576px) {
+  .btn,
+  button {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .home-card {
+    min-height: auto;
+  }
+}
+
+
+
 </style>
 
 </head>
 
 <body onload="initHome()">
 
+<button class="btn btn-primary d-lg-none mb-3"
+        onclick="toggleSidebar()">
+  ☰ Menu
+</button>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -2516,6 +2589,7 @@ function loadAgenda(){
     });
 }
 
+
 /* =====================================
    RENDER KALENDER
 ===================================== */
@@ -2668,57 +2742,54 @@ function hapusAgenda(id){
 loadAgenda();
 
 function buildRekap(){
-  const bulan = document.getElementById("rekapBulan").value;
-  const tahun = document.getElementById("rekapTahun").value;
-  const pesertaFilter = document.getElementById("rekapPeserta").value;
+
+  const agendaRows = document.querySelectorAll("#agendaTableBody tr");
 
   let totalKegiatan = 0;
   const hitungPeserta = {};
 
-  agendaData.forEach(a=>{
-    if(!a.tgl || !a.peserta) return;
+  agendaRows.forEach(row => {
 
-    const t = new Date(a.tgl);
-    const b = String(t.getMonth()+1).padStart(2,"0");
-    const y = t.getFullYear();
+    const cells = row.querySelectorAll("td");
+    if (cells.length < 5) return;
 
-    if(bulan && b !== bulan) return;
-    if(tahun && y != tahun) return;
+    // struktur kolom:
+    // 0=Tanggal | 1=Kegiatan | 2=Waktu | 3=Tempat | 4=Peserta
+    const pesertaText = cells[4].innerText.trim();
+    if (!pesertaText) return;
 
     totalKegiatan++;
 
-    let listPeserta = Array.isArray(a.peserta)
-      ? a.peserta
-      : a.peserta.split(",").map(p=>p.trim());
-
-    listPeserta.forEach(p=>{
-      if(pesertaFilter && p !== pesertaFilter) return;
-      hitungPeserta[p] = (hitungPeserta[p] || 0) + 1;
-    });
+    pesertaText
+      .split(",")
+      .map(p => p.trim())
+      .filter(Boolean)
+      .forEach(p => {
+        hitungPeserta[p] = (hitungPeserta[p] || 0) + 1;
+      });
   });
 
-  // ==== TABEL ====
   const tbody = document.getElementById("rekapBody");
   tbody.innerHTML = "";
 
   let no = 1;
-  Object.entries(hitungPeserta).forEach(([p,j])=>{
+  for (const [nama, jumlah] of Object.entries(hitungPeserta)) {
     tbody.innerHTML += `
       <tr>
         <td>${no++}</td>
-        <td>${p}</td>
+        <td>${nama}</td>
         <td class="text-center">
-          <span class="badge bg-primary rounded-pill px-3">${j}</span>
+          <span class="badge bg-primary">${jumlah}</span>
         </td>
         <td class="text-center">
-          <span class="badge ${j>1?'bg-success':'bg-warning text-dark'}">
-            ${j>1?'Aktif':'Kurang Aktif'}
+          <span class="badge ${jumlah > 1 ? 'bg-success' : 'bg-warning text-dark'}">
+            ${jumlah > 1 ? 'Aktif' : 'Kurang Aktif'}
           </span>
         </td>
       </tr>`;
-  });
+  }
 
-  if(no===1){
+  if (no === 1) {
     tbody.innerHTML = `
       <tr>
         <td colspan="4" class="text-center text-muted">
@@ -2727,7 +2798,6 @@ function buildRekap(){
       </tr>`;
   }
 
-  // ==== STATISTIK ====
   document.getElementById("statTotal").innerText = totalKegiatan;
   document.getElementById("statAktif").innerText = Object.keys(hitungPeserta).length;
   document.getElementById("statRata").innerText =
@@ -2736,14 +2806,6 @@ function buildRekap(){
       : 0;
 }
 
-["rekapBulan","rekapTahun","rekapPeserta"].forEach(id=>{
-  document.getElementById(id).addEventListener("change", buildRekap);
-});
-
-document.querySelector('[data-bs-target="#tabRekap"]')
-  .addEventListener("shown.bs.tab", buildRekap);
-
-let agendaData = [];
 
 function showProgramPertanian() {
     hideAllPages();
@@ -2830,6 +2892,31 @@ function showProgramPertanian() {
     </div>
     `;
 }
+
+function loadAgenda(){
+  fetch(AGENDA_API + "?action=get")
+    .then(r => r.json())
+    .then(data => {
+
+      agendaCache = data;
+      agendaData  = data;
+
+      agendaLoaded = true; // 🔴 PENTING
+
+      renderKalender();
+      renderAgendaTable();
+
+      // 🔁 JIKA TAB REKAP SUDAH TERBUKA, PAKSA HITUNG
+      const rekapBtn = document.querySelector('[data-bs-target="#tabRekap"]');
+      if (rekapBtn.classList.contains("active")) {
+        buildRekap();
+      }
+
+    })
+    .catch(err => console.error(err));
+}
+
+
 
 function showProgramInpek(){
     hideAllPages();
@@ -3095,6 +3182,10 @@ function showJadwalPopup(dateStr, events){
   new bootstrap.Modal(
     document.getElementById("modalJadwalDetail")
   ).show();
+}
+
+function toggleSidebar(){
+  document.querySelector('.sidebar').classList.toggle('show');
 }
 
 
