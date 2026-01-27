@@ -2769,13 +2769,22 @@ function nextMonth(){
 }
 
 /* =====================================
-   TABEL AGENDA
+   TABEL AGENDA DENGAN SORT
 ===================================== */
+let sortDirection = 'asc'; // 'asc' atau 'desc'
+
 function renderAgendaTable(){
   const tbody = document.querySelector("#agendaTable tbody");
   tbody.innerHTML = "";
 
-  agendaCache.forEach(r=>{
+  // Sort data berdasarkan tanggal
+  const sortedData = [...agendaCache].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+
+  sortedData.forEach(r=>{
     tbody.innerHTML += `
       <tr>
         <td>${formatDate(r.date)}</td>
@@ -2791,6 +2800,21 @@ function renderAgendaTable(){
       </tr>`;
   });
 }
+
+// Tambahkan event listener untuk sort pada header tabel
+document.addEventListener("DOMContentLoaded", () => {
+  const thTanggal = document.querySelector("#agendaTable thead th:first-child");
+  if (thTanggal) {
+    thTanggal.style.cursor = "pointer";
+    thTanggal.innerHTML += ' <span id="sortIcon">⬆️</span>'; // Icon sort awal
+    thTanggal.addEventListener("click", () => {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      const icon = document.getElementById("sortIcon");
+      icon.innerText = sortDirection === 'asc' ? '⬆️' : '⬇️';
+      renderAgendaTable();
+    });
+  }
+});
 
 /* =====================================
    KLIK TANGGAL
