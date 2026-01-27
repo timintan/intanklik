@@ -507,7 +507,6 @@ button[aria-label="Next"] {
 /* RESPONSIVE MOBILE & TABLET */
 /* ========================= */
 @media (max-width: 992px) {
-
   /* Sidebar disembunyikan */
   .sidebar {
     position: fixed;
@@ -546,30 +545,127 @@ button[aria-label="Next"] {
   table {
     font-size: 14px;
   }
+
+  /* 🔥 TAMBAHKAN: Tabel responsif dengan scroll horizontal */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
+  }
+
+  /* 🔥 TAMBAHKAN: Form dan input lebih besar untuk touch */
+  .form-control, input, select, textarea {
+    font-size: 16px; /* Mencegah zoom di iOS */
+    padding: 10px;
+  }
+
+  /* 🔥 TAMBAHKAN: Button lebih besar */
+  .btn {
+    padding: 10px 15px;
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 576px) {
   .kalender-grid,
   .calendar-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Tetap 2 kolom untuk kalender */
   }
 
   .kalender-header {
-    display: none;
-  }
-}
-@media (max-width: 576px) {
-  .btn,
-  button {
-    padding: 12px;
-    font-size: 16px;
+    display: none; /* Sembunyikan header kalender */
   }
 
+  /* 🔥 TAMBAHKAN: Kalender cell lebih kecil */
+  .kalender-cell, .calendar-day {
+    min-height: 60px; /* Kurangi tinggi */
+    padding: 4px;
+    font-size: 12px;
+  }
+
+  /* 🔥 TAMBAHKAN: Badge lebih kecil */
+  .badge, .badge-agenda, .badge-event {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  /* 🔥 TAMBAHKAN: Home card lebih kompak */
   .home-card {
     min-height: auto;
+    padding: 15px;
+  }
+
+  .home-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .home-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* 🔥 TAMBAHKAN: Grid button lebih besar untuk touch */
+  .grid .btn-doc {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  /* 🔥 TAMBAHKAN: Modal responsif */
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .modal-content {
+    padding: 10px;
+  }
+
+  /* 🔥 TAMBAHKAN: Peserta grid 1 kolom */
+  .peserta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 🔥 TAMBAHKAN: Statistik card stack */
+  .row.g-3.mb-4 .col-md-4 {
+    margin-bottom: 10px;
   }
 }
 
+/* 🔥 TAMBAHKAN: General responsive tweaks */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px; /* Font lebih kecil */
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+  }
+
+  /* 🔥 TAMBAHKAN: Overflow hidden untuk content */
+  .content {
+    overflow-x: hidden;
+  }
+
+  /* 🔥 TAMBAHKAN: Kalender layout stack */
+  .kalender-layout {
+    gap: 15px;
+  }
+
+  /* 🔥 TAMBAHKAN: Program card stack */
+  .program-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .program-card img {
+    width: 50px;
+    height: 50px;
+  }
+}
 
 
 </style>
@@ -1069,11 +1165,17 @@ button[aria-label="Next"] {
         ➕ Input Jadwal
       </button>
     </li>
+	
+	
+	
     <li class="nav-item">
       <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalRekap">
         📋 Rekap Jadwal
       </button>
     </li>
+	
+	
+
     <li class="nav-item">
       <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalKalender">
         📅 Kalender Jadwal
@@ -1096,7 +1198,17 @@ button[aria-label="Next"] {
         <input type="date" id="jmSelesai" class="form-control mb-2">
 
         <label>Kegiatan</label>
-        <input type="text" id="jmKegiatan" class="form-control mb-2">
+		<select id="jmKegiatan" class="form-select mb-2" required>
+		  <option value="">-- Pilih Kegiatan --</option>
+		  <option>KSA Padi</option>
+		  <option>KSA Jagung</option>
+		  <option>Ubinan Padi</option>
+		  <option>Ubinan Palawija</option>
+		  <option>SIMPTP</option>
+		  <option>LPTB</option>
+		  <option>Perusahaan Peternakan Unggas (LTU)</option>
+		</select>
+
 
         
         
@@ -1156,10 +1268,35 @@ button[aria-label="Next"] {
       </div>
     </div>
 
+
+
+
+
     <!-- ================= REKAP ================= -->
     <div class="tab-pane fade" id="jadwalRekap">
       <div class="card p-3">
         <h4>📋 Rekap Jadwal</h4>
+		<div class="row mb-3">
+  <div class="col-md-4">
+    <label class="form-label">Filter Kegiatan</label>
+    <select
+  id="filterKegiatan"
+  class="form-select"
+  onchange="renderJadwalRekap()"
+>
+  <option value="">Semua Kegiatan</option>
+  <option>KSA Padi</option>
+  <option>KSA Jagung</option>
+  <option>Ubinan Padi</option>
+  <option>Ubinan Palawija</option>
+  <option>SIMPTP</option>
+  <option>LPTB</option>
+  <option>Perusahaan Peternakan Unggas (LTU)</option>
+</select>
+
+  </div>
+</div>
+		
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -2741,22 +2878,25 @@ function hapusAgenda(id){
 ===================================== */
 loadAgenda();
 
-function buildRekap(){
-
-  const agendaRows = document.querySelectorAll("#agendaTableBody tr");
+// Ganti fungsi buildRekap() dengan ini (untuk menerima filter dan menerapkan logika filter):
+function buildRekap(filterBulan = "", filterTahun = "", filterPeserta = ""){
+  const tbody = document.getElementById("rekapBody");
+  tbody.innerHTML = "";
 
   let totalKegiatan = 0;
   const hitungPeserta = {};
 
-  agendaRows.forEach(row => {
+  agendaData.forEach(row => {
+    // 🔥 TAMBAHKAN FILTER: Cek bulan, tahun, dan peserta
+    const tgl = new Date(row.date);
+    const bulan = tgl.getMonth() + 1; // 1-12
+    const tahun = tgl.getFullYear();
 
-    const cells = row.querySelectorAll("td");
-    if (cells.length < 5) return;
+    if (filterBulan && bulan != filterBulan) return;
+    if (filterTahun && tahun != filterTahun) return;
 
-    // struktur kolom:
-    // 0=Tanggal | 1=Kegiatan | 2=Waktu | 3=Tempat | 4=Peserta
-    const pesertaText = cells[4].innerText.trim();
-    if (!pesertaText) return;
+    const pesertaText = row.peserta || "";
+    if (!pesertaText.trim()) return;
 
     totalKegiatan++;
 
@@ -2765,12 +2905,10 @@ function buildRekap(){
       .map(p => p.trim())
       .filter(Boolean)
       .forEach(p => {
+        if (filterPeserta && p !== filterPeserta) return; // 🔥 FILTER PESERTA: Hanya hitung jika cocok
         hitungPeserta[p] = (hitungPeserta[p] || 0) + 1;
       });
   });
-
-  const tbody = document.getElementById("rekapBody");
-  tbody.innerHTML = "";
 
   let no = 1;
   for (const [nama, jumlah] of Object.entries(hitungPeserta)) {
@@ -2806,6 +2944,72 @@ function buildRekap(){
       : 0;
 }
 
+// Tambahkan fungsi untuk mengisi dropdown filter (panggil saat data dimuat atau tab dibuka):
+function populateFilters(){
+  // 🔥 ISI BULAN (1-12)
+  const bulanSelect = document.getElementById("rekapBulan");
+  bulanSelect.innerHTML = '<option value="">Semua Bulan</option>';
+  for (let i = 1; i <= 12; i++) {
+    bulanSelect.innerHTML += `<option value="${i}">${new Date(0, i-1).toLocaleString('id-ID', {month: 'long'})}</option>`;
+  }
+
+  // 🔥 ISI TAHUN (2026-2035)
+  const tahunSelect = document.getElementById("rekapTahun");
+  tahunSelect.innerHTML = '';
+  for (let y = 2026; y <= 2035; y++) {
+    tahunSelect.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+
+  // 🔥 ISI PESERTA (unik dari agendaData)
+  const pesertaSelect = document.getElementById("rekapPeserta");
+  pesertaSelect.innerHTML = '<option value="">Semua Peserta</option>';
+  const pesertaUnik = new Set();
+  agendaData.forEach(row => {
+    const pesertaText = row.peserta || "";
+    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => pesertaUnik.add(p));
+  });
+  pesertaUnik.forEach(p => {
+    pesertaSelect.innerHTML += `<option value="${p}">${p}</option>`;
+  });
+}
+
+// Tambahkan event listener untuk filter (di akhir script, setelah DOMContentLoaded):
+document.addEventListener("DOMContentLoaded", () => {
+  // Event listener untuk tab rekap
+  const rekapTab = document.querySelector('[data-bs-target="#tabRekap"]');
+  if (rekapTab) {
+    rekapTab.addEventListener("shown.bs.tab", () => {
+      if (agendaLoaded) {
+        populateFilters();  // 🔥 TAMBAHKAN INI: Isi dropdown saat tab dibuka
+        buildRekap();  // Panggil buildRekap tanpa filter (semua)
+      } else {
+        loadAgenda();  // Jika belum dimuat, load dulu
+      }
+    });
+  }
+
+  // 🔥 TAMBAHKAN EVENT LISTENER UNTUK FILTER
+  document.getElementById("rekapBulan").addEventListener("change", () => {
+    const bulan = document.getElementById("rekapBulan").value;
+    const tahun = document.getElementById("rekapTahun").value;
+    const peserta = document.getElementById("rekapPeserta").value;
+    buildRekap(bulan, tahun, peserta);
+  });
+
+  document.getElementById("rekapTahun").addEventListener("change", () => {
+    const bulan = document.getElementById("rekapBulan").value;
+    const tahun = document.getElementById("rekapTahun").value;
+    const peserta = document.getElementById("rekapPeserta").value;
+    buildRekap(bulan, tahun, peserta);
+  });
+
+  document.getElementById("rekapPeserta").addEventListener("change", () => {
+    const bulan = document.getElementById("rekapBulan").value;
+    const tahun = document.getElementById("rekapTahun").value;
+    const peserta = document.getElementById("rekapPeserta").value;
+    buildRekap(bulan, tahun, peserta);
+  });
+});
 
 function showProgramPertanian() {
     hideAllPages();
@@ -2897,21 +3101,19 @@ function loadAgenda(){
   fetch(AGENDA_API + "?action=get")
     .then(r => r.json())
     .then(data => {
-
       agendaCache = data;
-      agendaData  = data;
+      agendaData = data;  // 🔥 TAMBAHKAN INI: Simpan ke agendaData global untuk rekap
 
       agendaLoaded = true; // 🔴 PENTING
 
       renderKalender();
       renderAgendaTable();
 
-      // 🔁 JIKA TAB REKAP SUDAH TERBUKA, PAKSA HITUNG
+      // 🔥 TAMBAHKAN INI: Jika tab rekap sudah aktif, panggil buildRekap()
       const rekapBtn = document.querySelector('[data-bs-target="#tabRekap"]');
-      if (rekapBtn.classList.contains("active")) {
+      if (rekapBtn && rekapBtn.classList.contains("active")) {
         buildRekap();
       }
-
     })
     .catch(err => console.error(err));
 }
@@ -3025,6 +3227,8 @@ function loadRekapJadwal(){
     .then(data => {
       console.log("DATA REKAP:", data); // DEBUG
 
+      jadwalData = data;  // 🔥 TAMBAHKAN INI: Simpan data ke jadwalData global
+
       const tbody = document.getElementById("jadwalBody");
       if(!tbody){
         console.warn("jadwalBody tidak ditemukan");
@@ -3053,6 +3257,8 @@ function loadRekapJadwal(){
         `;
         tbody.appendChild(tr);
       });
+
+      renderJadwalRekap();  // 🔥 TAMBAHKAN INI: Panggil render setelah data dimuat
     })
     .catch(err => {
       console.error("Gagal load rekap:", err);
@@ -3187,6 +3393,86 @@ function showJadwalPopup(dateStr, events){
 function toggleSidebar(){
   document.querySelector('.sidebar').classList.toggle('show');
 }
+
+
+let dataJadwal = [];
+
+function initDataJadwal() {
+  const tbody = document.getElementById("jadwalBody");
+  if (!tbody) {
+    console.error("tbody #jadwalBody tidak ditemukan");
+    return;
+  }
+
+  const rows = tbody.querySelectorAll("tr");
+
+  dataJadwal = Array.from(rows).map(row => {
+    const cols = row.querySelectorAll("td");
+    return {
+      mulai: cols[0]?.innerText.trim() || "",
+      selesai: cols[1]?.innerText.trim() || "",
+      kegiatan: cols[2]?.innerText.trim() || "",
+      tahapan: cols[3]?.innerText.trim() || "",
+      subsektor: cols[4]?.innerText.trim() || "",
+      pic: cols[5]?.innerText.trim() || ""
+    };
+  });
+
+  console.log("INIT DATA:", dataJadwal);
+}
+
+
+
+function renderJadwalRekap() {
+  const tbody = document.getElementById("jadwalBody");
+  const filterKegiatan = document.getElementById("filterKegiatan").value;
+
+  tbody.innerHTML = "";
+
+  jadwalData.forEach(item => {
+    // FILTER DROPDOWN: Gunakan properti yang benar (jmKegiatan)
+    if (filterKegiatan && item.jmKegiatan !== filterKegiatan) return;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.jmMulai}</td>
+      <td>${item.jmSelesai}</td>
+      <td>${item.jmKegiatan}</td>
+      <td>${item.jmTahapan}</td>
+      <td>${item.jmSubsektor}</td>
+      <td>${item.jmPIC}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Jika tidak ada data setelah filter
+  if (tbody.innerHTML === "") {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data yang cocok</td></tr>`;
+  }
+}
+
+function populateRekapPeserta() {
+  const select = document.getElementById("rekapPeserta");
+  select.innerHTML = '<option value="">Semua Peserta</option>';  // Reset opsi
+
+  const uniquePeserta = new Set();
+  agendaData.forEach(row => {
+    const pesertaText = row.peserta || "";
+    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => uniquePeserta.add(p));
+  });
+
+  uniquePeserta.forEach(nama => {
+    const opt = document.createElement("option");
+    opt.value = nama;
+    opt.textContent = nama;
+    select.appendChild(opt);
+  });
+}
+
+
+
+
+
 
 
 </script>
