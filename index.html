@@ -2840,6 +2840,12 @@ function getPeserta(){
 }
 
 function submitAgenda(){
+  const password = prompt("Masukkan password untuk menyimpan agenda:");
+  if (password !== "123") {
+    alert("Password salah! Penyimpanan dibatalkan.");
+    return;
+  }
+
   const data = {
     action: editId?"edit":"add",
     id: editId,
@@ -2889,6 +2895,12 @@ function editAgenda(id){
 }
 
 function hapusAgenda(id){
+  const password = prompt("Masukkan password untuk menghapus agenda:");
+  if (password !== "123") {
+    alert("Password salah! Penghapusan dibatalkan.");
+    return;
+  }
+
   if(!confirm("Hapus agenda ini?")) return;
   fetch(AGENDA_API,{
     method:"POST",
