@@ -666,7 +666,21 @@ button[aria-label="Next"] {
     height: 50px;
   }
 }
-
+/* Tambahkan CSS ini di bagian @media (max-width: 992px) untuk membuat tombol tetap terlihat */
+@media (max-width: 992px) {
+  .hamburger-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1060; /* Pastikan di atas sidebar (z-index sidebar 1050) */
+    background: #0a3d62;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+}
 
 </style>
 
@@ -674,7 +688,7 @@ button[aria-label="Next"] {
 
 <body onload="initHome()">
 
-<button class="btn btn-primary d-lg-none mb-3"
+<button class="btn btn-primary d-lg-none mb-3 hamburger-btn"
         onclick="toggleSidebar()">
   ☰ Menu
 </button>
