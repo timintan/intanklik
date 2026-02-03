@@ -666,21 +666,7 @@ button[aria-label="Next"] {
     height: 50px;
   }
 }
-/* Tambahkan CSS ini di bagian @media (max-width: 992px) untuk membuat tombol tetap terlihat */
-@media (max-width: 992px) {
-  .hamburger-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1060; /* Pastikan di atas sidebar (z-index sidebar 1050) */
-    background: #0a3d62;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  }
-}
+
 
 </style>
 
@@ -688,7 +674,7 @@ button[aria-label="Next"] {
 
 <body onload="initHome()">
 
-<button class="btn btn-primary d-lg-none mb-3 hamburger-btn"
+<button class="btn btn-primary d-lg-none mb-3"
         onclick="toggleSidebar()">
   ☰ Menu
 </button>
@@ -756,7 +742,7 @@ button[aria-label="Next"] {
             <div id="perkebunan" class="submenu">
                 <div onclick="show('skb', this)">SKB</div>
                 <div onclick="show('dpp', this)">DPP / DUTL</div>
-				<div onclick="show('komstrat', this)">Komstart</div>
+				<div onclick="show('komstrat', this)">Komstrat</div>
             </div>
 
             <!-- PETERNAKAN -->
@@ -1334,45 +1320,12 @@ button[aria-label="Next"] {
 >
   <option value="">Semua Kegiatan</option>
   <option>KSA Padi</option>
-		  <option>KSA Jagung</option>
-		  <option>Ubinan Padi</option>
-		  <option>Ubinan Palawija</option>
-		  <option>SIMPTP</option>
-		  <option>LPTB</option>
-		  <option>Perusahaan Peternakan Unggas (LTU)</option>
-		  <option>Perusahaan Peternakan Besar Kecil (LTT)</option>
-		  <option>Perusahaan Peternakan Sapi Perah (LTS)</option>
-		  <option>SKB Tahunan</option>
-		  <option>Sedapp</option>
-		  <option>VN-Horti</option>
-		  <option>PP-TPI</option>
-		  <option>LTP</option>
-		  <option>LTB</option>
-		  <option>DKT Prov</option>
-		  <option>HPHT</option>
-		  <option>VT-TSL</option>
-		  <option>IBS Tahunan</option>
-		  <option>IBS Bulanan</option>
-		  <option>IMK Tahunan</option>
-		  <option>IMK Triwulanan</option>
-		  <option>Pengutipan IBS</option>
-		  <option>Update DPA</option>
-		  <option>Pengutipan Konstruksi</option>
-		  <option>Updating Direktori Perusahaan</option>
-		  <option>Survei Konstruksi Tahunan (SKTH)</option>
-		  <option>Survei Konstruksi Triwulnan (SKTR)</option>
-		  <option>Air Bersih Tahunan</option>
-		  <option>Air Bersih Triwulanan</option>
-		  <option>Listrik</option>
-		  <option>Captive Power</option>
-		  <option>Galian Tahunan</option>
-		  <option>Galian Triwulanan</option>
-		  <option>Gas</option>
-		  <option>Migas</option>
-		  <option>Non Migas</option>
-		  <option>Geothermal</option>
-		  <option>UDPE</option>
-		  <option>Pengutipan PE</option>
+  <option>KSA Jagung</option>
+  <option>Ubinan Padi</option>
+  <option>Ubinan Palawija</option>
+  <option>SIMPTP</option>
+  <option>LPTB</option>
+  <option>Perusahaan Peternakan Unggas (LTU)</option>
 </select>
 
   </div>
@@ -1946,6 +1899,7 @@ ubinanPalawija:{
 		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
 		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
     },
+	
 	komstrat:{
     "Surat":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
     "Pedoman":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
