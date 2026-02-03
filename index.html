@@ -507,6 +507,7 @@ button[aria-label="Next"] {
 /* RESPONSIVE MOBILE & TABLET */
 /* ========================= */
 @media (max-width: 992px) {
+
   /* Sidebar disembunyikan */
   .sidebar {
     position: fixed;
@@ -545,127 +546,30 @@ button[aria-label="Next"] {
   table {
     font-size: 14px;
   }
-
-  /* 🔥 TAMBAHKAN: Tabel responsif dengan scroll horizontal */
-  .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
-  }
-
-  /* 🔥 TAMBAHKAN: Form dan input lebih besar untuk touch */
-  .form-control, input, select, textarea {
-    font-size: 16px; /* Mencegah zoom di iOS */
-    padding: 10px;
-  }
-
-  /* 🔥 TAMBAHKAN: Button lebih besar */
-  .btn {
-    padding: 10px 15px;
-    font-size: 16px;
-  }
 }
 
 @media (max-width: 576px) {
   .kalender-grid,
   .calendar-grid {
-    grid-template-columns: repeat(2, 1fr); /* Tetap 2 kolom untuk kalender */
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .kalender-header {
-    display: none; /* Sembunyikan header kalender */
+    display: none;
+  }
+}
+@media (max-width: 576px) {
+  .btn,
+  button {
+    padding: 12px;
+    font-size: 16px;
   }
 
-  /* 🔥 TAMBAHKAN: Kalender cell lebih kecil */
-  .kalender-cell, .calendar-day {
-    min-height: 60px; /* Kurangi tinggi */
-    padding: 4px;
-    font-size: 12px;
-  }
-
-  /* 🔥 TAMBAHKAN: Badge lebih kecil */
-  .badge, .badge-agenda, .badge-event {
-    font-size: 10px;
-    padding: 2px 4px;
-  }
-
-  /* 🔥 TAMBAHKAN: Home card lebih kompak */
   .home-card {
     min-height: auto;
-    padding: 15px;
-  }
-
-  .home-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .home-logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  /* 🔥 TAMBAHKAN: Grid button lebih besar untuk touch */
-  .grid .btn-doc {
-    padding: 15px;
-    font-size: 14px;
-  }
-
-  /* 🔥 TAMBAHKAN: Modal responsif */
-  .modal-dialog {
-    margin: 10px;
-  }
-
-  .modal-content {
-    padding: 10px;
-  }
-
-  /* 🔥 TAMBAHKAN: Peserta grid 1 kolom */
-  .peserta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* 🔥 TAMBAHKAN: Statistik card stack */
-  .row.g-3.mb-4 .col-md-4 {
-    margin-bottom: 10px;
   }
 }
 
-/* 🔥 TAMBAHKAN: General responsive tweaks */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px; /* Font lebih kecil */
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .breadcrumb {
-    font-size: 12px;
-  }
-
-  /* 🔥 TAMBAHKAN: Overflow hidden untuk content */
-  .content {
-    overflow-x: hidden;
-  }
-
-  /* 🔥 TAMBAHKAN: Kalender layout stack */
-  .kalender-layout {
-    gap: 15px;
-  }
-
-  /* 🔥 TAMBAHKAN: Program card stack */
-  .program-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .program-card img {
-    width: 50px;
-    height: 50px;
-  }
-}
 
 
 </style>
@@ -742,7 +646,6 @@ button[aria-label="Next"] {
             <div id="perkebunan" class="submenu">
                 <div onclick="show('skb', this)">SKB</div>
                 <div onclick="show('dpp', this)">DPP / DUTL</div>
-				<div onclick="show('komstrat', this)">Komstrat</div>
             </div>
 
             <!-- PETERNAKAN -->
@@ -979,8 +882,8 @@ button[aria-label="Next"] {
             <label><input type="checkbox" value="Etikawati Datiek Pratiwi"> Etikawati Datiek Pratiwi</label>
             <label><input type="checkbox" value="Al Barkah Triandika"> Al Barkah Triandika</label>
             <label><input type="checkbox" value="Dian Eka Putri"> Dian Eka Putri</label>
-            <label><input type="checkbox" value="Dina Nur Rahmawati"> Dina Nur Rahmawati</label>
-            <label><input type="checkbox" value="Rina Lusiana Handayanti"> Rina Lusiana Handayanti</label>
+            <label><input type="checkbox" value="Dina Nur Rahma"> Dina Nur Rahma</label>
+            <label><input type="checkbox" value="Rina Lusi Handayani"> Rina Lusi Handayani</label>
             <label><input type="checkbox" value="Fadhila Tsany NR"> Fadhila Tsany NR</label>
             <label><input type="checkbox" value="Minanur Rohman"> Minanur Rohman</label>
             <label><input type="checkbox" value="Ari Susanto"> Ari Susanto</label>
@@ -1208,39 +1111,6 @@ button[aria-label="Next"] {
 		  <option>SIMPTP</option>
 		  <option>LPTB</option>
 		  <option>Perusahaan Peternakan Unggas (LTU)</option>
-		  <option>Perusahaan Peternakan Besar Kecil (LTT)</option>
-		  <option>Perusahaan Peternakan Sapi Perah (LTS)</option>
-		  <option>SKB Tahunan</option>
-		  <option>Sedapp</option>
-		  <option>VN-Horti</option>
-		  <option>PP-TPI</option>
-		  <option>LTP</option>
-		  <option>LTB</option>
-		  <option>DKT Prov</option>
-		  <option>HPHT</option>
-		  <option>VT-TSL</option>
-		  <option>IBS Tahunan</option>
-		  <option>IBS Bulanan</option>
-		  <option>IMK Tahunan</option>
-		  <option>IMK Triwulanan</option>
-		  <option>Pengutipan IBS</option>
-		  <option>Update DPA</option>
-		  <option>Pengutipan Konstruksi</option>
-		  <option>Updating Direktori Perusahaan</option>
-		  <option>Survei Konstruksi Tahunan (SKTH)</option>
-		  <option>Survei Konstruksi Triwulnan (SKTR)</option>
-		  <option>Air Bersih Tahunan</option>
-		  <option>Air Bersih Triwulanan</option>
-		  <option>Listrik</option>
-		  <option>Captive Power</option>
-		  <option>Galian Tahunan</option>
-		  <option>Galian Triwulanan</option>
-		  <option>Gas</option>
-		  <option>Migas</option>
-		  <option>Non Migas</option>
-		  <option>Geothermal</option>
-		  <option>UDPE</option>
-		  <option>Pengutipan PE</option>
 		</select>
 
 
@@ -1286,8 +1156,8 @@ button[aria-label="Next"] {
 				<option>Etikawati Datiek Pratiwi</option>
 				<option>Al Barkah Triandika</option>
 				<option>Dian Eka Putri</option>
-				<option>Dina Nur Rahmawati</option>
-				<option>Rina Lusiana Handayanti</option>
+				<option>Dina Nur Rahma</option>
+				<option>Rina Lusi Handayani</option>
 				<option>Fadhila Tsany NR</option>
 				<option>Minanur Rohman</option>
 				<option>Ari Susanto</option>
@@ -1899,20 +1769,6 @@ ubinanPalawija:{
 		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
 		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
     },
-	
-	komstrat:{
-    "Surat":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Pedoman":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Daftar Sampel":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d,
-    "Bahan Ajar":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Paparan":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Kuesioner":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Upload Dokumen":"https://drive.google.com/drive/folders/1nzEHJbczSadib5HpC_2XpfhVbUUC2j5d",
-    "Backup Data":"https://drive.google.com/xxx",
-    "Berita Acara":"https://drive.google.com/xxx",
-    "Fenomena":"https://drive.google.com/xxx",
-    "Apresiasi":"https://drive.google.com/xxx",
-},
 	lptb:{
         "Surat": "https://drive.google.com/drive/folders/1gKjRtKtmd4k2ExZOfDH7roJsn4kGOeT9?usp=sharing",
         "Pedoman": "https://drive.google.com/drive/folders/16QS4j-bqMMDyy6EQP3-iKdRdZNxVMQTL?usp=drive_link",
@@ -2817,22 +2673,13 @@ function nextMonth(){
 }
 
 /* =====================================
-   TABEL AGENDA DENGAN SORT
+   TABEL AGENDA
 ===================================== */
-let sortDirection = 'asc'; // 'asc' atau 'desc'
-
 function renderAgendaTable(){
   const tbody = document.querySelector("#agendaTable tbody");
   tbody.innerHTML = "";
 
-  // Sort data berdasarkan tanggal
-  const sortedData = [...agendaCache].sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-  });
-
-  sortedData.forEach(r=>{
+  agendaCache.forEach(r=>{
     tbody.innerHTML += `
       <tr>
         <td>${formatDate(r.date)}</td>
@@ -2848,21 +2695,6 @@ function renderAgendaTable(){
       </tr>`;
   });
 }
-
-// Tambahkan event listener untuk sort pada header tabel
-document.addEventListener("DOMContentLoaded", () => {
-  const thTanggal = document.querySelector("#agendaTable thead th:first-child");
-  if (thTanggal) {
-    thTanggal.style.cursor = "pointer";
-    thTanggal.innerHTML += ' <span id="sortIcon">⬆️</span>'; // Icon sort awal
-    thTanggal.addEventListener("click", () => {
-      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-      const icon = document.getElementById("sortIcon");
-      icon.innerText = sortDirection === 'asc' ? '⬆️' : '⬇️';
-      renderAgendaTable();
-    });
-  }
-});
 
 /* =====================================
    KLIK TANGGAL
@@ -2888,12 +2720,6 @@ function getPeserta(){
 }
 
 function submitAgenda(){
-  const password = prompt("Masukkan password untuk menyimpan agenda:");
-  if (password !== "123") {
-    alert("Password salah! Penyimpanan dibatalkan.");
-    return;
-  }
-
   const data = {
     action: editId?"edit":"add",
     id: editId,
@@ -2943,12 +2769,6 @@ function editAgenda(id){
 }
 
 function hapusAgenda(id){
-  const password = prompt("Masukkan password untuk menghapus agenda:");
-  if (password !== "123") {
-    alert("Password salah! Penghapusan dibatalkan.");
-    return;
-  }
-
   if(!confirm("Hapus agenda ini?")) return;
   fetch(AGENDA_API,{
     method:"POST",
@@ -2962,25 +2782,22 @@ function hapusAgenda(id){
 ===================================== */
 loadAgenda();
 
-// Ganti fungsi buildRekap() dengan ini (untuk menerima filter dan menerapkan logika filter):
-function buildRekap(filterBulan = "", filterTahun = "", filterPeserta = ""){
-  const tbody = document.getElementById("rekapBody");
-  tbody.innerHTML = "";
+function buildRekap(){
+
+  const agendaRows = document.querySelectorAll("#agendaTableBody tr");
 
   let totalKegiatan = 0;
   const hitungPeserta = {};
 
-  agendaData.forEach(row => {
-    // 🔥 TAMBAHKAN FILTER: Cek bulan, tahun, dan peserta
-    const tgl = new Date(row.date);
-    const bulan = tgl.getMonth() + 1; // 1-12
-    const tahun = tgl.getFullYear();
+  agendaRows.forEach(row => {
 
-    if (filterBulan && bulan != filterBulan) return;
-    if (filterTahun && tahun != filterTahun) return;
+    const cells = row.querySelectorAll("td");
+    if (cells.length < 5) return;
 
-    const pesertaText = row.peserta || "";
-    if (!pesertaText.trim()) return;
+    // struktur kolom:
+    // 0=Tanggal | 1=Kegiatan | 2=Waktu | 3=Tempat | 4=Peserta
+    const pesertaText = cells[4].innerText.trim();
+    if (!pesertaText) return;
 
     totalKegiatan++;
 
@@ -2989,10 +2806,12 @@ function buildRekap(filterBulan = "", filterTahun = "", filterPeserta = ""){
       .map(p => p.trim())
       .filter(Boolean)
       .forEach(p => {
-        if (filterPeserta && p !== filterPeserta) return; // 🔥 FILTER PESERTA: Hanya hitung jika cocok
         hitungPeserta[p] = (hitungPeserta[p] || 0) + 1;
       });
   });
+
+  const tbody = document.getElementById("rekapBody");
+  tbody.innerHTML = "";
 
   let no = 1;
   for (const [nama, jumlah] of Object.entries(hitungPeserta)) {
@@ -3028,72 +2847,6 @@ function buildRekap(filterBulan = "", filterTahun = "", filterPeserta = ""){
       : 0;
 }
 
-// Tambahkan fungsi untuk mengisi dropdown filter (panggil saat data dimuat atau tab dibuka):
-function populateFilters(){
-  // 🔥 ISI BULAN (1-12)
-  const bulanSelect = document.getElementById("rekapBulan");
-  bulanSelect.innerHTML = '<option value="">Semua Bulan</option>';
-  for (let i = 1; i <= 12; i++) {
-    bulanSelect.innerHTML += `<option value="${i}">${new Date(0, i-1).toLocaleString('id-ID', {month: 'long'})}</option>`;
-  }
-
-  // 🔥 ISI TAHUN (2026-2035)
-  const tahunSelect = document.getElementById("rekapTahun");
-  tahunSelect.innerHTML = '';
-  for (let y = 2026; y <= 2035; y++) {
-    tahunSelect.innerHTML += `<option value="${y}">${y}</option>`;
-  }
-
-  // 🔥 ISI PESERTA (unik dari agendaData)
-  const pesertaSelect = document.getElementById("rekapPeserta");
-  pesertaSelect.innerHTML = '<option value="">Semua Peserta</option>';
-  const pesertaUnik = new Set();
-  agendaData.forEach(row => {
-    const pesertaText = row.peserta || "";
-    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => pesertaUnik.add(p));
-  });
-  pesertaUnik.forEach(p => {
-    pesertaSelect.innerHTML += `<option value="${p}">${p}</option>`;
-  });
-}
-
-// Tambahkan event listener untuk filter (di akhir script, setelah DOMContentLoaded):
-document.addEventListener("DOMContentLoaded", () => {
-  // Event listener untuk tab rekap
-  const rekapTab = document.querySelector('[data-bs-target="#tabRekap"]');
-  if (rekapTab) {
-    rekapTab.addEventListener("shown.bs.tab", () => {
-      if (agendaLoaded) {
-        populateFilters();  // 🔥 TAMBAHKAN INI: Isi dropdown saat tab dibuka
-        buildRekap();  // Panggil buildRekap tanpa filter (semua)
-      } else {
-        loadAgenda();  // Jika belum dimuat, load dulu
-      }
-    });
-  }
-
-  // 🔥 TAMBAHKAN EVENT LISTENER UNTUK FILTER
-  document.getElementById("rekapBulan").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-
-  document.getElementById("rekapTahun").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-
-  document.getElementById("rekapPeserta").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-});
 
 function showProgramPertanian() {
     hideAllPages();
@@ -3185,19 +2938,21 @@ function loadAgenda(){
   fetch(AGENDA_API + "?action=get")
     .then(r => r.json())
     .then(data => {
+
       agendaCache = data;
-      agendaData = data;  // 🔥 TAMBAHKAN INI: Simpan ke agendaData global untuk rekap
+      agendaData  = data;
 
       agendaLoaded = true; // 🔴 PENTING
 
       renderKalender();
       renderAgendaTable();
 
-      // 🔥 TAMBAHKAN INI: Jika tab rekap sudah aktif, panggil buildRekap()
+      // 🔁 JIKA TAB REKAP SUDAH TERBUKA, PAKSA HITUNG
       const rekapBtn = document.querySelector('[data-bs-target="#tabRekap"]');
-      if (rekapBtn && rekapBtn.classList.contains("active")) {
+      if (rekapBtn.classList.contains("active")) {
         buildRekap();
       }
+
     })
     .catch(err => console.error(err));
 }
@@ -3311,8 +3066,6 @@ function loadRekapJadwal(){
     .then(data => {
       console.log("DATA REKAP:", data); // DEBUG
 
-      jadwalData = data;  // 🔥 TAMBAHKAN INI: Simpan data ke jadwalData global
-
       const tbody = document.getElementById("jadwalBody");
       if(!tbody){
         console.warn("jadwalBody tidak ditemukan");
@@ -3341,8 +3094,6 @@ function loadRekapJadwal(){
         `;
         tbody.appendChild(tr);
       });
-
-      renderJadwalRekap();  // 🔥 TAMBAHKAN INI: Panggil render setelah data dimuat
     })
     .catch(err => {
       console.error("Gagal load rekap:", err);
@@ -3514,44 +3265,22 @@ function renderJadwalRekap() {
   tbody.innerHTML = "";
 
   jadwalData.forEach(item => {
-    // FILTER DROPDOWN: Gunakan properti yang benar (jmKegiatan)
-    if (filterKegiatan && item.jmKegiatan !== filterKegiatan) return;
+    // FILTER DROPDOWN
+    if (filterKegiatan && item.kegiatan !== filterKegiatan) return;
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${item.jmMulai}</td>
-      <td>${item.jmSelesai}</td>
-      <td>${item.jmKegiatan}</td>
-      <td>${item.jmTahapan}</td>
-      <td>${item.jmSubsektor}</td>
-      <td>${item.jmPIC}</td>
+      <td>${item.mulai}</td>
+      <td>${item.selesai}</td>
+      <td>${item.kegiatan}</td>
+      <td>${item.tahapan}</td>
+      <td>${item.subsektor}</td>
+      <td>${item.pic}</td>
     `;
     tbody.appendChild(tr);
   });
-
-  // Jika tidak ada data setelah filter
-  if (tbody.innerHTML === "") {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data yang cocok</td></tr>`;
-  }
 }
 
-function populateRekapPeserta() {
-  const select = document.getElementById("rekapPeserta");
-  select.innerHTML = '<option value="">Semua Peserta</option>';  // Reset opsi
-
-  const uniquePeserta = new Set();
-  agendaData.forEach(row => {
-    const pesertaText = row.peserta || "";
-    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => uniquePeserta.add(p));
-  });
-
-  uniquePeserta.forEach(nama => {
-    const opt = document.createElement("option");
-    opt.value = nama;
-    opt.textContent = nama;
-    select.appendChild(opt);
-  });
-}
 
 
 
