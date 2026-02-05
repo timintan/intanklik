@@ -738,6 +738,7 @@ button[aria-label="Next"] {
                 <div onclick="show('ksaJagung', this)">KSA Jagung</div>
                 <div onclick="show('ubinanPadi', this)">Ubinan Padi</div>
                 <div onclick="show('ubinanPalawija', this)">Ubinan Palawija</div>
+				<div onclick="show('simtp', this)">SIMTP</div>
             </div>
 
             <!-- HORTIKULTURA -->
@@ -756,7 +757,7 @@ button[aria-label="Next"] {
             <div id="perkebunan" class="submenu">
                 <div onclick="show('skb', this)">SKB</div>
                 <div onclick="show('dpp', this)">DPP / DUTL</div>
-				<div onclick="show('komstrat', this)">Komstrat</div>
+				
             </div>
 
             <!-- PETERNAKAN -->
@@ -1696,6 +1697,7 @@ const pages = {
     ksaJagung:"Tanaman Pangan > KSA Jagung",
     ubinanPadi:"Tanaman Pangan > Ubinan Padi",
     ubinanPalawija:"Tanaman Pangan > Ubinan Palawija",
+	simtp:"Tanaman Pangan > SIMTP",
 
     sphSbs:"Hortikultura > SPH - SBS",
     sphBst:"Hortikultura > SPH - BST",
@@ -1706,6 +1708,7 @@ const pages = {
 
     skb:"Perkebunan > SKB",
     dpp:"Perkebunan > DPP / DUTL",
+	komstrat:"Perkebunan > Komstrat",
 
     lptb:"Peternakan > LPTB",
     ppt:"Peternakan > Pendataan Perusahaan Peternakan Tahunan",
@@ -1825,20 +1828,31 @@ const docs = {
 "https://drive.google.com/drive/folders/156v5DLWZ-WUNHleqjwnRKcVCEfuf6_e9?usp=sharing",
     },
 
-ubinanPalawija:{
+		ubinanPalawija:{
         "Surat": "https://drive.google.com/drive/folders/1nk9v0CYpG_ZQLbl8t_Fs1yY8gWRtavHD?usp=sharing",
         "Pedoman": "https://drive.google.com/drive/folders/16EpSsFA2IYInQHomAed4TSXbcJzMWfTL?usp=sharing",
         "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
 		"Bahan Ajar":"https://drive.google.com/drive/folders/1euHr5CesB-y7L-At5c0FnLVYAkFju5KV?usp=sharing",
 		"Paparan": "https://drive.google.com/drive/folders/15fbF9_Dfcd8yrG0McG2we4Iq_3_e5se6?usp=sharing",
-		"Kuesioner":
-"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
+		"Kuesioner":"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
 		"Upload Dokumen":"https://drive.google.com/drive/folders/15LL-tkxWkM6MQ5Ro2UdUwx2sg3o3t5qY?usp=sharing",
 		"Backup Data":"https://drive.google.com/drive/folders/15qf2as7Ofjmogk-dxoT8zw7mqnWQuN7_?usp=sharing",
 		"Berita Acara":"https://drive.google.com/drive/folders/15GBmC0gx8ezv_QcJv2yjvZ7DoppzZh9N?usp=sharing",
-		"Fenomena":
-"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
-		"Apresiasi": "https://drive.google.com/drive/folders/15P4m3nXXXpoYKhTVntB8WMFw3bBa5Un3?usp=sharing",
+		"Fenomena":"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
+		"Apresiasi":"https://drive.google.com/drive/folders/15P4m3nXXXpoYKhTVntB8WMFw3bBa5Un3?usp=sharing",
+    },
+	simtp:{
+        "Surat": "https://drive.google.com/drive/folders/1va8QKfoz9jEGxdUNRD9LSruBARgSEpud?usp=sharing",
+        "Pedoman": "https://drive.google.com/drive/folders/16tV8eobLxRZEvoNWMqFvLxaXF_br-Xxr?usp=sharing",
+        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
+		"Bahan Ajar":"https://drive.google.com/drive/folders/16ljWKauYsTijE_Rkn2nZHldxN-PPLWQ8?usp=sharing",
+		"Paparan": "https://drive.google.com/drive/folders/16jUJ__2XiKszxlWMOr6IEwmKb_32WT_A?usp=sharing",
+		"Kuesioner":"https://drive.google.com/drive/folders/16n84C0luwChdbBl7WQCVmThMRyE3qRow?usp=sharing",
+		"Upload Dokumen":"https://drive.google.com/drive/folders/16hSGjqqTL-tvZxU1XaM9Yh68-mEDj6Z2?usp=sharing",
+		"Backup Data":"https://drive.google.com/drive/folders/16kLwbXfVO3i2XDbbM00wNH5kZMDcjs24?usp=sharing",
+		"Berita Acara":"https://drive.google.com/drive/folders/16au2S-rk0jmQFuCAyEqb1R4sapMF208p?usp=sharing",
+		"Fenomena":"https://drive.google.com/drive/folders/16VzDmsCSCpyvnVtIEkbygKOqhyakn4n3?usp=sharing",
+		"Apresiasi":"https://drive.google.com/drive/folders/16S-X-EC0eRGw3ghkX0zPa4jkHA80ArDI?usp=sharing",
     },
 	
 	sphSbs:{
@@ -1934,19 +1948,6 @@ ubinanPalawija:{
 		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
     },
 	dpp:{
-        "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/19uC8QkS-O830D2ELV9tbnbwNyNVIgeAm?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/19n27H3XvVgakabUtyo6CjhQpD1EpSWJM?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/19ve0AetH51IVBBhTtKzdf2v-poc-WnA5?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/19VcMpU7RaEg-zKy45z822BfbpPnDrzNq?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/19n4D9eo-V2j3t0DAn3lTJIRFwrpDv_Am?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/19V3S1Shl80M7kKb1hdcuzDSQVa1LqQNl?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
-    },
-	komstrat:{
         "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
         "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
         "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
