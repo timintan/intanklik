@@ -2,3613 +2,713 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Portal Tim INTAN</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<title>DAUN PADI: Deteksi Anomali Ubinan Padi</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
+body { background:#f8f9fa; }
+.card { border-radius:12px; }
+.alert { white-space: pre-line; }
 
-body{
-    margin:0;
-    font-family:Segoe UI, Arial;
-    background:#f4f6f8;
-}
-
-/* SIDEBAR */
-.sidebar{
-    width:260px;
-    background:#0a3d62;
-    color:white;
-    height:100vh;
-    position:fixed;
-    top:0;
-    left:0;
-    overflow-y:auto;
-}
-
-.sidebar h2{
-    text-align:center;
-    padding:20px 0;
-    margin:0;
-    background:#07416f;
-}
-
-.menu{
-    padding:10px 0;
-}
-
-.menu-item{
-    padding:12px 20px;
-    cursor:pointer;
-    border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.menu-item:hover{
-    background:#1e90ff;
-}
-
-.submenu{
-    display:none;
-    background:#124d7a;
-}
-
-.submenu div{
-    padding:10px 40px;
-    cursor:pointer;
-    border-bottom:1px solid rgba(255,255,255,.1);
-}
-.submenu div.active-menu{
-    background:#1e90ff;
-    font-weight:bold;
-    border-radius:6px;
-}
-.submenu div:hover{
-    background:#1e90ff;
-}
-
-/* CONTENT */
-.content{
-    margin-left:260px;
-    padding:25px;
-}
-
-.card{
-    background:white;
-    border-radius:10px;
-    padding:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
-
-.title{
-    font-size:22px;
-    margin-bottom:8px;
-    font-weight:600;
-}
-
-.breadcrumb{
-    color:#777;
-    margin-bottom:12px;
-}
-
-/* GRID BUTTON */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-    gap:15px;
-    margin-top:10px;
-}
-
-.btn-doc{
-    background:#2e7d32;
-    padding:18px;
-    color:white;
-    text-align:center;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-    transition:.2s;
-    text-decoration:none;
-}
-
-.btn-doc:hover{
-    background:#c7a66b;
-}
-/* ===================== */
-/* HOME DASHBOARD */
-/* ===================== */
-
-.home-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap:20px;
-    padding:20px;
-}
-
-.home-card{
-    border-radius:16px;
-    padding:25px;
-    color:white;
-    box-shadow:0 6px 16px rgba(0,0,0,.15);
-}
-.home-card{
-    min-height: 260px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.home-card.industri{
-    background:linear-gradient(135deg, #f39c12, #e67e22);
-}
-
-.home-card.pertanian{
-    background:linear-gradient(135deg, #27ae60, #2ecc71);
-}
-
-.home-header{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.home-logo{
-    width:60px;
-    height:60px;
-    background:white;
-    border-radius:50%;
-    padding:8px;
-}
-
-.home-list{
-    list-style:none;
-    padding:0;
-    margin:0;
-}
-
-.home-list li{
-    background:rgba(255,255,255,.18);
-    padding:12px 15px;
-    border-radius:10px;
-    margin-bottom:10px;
-    font-weight:500;
-}
-.home-list li{
-    cursor:pointer;
-    transition:.2s;
-}
-
-.home-list li:hover{
-    background:rgba(255,255,255,.35);
-    transform:translateX(4px);
-}
-
-
-
-</style>
-<style>
-
-/* hover menu */
-.home-list li:hover{
-    background:rgba(255,255,255,.35);
-    transform:translateX(4px);
-}
-
-/* tampilkan checkbox peserta */
-#pesertaList input[type="checkbox"]{
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 16px;
-    height: 16px;
-    accent-color: #0a3d62;
-}
-.peserta-box{
-    max-width: 600px;
-}
-
-.peserta-grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 kolom */
-    gap: 12px 40px;
-    margin-top: 10px;
-}
-
-.peserta-item{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-}
-.kalender-header{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  font-weight:600;
-  text-align:center;
-  margin-bottom:6px;
-}
-
-.kalender-grid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:6px;
-}
-
-.hari{
-  border:1px solid #ddd;
-  min-height:90px;
-  padding:6px;
-  cursor:pointer;
-  background:#fff;
-}
-
-.hari-ada{
-  background:#e3f2fd;
-}
-
-.badge-agenda{
-  background:#0d6efd;
-  color:#fff;
-  font-size:11px;
-  padding:2px 6px;
-  border-radius:6px;
-  display:inline-block;
-  margin-top:4px;
-}
-.kalender-grid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:5px;
-}
-
-.kalender-cell{
-  min-height:70px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  padding:6px;
-  position:relative;
-}
-
-.kalender-cell .tgl{
-  font-weight:bold;
-}
-
-.agenda-dots{
-  position:absolute;
-  bottom:6px;
-  left:6px;
+/* LOGIN */
+#loginOverlay{
+  position:fixed;
+  inset:0;
+  background:#f8f9fa;
   display:flex;
-  gap:4px;
-}
-
-.agenda-dots .dot{
-  width:8px;
-  height:8px;
-  background:#e74c3c;
-  border-radius:50%;
-}
-.kalender-layout{
-    display:grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap:20px;
-    margin-bottom:20px;
-}
-
-.kalender-box, .form-box, .table-box{
-    background:#fff;
-    border-radius:12px;
-    padding:18px;
-    box-shadow:0 5px 12px rgba(0,0,0,.08);
-}
-
-.kalender-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-}
-
-.kalender-nav button{
-    background:#0a3d62;
-    color:white;
-    border:none;
-    padding:6px 14px;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-.kalender-cell{
-    border:1px solid #ddd;
-    border-radius:8px;
-    min-height:80px;
-    padding:6px;
-    cursor:pointer;
-    background:#fff;
-}
-
-.kalender-cell:hover{
-    background:#eef6ff;
-}
-
-.kalender-cell.has-agenda{
-    background:#e3f2fd;
-}
-
-.badge{
-    background:#0d6efd;
-    color:white;
-    font-size:11px;
-    padding:2px 6px;
-    border-radius:6px;
-    display:inline-block;
-    margin-top:4px;
-}
-
-.table-box table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-.table-box th{
-    background:#0a3d62;
-    color:white;
-    padding:10px;
-}
-
-.table-box td{
-    padding:8px;
-    border-bottom:1px solid #ddd;
-}
-/* Matikan tombol panah global */
-.carousel-control-prev,
-.carousel-control-next,
-.carousel-control-prev-icon,
-.carousel-control-next-icon,
-.slider-prev,
-.slider-next,
-.prev,
-.next {
-    display: none !important;
-}
-a[href="#prev"], 
-a[href="#next"],
-button[aria-label="Previous"],
-button[aria-label="Next"] {
-    display:none !important;
-}
-.program-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-  gap:20px;
-  margin-top:20px;
-}
-
-.program-card{
-  display:flex;
-  gap:15px;
-  padding:16px;
-  border-radius:12px;
-  background:#f9f9f9;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
   align-items:center;
+  justify-content:center;
+  z-index:9999;
 }
-
-.program-card img{
-  width:70px;
-  height:70px;
-  object-fit:contain;
-}
-
-.program-info a{
-  color:#0a3d62;
-  font-weight:600;
-  text-decoration:none;
-}
-
-.program-info a:hover{
-  text-decoration:underline;
-}
-#programPage{
-  margin-left: 260px;
-}
-.program-card img{
-  background:#fff;
-  border-radius:50%;
-  padding:10px;
-}
-
-#calendar{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:10px;
-  margin:15px 0;
-}
-
-.calendar-item{
-  background:#f4f6fa;
-  padding:10px;
-  border-left:4px solid #3b82f6;
-  border-radius:6px;
-}
-
-#jadwalPage{
-  margin-left: 260px;
-}
-#jadwalPage{
-  position: relative;
-}
-#jadwalPage {
-  overflow-x: hidden;
-}
-
-#jadwalPage * {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-.content {
-  min-width: 0;     /* 🔥 INI KUNCI UTAMA */
-  max-width: 100%;
-  overflow-x: hidden;
-}
-.page {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.layout {
-  display: flex;
-}
-
-.layout > * {
-  min-width: 0;   /* 🔥 INI PENENTU */
-}
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-}
-
-.calendar-day {
-  border: 1px solid #ddd;
-  min-height: 100px;
-  padding: 8px;
-  position: relative;
-}
-
-.calendar-day.has-event {
-  background: #e8f4ff;
-}
-
-.calendar-day .date {
-  font-weight: bold;
-}
-
-.badge-event {
-  background: #0d6efd;
-  color: white;
-  border-radius: 12px;
-  padding: 4px 8px;
-  font-size: 12px;
-  display: inline-block;
-  margin-top: 6px;
-}
-.calendar-day{
-  cursor: pointer;
-}
-.calendar-day:hover{
-  background:#e9f5ff;
-}
-.jadwal-modal{
-  margin-left: 260px;
-}
-
-/* ========================= */
-/* RESPONSIVE MOBILE & TABLET */
-/* ========================= */
-@media (max-width: 992px) {
-  /* Sidebar disembunyikan */
-  .sidebar {
-    position: fixed;
-    left: -260px;
-    transition: .3s;
-    z-index: 1050;
-  }
-
-  .sidebar.show {
-    left: 0;
-  }
-
-  /* Konten full */
-  .content,
-  #programPage,
-  #jadwalPage,
-  .jadwal-modal {
-    margin-left: 0 !important;
-  }
-
-  /* Grid disederhanakan */
-  .home-grid,
-  .program-grid {
-    grid-template-columns: 1fr;
-    padding: 10px;
-  }
-
-  .kalender-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .peserta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  table {
-    font-size: 14px;
-  }
-
-  /* 🔥 TAMBAHKAN: Tabel responsif dengan scroll horizontal */
-  .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll di iOS */
-  }
-
-  /* 🔥 TAMBAHKAN: Form dan input lebih besar untuk touch */
-  .form-control, input, select, textarea {
-    font-size: 16px; /* Mencegah zoom di iOS */
-    padding: 10px;
-  }
-
-  /* 🔥 TAMBAHKAN: Button lebih besar */
-  .btn {
-    padding: 10px 15px;
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 576px) {
-  .kalender-grid,
-  .calendar-grid {
-    grid-template-columns: repeat(2, 1fr); /* Tetap 2 kolom untuk kalender */
-  }
-
-  .kalender-header {
-    display: none; /* Sembunyikan header kalender */
-  }
-
-  /* 🔥 TAMBAHKAN: Kalender cell lebih kecil */
-  .kalender-cell, .calendar-day {
-    min-height: 60px; /* Kurangi tinggi */
-    padding: 4px;
-    font-size: 12px;
-  }
-
-  /* 🔥 TAMBAHKAN: Badge lebih kecil */
-  .badge, .badge-agenda, .badge-event {
-    font-size: 10px;
-    padding: 2px 4px;
-  }
-
-  /* 🔥 TAMBAHKAN: Home card lebih kompak */
-  .home-card {
-    min-height: auto;
-    padding: 15px;
-  }
-
-  .home-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .home-logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  /* 🔥 TAMBAHKAN: Grid button lebih besar untuk touch */
-  .grid .btn-doc {
-    padding: 15px;
-    font-size: 14px;
-  }
-
-  /* 🔥 TAMBAHKAN: Modal responsif */
-  .modal-dialog {
-    margin: 10px;
-  }
-
-  .modal-content {
-    padding: 10px;
-  }
-
-  /* 🔥 TAMBAHKAN: Peserta grid 1 kolom */
-  .peserta-grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* 🔥 TAMBAHKAN: Statistik card stack */
-  .row.g-3.mb-4 .col-md-4 {
-    margin-bottom: 10px;
-  }
-}
-
-/* 🔥 TAMBAHKAN: General responsive tweaks */
-@media (max-width: 768px) {
-  body {
-    font-size: 14px; /* Font lebih kecil */
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .breadcrumb {
-    font-size: 12px;
-  }
-
-  /* 🔥 TAMBAHKAN: Overflow hidden untuk content */
-  .content {
-    overflow-x: hidden;
-  }
-
-  /* 🔥 TAMBAHKAN: Kalender layout stack */
-  .kalender-layout {
-    gap: 15px;
-  }
-
-  /* 🔥 TAMBAHKAN: Program card stack */
-  .program-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .program-card img {
-    width: 50px;
-    height: 50px;
-  }
-}
-/* Tambahkan CSS ini di bagian @media (max-width: 992px) untuk membuat tombol tetap terlihat */
-@media (max-width: 992px) {
-  .hamburger-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    z-index: 1060; /* Pastikan di atas sidebar (z-index sidebar 1050) */
-    background: #0a3d62;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  }
-}
-
+.logo-padi svg{width:90px;height:90px;}
 </style>
-
 </head>
 
-<body onload="initHome()">
+<body>
 
-<button class="btn btn-primary d-lg-none mb-3 hamburger-btn"
-        onclick="toggleSidebar()">
-  ☰ Menu
-</button>
+<!-- ================= LOGIN ================= -->
+<div id="loginOverlay">
+  <div class="card p-4 shadow text-center" style="width:380px">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2>Tim Intan</h2>
-
-    <div class="menu">
-<div class="menu-item" onclick="showHome(this)">
-    🏠 Beranda
-</div>
-<div class="menu-item" onclick="show('kalenderPage', this); loadAgenda();">
-📅 Kalender & Agenda
-</div>
-
-<div class="menu-item" onclick="showJadwal(this)">
-🗓️ Jadwal Kegiatan
-</div>
-
-
-
-<div class="menu-item" onclick="toggle('capaian')">
-    📈 Capaian Kinerja ▾
-</div>
-
-<div id="capaian" class="submenu">
-    <div onclick="showCapaian('pertanian', this)">
-        Capaian Kinerja Pertanian
+    <div class="logo-padi mx-auto mb-2">
+      <svg viewBox="0 0 100 100">
+        <path d="M50 90 C45 65 35 50 20 30" stroke="#2e7d32" stroke-width="5" fill="none"/>
+        <path d="M50 90 C55 65 65 50 80 30" stroke="#2e7d32" stroke-width="5" fill="none"/>
+        <circle cx="20" cy="30" r="6" fill="#f9a825"/>
+        <circle cx="26" cy="38" r="6" fill="#fbc02d"/>
+        <circle cx="32" cy="26" r="6" fill="#f9a825"/>
+        <circle cx="80" cy="30" r="6" fill="#f9a825"/>
+        <circle cx="74" cy="38" r="6" fill="#fbc02d"/>
+        <circle cx="68" cy="26" r="6" fill="#f9a825"/>
+      </svg>
     </div>
-    <div onclick="showCapaian('ipk', this)">
-        Capaian Kinerja Industri, Pertambangan, Energi & Konstruksi
+
+    <h5 class="fw-bold mb-1">DAUN PADI</h5>
+    <div class="text-muted mb-3">Deteksi Anomali Ubinan Padi</div>
+
+    <input id="loginUser" class="form-control mb-2" placeholder="User">
+    <input id="loginPass" type="password" class="form-control mb-2" placeholder="Password">
+
+    <div id="loginError" class="text-danger small d-none mb-2">
+      User atau password salah
     </div>
+
+    <button class="btn btn-success w-100" onclick="doLogin()">Login</button>
+  </div>
 </div>
 
+<!-- ================= DASHBOARD ================= -->
+<div class="container-fluid p-4" id="dashboard" style="display:none">
 
-        <div class="menu-item" onclick="toggle('stat')">
-            📊 Statistik Pertanian ▾
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="fw-bold">🌾 DAUN PADI: Deteksi Anomali Ubinan Padi</h4>
+  <button class="btn btn-outline-danger btn-sm" onclick="logout()">Logout</button>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <label class="fw-bold">Pilih Sheet</label>
+    <select id="sheetSelect" class="form-select"></select>
+  </div>
+</div>
+
+<!-- WARNING SHEET -->
+<div id="sheetWarning" class="alert alert-danger d-none mb-3"></div>
+
+<div id="noDataAlert" class="alert alert-info d-none mb-3">
+  ℹ️ <b>Tidak ditemukan Anomali</b>
+</div>
+
+<!-- FILTERS (GLOBAL) -->
+<div class="card mb-3">
+  <div class="card-body row g-3">
+    <div class="col-md-3">
+      <label>Filter Subround</label>
+      <select id="filterSubround" class="form-select"><option value="ALL">Semua</option></select>
+    </div>
+    <div class="col-md-3">
+      <label>Filter Kabupaten</label>
+      <select id="filterKab" class="form-select"><option value="ALL">Semua</option></select>
+    </div>
+  </div>
+</div>
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabTabel">Tabel Data</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabGrafik">Grafik</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabPeta">Peta</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabJuknis">Juknis</a></li>
+</ul>
+
+<div class="tab-content">
+
+<!-- Tambahkan div tab-content baru di dalam div.tab-content -->
+<div class="tab-content">
+  <!-- TAB TABEL (tidak berubah) -->
+  <div class="tab-pane fade show active" id="tabTabel">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped" id="dataTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB GRAFIK (tidak berubah) -->
+  <div class="tab-pane fade" id="tabGrafik">
+    <canvas id="chartKab"></canvas>
+  </div>
+
+  <!-- TAB PETA (diperbaiki dengan debug log) -->
+  <div class="tab-pane fade" id="tabPeta">
+    <div class="card mb-3">
+      <div class="card-body row g-3">
+        <div class="col-md-3">
+          <label>Filter Kabupaten</label>
+          <select id="filterKabPeta" class="form-select"><option value="ALL">Semua</option></select>
         </div>
-
-        <div id="stat" class="submenu">
-
-            <!-- TANAMAN PANGAN -->
-            <div onclick="toggle('tp')">🌾 Tanaman Pangan ▾</div>
-            <div id="tp" class="submenu">
-                <div onclick="show('ksaPadi', this)">KSA Padi</div>
-                <div onclick="show('ksaJagung', this)">KSA Jagung</div>
-                <div onclick="show('ubinanPadi', this)">Ubinan Padi</div>
-                <div onclick="show('ubinanPalawija', this)">Ubinan Palawija</div>
-				<div onclick="show('simtp', this)">SIMTP</div>
-            </div>
-
-            <!-- HORTIKULTURA -->
-            <div onclick="toggle('horti')">🍓 Hortikultura ▾</div>
-            <div id="horti" class="submenu">
-                <div onclick="show('sphSbs', this)">SPH - SBS</div>
-                <div onclick="show('sphBst', this)">SPH - BST</div>
-                <div onclick="show('sphTbf', this)">SPH - TBF</div>
-                <div onclick="show('sphTh', this)">SPH - TH</div>
-                <div onclick="show('vpHorti', this)">VP-Horti</div>
-                <div onclick="show('vnHorti', this)">VN-Horti</div>
-            </div>
-
-            <!-- PERKEBUNAN -->
-            <div onclick="toggle('perkebunan')">🌴 Perkebunan ▾</div>
-            <div id="perkebunan" class="submenu">
-                <div onclick="show('skb', this)">SKB</div>
-                <div onclick="show('dpp', this)">DPP / DUTL</div>
-				
-            </div>
-
-            <!-- PETERNAKAN -->
-            <div onclick="toggle('ternak')">🐄 Peternakan ▾</div>
-            <div id="ternak" class="submenu">
-                <div onclick="show('lptb', this)">Laporan Pemotongan Ternak Bulanan</div>
-                <div onclick="show('ppt', this)">Pendataan Perusahaan Peternakan Tahunan</div>
-            </div>
-
-            <!-- PERIKANAN -->
-            <div onclick="toggle('ikan')">🐟 Perikanan ▾</div>
-            <div id="ikan" class="submenu">
-                <div onclick="show('pptpi1', this)">PP-TPI</div>
-                <div onclick="show('pptpi2', this)">PP-TPI</div>
-                <div onclick="show('ltp', this)">LTP</div>
-                <div onclick="show('ltb', this)">LTB</div>
-            </div>
-
-            <!-- KEHUTANAN -->
-            <div onclick="toggle('hutan')">🌲 Kehutanan ▾</div>
-            <div id="hutan" class="submenu">
-                <div onclick="show('dkt', this)">DKT Prov</div>
-                <div onclick="show('hpht', this)">HPHT</div>
-                <div onclick="show('vtTsl', this)">VT TSL</div>
-            </div>
-
+        <div class="col-md-3">
+          <label>Filter Subround</label>
+          <select id="filterSubroundPeta" class="form-select"><option value="ALL">Semua</option></select>
         </div>
-    </div>
-	<!-- STATISTIK INDUSTRI -->
-<div class="menu-item" onclick="toggle('industri')">
-    🏭 Statistik Industri ▾
-</div>
-
-<div id="industri" class="submenu">
-
-    <div onclick="show('ibsTahunan', this)">
-        Industri Besar Sedang Tahunan
-    </div>
-
-    <div onclick="show('ibsBulanan', this)">
-        Industri Besar Sedang Bulanan
-    </div>
-
-    <div onclick="show('mikroTahunan', this)">
-        Industri Mikro Kecil Tahunan
-    </div>
-
-    <div onclick="show('mikroTriwulan', this)">
-        Industri Mikro Kecil Triwulanan
-    </div>
-
-    <div onclick="show('pengutipanIBS', this)">
-        Pengutipan Industri Besar Sedang (IBS)
-    </div>
-
-    <div onclick="show('updateDPA', this)">
-        Update DPA
-    </div>
-
-</div>
-
-<div class="menu-item" onclick="toggle('konstruksi')">
-    🏗️ Statistik Konstruksi ▾
-</div>
-
-<div id="konstruksi" class="submenu">
-    <div onclick="show('konsPengutipan', this)">Pengutipan</div>
-    <div onclick="show('konsUpdating', this)">Updating Direktori Perusahaan</div>
-    <div onclick="show('konsGround', this)">Ground Check</div>
-    <div onclick="show('skth', this)">Survei Konstruksi Tahunan (SKTH)</div>
-    <div onclick="show('sktr', this)">Survei Konstruksi Triwulanan (SKTR)</div>
-</div>
-<div class="menu-item" onclick="toggle('tambang')">
-    ⛏️ Statistik Pertambangan & Energi ▾
-</div>
-
-<div id="tambang" class="submenu">
-    <div onclick="show('airTahunan', this)">Air Bersih Tahunan</div>
-    <div onclick="show('airTriwulanan', this)">Air Bersih Triwulanan</div>
-    <div onclick="show('listrik', this)">Listrik</div>
-    <div onclick="show('captive', this)">Captive Power</div>
-
-    <div onclick="show('galianTahunan', this)">Galian Tahunan</div>
-    <div onclick="show('galianTriwulanan', this)">Galian Triwulanan</div>
-    <div onclick="show('galianUrt', this)">Galian URT</div>
-
-    <div onclick="show('gas', this)">Gas</div>
-    <div onclick="show('migas', this)">Migas</div>
-    <div onclick="show('nonMigas', this)">Non Migas</div>
-    <div onclick="show('geothermal', this)">Geothermal</div>
-    <div onclick="show('udpe', this)">UDPE</div>
-    <div onclick="show('tambangPengutipan', this)">Pengutipan</div>
-</div>
-<div class="menu-item" onclick="toggle('adhoc')">
-    📝 Kegiatan Adhoc ▾
-</div>
-<div id="adhoc" class="submenu">
-    <div onclick="show('adhoc1', this)">Kegiatan Adhoc 1</div>
-    <div onclick="show('adhoc2', this)">Kegiatan Adhoc 2</div>
-    <div onclick="show('adhoc3', this)">Kegiatan Adhoc 3</div>
-</div>
-<div class="menu-item" onclick="toggle('program')">
-    🔐 Akses Program ▾
-</div>
-
-<div id="program" class="submenu">
-  <div onclick="showProgram('progInpek', this)">Program INPEK</div>
-
-  <div onclick="showProgram('progPertanian', this)">Program Pertanian</div>
-  <div onclick="showProgram('progManajemen', this)">Program Manajemen</div>
-</div>
-
-
-
-</div>
-
-
-<!-- CONTENT -->
-<div class="content">
-
-    <div id="home" class="page">
-
-    <div class="home-grid">
-
-        <!-- ===================== -->
-        <!-- INDUSTRI -->
-        <!-- ===================== -->
-        <div class="home-card industri">
-            <div class="home-header">
-                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063822.png" class="home-logo">
-                <h3>Industri, Pertambangan,<br>Energi & Konstruksi</h3>
-            </div>
-
-            <ul class="home-list">
-                <li onclick="openHomeLink('industri','surat')">📥 Surat Masuk</li>
-				<li onclick="openHomeLink('industri','sop')">📄 SOP Kegiatan</li>
-				<li onclick="openHomeLink('industri','wa')">💬 Link Join WA Group</li>
-				<li onclick="openHomeLink('industri','grafik')">📊 Grafik</li>
-            </ul>
+        <div class="col-md-3">
+          <label>Filter Subsegmen</label>
+          <select id="filterSubsegmenPeta" class="form-select"><option value="ALL">Semua</option></select>
         </div>
-		
-        <!-- ===================== -->
-        <!-- PERTANIAN -->
-        <!-- ===================== -->
-        <div class="home-card pertanian">
-            <div class="home-header">
-                <img src="https://cdn-icons-png.flaticon.com/512/2909/2909764.png" class="home-logo">
-                <h3>Pertanian</h3>
-            </div>
-
-            <ul class="home-list">
-                <li onclick="openHomeLink('pertanian','surat')">📥 Surat Masuk</li>
-				<li onclick="openHomeLink('pertanian','sop')">📄 SOP Kegiatan</li>
-				<li onclick="openHomeLink('pertanian','wa')">💬 Link Join WA Group</li>
-				<li onclick="openHomeLink('pertanian','grafik')">📊 Grafik</li>
-            </ul>
+        <div class="col-md-3">
+          <label>Filter Bulan</label>
+          <select id="filterBulanPeta" class="form-select"><option value="ALL">Semua</option></select>
         </div>
-
-    </div>
-
-</div>
-<!-- ================== KALENDER & AGENDA PAGE ================== -->
-<div id="kalenderPage" class="page" style="display:none">
-
-  <div class="title">📅 Kalender & Agenda</div>
-  <div class="breadcrumb">Beranda > Kalender & Agenda</div>
-
-  <!-- ================== TAB MENU ================== -->
-  <ul class="nav nav-pills mb-4">
-    <li class="nav-item">
-      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabKalender">
-        <i class="bi bi-calendar-event"></i> Kalender
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabAgenda">
-        <i class="bi bi-list-check"></i> Daftar Agenda
-      </button>
-    </li>
-    <li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabRekap">
-        <i class="bi bi-people"></i> Rekap Peserta
-      </button>
-    </li>
-  </ul>
-
-  <!-- ================== TAB CONTENT (LANGKAH 2) ================== -->
-  <div class="tab-content">
-
-    <!-- ================== TAB KALENDER ================== -->
-    <div class="tab-pane fade show active" id="tabKalender">
-
-      <div class="kalender-layout">
-
-        <!-- KALENDER -->
-        <div class="kalender-box">
-          <div class="kalender-nav">
-            <button onclick="prevMonth()">◀ Bulan Sebelumnya</button>
-            <h3 id="kalenderJudul"></h3>
-            <button onclick="nextMonth()">Bulan Berikutnya ▶</button>
-          </div>
-
-          <div class="kalender-header">
-            <div style="color:red">Min</div>
-            <div>Sen</div><div>Sel</div><div>Rab</div>
-            <div>Kam</div><div>Jum</div><div>Sab</div>
-          </div>
-
-          <div id="kalenderGrid" class="kalender-grid"></div>
-        </div>
-
-        <!-- FORM -->
-        <div class="form-box">
-          <h3>📝 Tambah Agenda Baru</h3>
-
-          <label>Tanggal *</label>
-          <input type="date" id="tgl" style="width:100%;padding:8px"><br><br>
-
-          <label>Waktu</label>
-          <input type="time" id="waktu" style="width:100%;padding:8px"><br><br>
-
-          <label>Nama Kegiatan *</label>
-          <input type="text" id="nama" style="width:100%;padding:8px"><br><br>
-
-          <label>Tempat</label>
-          <input type="text" id="tempat" style="width:100%;padding:8px"><br><br>
-
-          <label>Peserta</label>
-          <div id="pesertaList" class="peserta-grid">
-            <label><input type="checkbox" value="Sri Diastuti"> Sri Diastuti</label>
-            <label><input type="checkbox" value="Tri Karjono"> Tri Karjono</label>
-            <label><input type="checkbox" value="Adi Susanto"> Adi Susanto</label>
-            <label><input type="checkbox" value="Lestania Jayanti"> Lestania Jayanti</label>
-            <label><input type="checkbox" value="Etikawati Datiek Pratiwi"> Etikawati Datiek Pratiwi</label>
-            <label><input type="checkbox" value="Al Barkah Triandika"> Al Barkah Triandika</label>
-            <label><input type="checkbox" value="Dian Eka Putri"> Dian Eka Putri</label>
-            <label><input type="checkbox" value="Dina Nur Rahmawati"> Dina Nur Rahmawati</label>
-            <label><input type="checkbox" value="Rina Lusiana Handayanti"> Rina Lusiana Handayanti</label>
-            <label><input type="checkbox" value="Fadhila Tsany NR"> Fadhila Tsany NR</label>
-            <label><input type="checkbox" value="Minanur Rohman"> Minanur Rohman</label>
-            <label><input type="checkbox" value="Ari Susanto"> Ari Susanto</label>
-            <label><input type="checkbox" value="Rizqi Amalia Hanif"> Rizqi Amalia Hanif</label>
-          </div>
-
-          <label>Catatan</label>
-          <textarea id="catatan" style="width:100%;height:70px"></textarea><br>
-
-          <button onclick="submitAgenda()" style="margin-top:10px;width:100%;padding:10px;background:#0a3d62;color:white;border:none;border-radius:6px;">
-            💾 Simpan Agenda
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ================== TAB DAFTAR AGENDA ================== -->
-    <div class="tab-pane fade" id="tabAgenda">
-      <div class="table-box">
-        <h3>📋 Daftar Agenda</h3>
-        <table id="agendaTable">
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>Kegiatan</th>
-              <th>Waktu</th>
-              <th>Tempat</th>
-              <th>Peserta</th>
-              <th>Catatan</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-
-
-    <!-- ================== TAB REKAP PESERTA ================== -->
-	
-    <div class="tab-pane fade" id="tabRekap">
-
-      <!-- FILTER -->
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Bulan</label>
-              <select class="form-select" id="rekapBulan">
-                <option value="">Semua Bulan</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Tahun</label>
-              <select class="form-select" id="rekapTahun">
-                <option>2026</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Peserta</label>
-              <select class="form-select" id="rekapPeserta">
-                <option value="">Semua Peserta</option>
-              </select>
-            </div>
-          </div>
+        <div class="col-md-3">
+          <label>Tipe Peta</label>
+          <select id="mapType" class="form-select">
+            <option value="streets">Peta Jalan</option>
+            <option value="satellite">Peta Satelit</option>
+          </select>
         </div>
       </div>
-<!-- ================== STATISTIK ================== -->
-<div class="row g-3 mb-4">
+    </div>
+    <div id="map" style="height: 500px;"></div>
+  </div>
 
-  <div class="col-md-4">
-    <div class="card shadow-sm">
+  <!-- TAB JUKNIS (baru) -->
+  <div class="tab-pane fade" id="tabJuknis">
+    <div class="card">
       <div class="card-body">
-        <h3 id="statTotal" class="fw-bold mb-0">0</h3>
-        <small class="text-muted">Total Kegiatan</small>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 id="statAktif" class="fw-bold text-success mb-0">0</h3>
-        <small class="text-muted">Peserta Aktif</small>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h3 id="statRata" class="fw-bold text-primary mb-0">0</h3>
-        <small class="text-muted">Rata-rata / Peserta</small>
-      </div>
-    </div>
-  </div>
-
-</div>
-      <!-- TABEL REKAP -->
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          Rekap Peserta
-        </div>
-        <div class="table-responsive">
-          <table class="table align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>No</th>
-                <th>Nama Peserta</th>
-                <th class="text-center">Jumlah Kegiatan</th>
-                <th class="text-center">Status</th>
-              </tr>
-            </thead>
-            <tbody id="rekapBody">
-              <!-- diisi JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
-<hr class="my-4">
-
-
-
-
-    <!-- ============ TEMPLATE HALAMAN ========= -->
-    <!-- Semua halaman pakai template ini saja -->
-    <div id="pageTemplate" class="card page" style="display:none">
-        <div class="title" id="pageTitle"></div>
-        <div class="breadcrumb" id="pagePath"></div>
-
-        <p>Silakan unduh dokumen berikut:</p>
-
-        <div class="grid">
-            <a class="btn-doc" href="#" target="_blank">Pedoman</a>
-            <a class="btn-doc" href="#" target="_blank">Daftar Sampel</a>
-            <a class="btn-doc" href="#" target="_blank">Apresiasi</a>
-            <a class="btn-doc" href="#" target="_blank">Kuesioner</a>
-            <a class="btn-doc" href="#" target="_blank">Backup Data</a>
-            <a class="btn-doc" href="#" target="_blank">Upload Dokumen</a>
-            <a class="btn-doc" href="#" target="_blank">Bahan Ajar</a>
-            <a class="btn-doc" href="#" target="_blank">Berita Acara</a>
-            <a class="btn-doc" href="#" target="_blank">Publikasi</a>
-            <a class="btn-doc" href="#" target="_blank">Paparan</a>
-            <a class="btn-doc" href="#" target="_blank">Fenomena</a>
-            <a class="btn-doc" href="#" target="_blank">Surat</a>
-        </div>
-    </div>
-<div id="capaianPage" class="card page" style="display:none">
-    <div class="title" id="capaianTitle"></div>
-    <div class="breadcrumb" id="capaianPath"></div>
-
-    <label><b>Pilih Sheet:</b></label>
-    <select id="sheetSelect" onchange="loadSheetData()" style="padding:6px; margin:10px 0;">
-    </select>
-
-    <div style="overflow-x:auto">
-        <table id="dataTable" border="1" cellpadding="8" cellspacing="0" width="100%">
-        </table>
-    </div>
-</div>
-
-</div>
-<div id="programPage" class="card page" style="display:none">
-  <div class="title" id="programTitle"></div>
-  <div class="program-grid" id="programGrid"></div>
-</div>
-
-<div id="jadwalPage" class="card page" style="display:none">
-
-  <div class="title">🗓️ Jadwal Kegiatan</div>
-  <div class="breadcrumb">Beranda > Jadwal Kegiatan</div>
-
-  <ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#jadwalForm">
-        ➕ Input Jadwal
-      </button>
-    </li>
-	
-	
-	
-    <li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalRekap">
-        📋 Rekap Jadwal
-      </button>
-    </li>
-	
-	
-
-    <li class="nav-item">
-      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#jadwalKalender">
-        📅 Kalender Jadwal
-      </button>
-    </li>
-  </ul>
-
-  <div class="tab-content">
-
-    <!-- ================= FORM INPUT ================= -->
-    <div class="tab-pane fade show active" id="jadwalForm">
-      <div class="card p-3">
-
-        <h4 class="mb-3">📝 Form Input Jadwal</h4>
-
-        <label>Tanggal Mulai</label>
-        <input type="date" id="jmMulai" class="form-control mb-2">
-
-        <label>Tanggal Selesai</label>
-        <input type="date" id="jmSelesai" class="form-control mb-2">
-
-        <label>Kegiatan</label>
-		<select id="jmKegiatan" class="form-select mb-2" required>
-		  <option value="">-- Pilih Kegiatan --</option>
-		  <option>KSA Padi</option>
-		  <option>KSA Jagung</option>
-		  <option>Ubinan Padi</option>
-		  <option>Ubinan Palawija</option>
-		  <option>SIMPTP</option>
-		  <option>LPTB</option>
-		  <option>Perusahaan Peternakan Unggas (LTU)</option>
-		  <option>Perusahaan Peternakan Besar Kecil (LTT)</option>
-		  <option>Perusahaan Peternakan Sapi Perah (LTS)</option>
-		  <option>SKB Tahunan</option>
-		  <option>Sedapp</option>
-		  <option>VN-Horti</option>
-		  <option>PP-TPI</option>
-		  <option>LTP</option>
-		  <option>LTB</option>
-		  <option>DKT Prov</option>
-		  <option>HPHT</option>
-		  <option>VT-TSL</option>
-		  <option>IBS Tahunan</option>
-		  <option>IBS Bulanan</option>
-		  <option>IMK Tahunan</option>
-		  <option>IMK Triwulanan</option>
-		  <option>Pengutipan IBS</option>
-		  <option>Update DPA</option>
-		  <option>Pengutipan Konstruksi</option>
-		  <option>Updating Direktori Perusahaan</option>
-		  <option>Survei Konstruksi Tahunan (SKTH)</option>
-		  <option>Survei Konstruksi Triwulnan (SKTR)</option>
-		  <option>Air Bersih Tahunan</option>
-		  <option>Air Bersih Triwulanan</option>
-		  <option>Listrik</option>
-		  <option>Captive Power</option>
-		  <option>Galian Tahunan</option>
-		  <option>Galian Triwulanan</option>
-		  <option>Gas</option>
-		  <option>Migas</option>
-		  <option>Non Migas</option>
-		  <option>Geothermal</option>
-		  <option>UDPE</option>
-		  <option>Pengutipan PE</option>
-		</select>
-
-
-        
-        
-		<div class="mb-3">
-		<label class="form-label">Tahapan Kegiatan</label>
-		<select id="jmTahapan" class="form-select" required>
-		<option value="">-- Pilih Tahapan --</option>
-		<option>Persiapan</option>
-		<option>Pendataan</option>
-		<option>Pengolahan</option>
-		<option>Publikasi</option>
-		</select>
-		</div>
-
-        
-			<div class="mb-3">
-			  <label class="form-label">Subsektor</label>
-			  <select id="jmSubsektor" class="form-select" required>
-				<option value="">-- Pilih Subsektor --</option>
-				<option>Tanaman Pangan</option>
-				<option>Hortikultura</option>
-				<option>Perkebunan</option>
-				<option>Peternakan</option>
-				<option>Perikanan</option>
-				<option>Kehutanan</option>
-				<option>Industri</option>
-				<option>Konstruksi</option>
-				<option>Pertambangan dan Energi</option>
-			  </select>
-			</div>
-
-        
-			<div class="mb-3">
-			  <label class="form-label">PIC</label>
-			  <select id="jmPIC" class="form-select" required>
-				<option value="">-- Pilih PIC --</option>
-				<option>Sri Diastuti</option>
-				<option>Tri Karjono</option>
-				<option>Adi Susanto</option>
-				<option>Lestania Jayanti</option>
-				<option>Etikawati Datiek Pratiwi</option>
-				<option>Al Barkah Triandika</option>
-				<option>Dian Eka Putri</option>
-				<option>Dina Nur Rahmawati</option>
-				<option>Rina Lusiana Handayanti</option>
-				<option>Fadhila Tsany NR</option>
-				<option>Minanur Rohman</option>
-				<option>Ari Susanto</option>
-				<option>Rizqi Amalia Hanif</option>
-			  </select>
-			</div>
-
-        <button class="btn btn-primary w-100" onclick="simpanJadwal()">
-          💾 Simpan Jadwal
-        </button>
-
-      </div>
-    </div>
-
-
-
-
-
-    <!-- ================= REKAP ================= -->
-    <div class="tab-pane fade" id="jadwalRekap">
-      <div class="card p-3">
-        <h4>📋 Rekap Jadwal</h4>
-		<div class="row mb-3">
-  <div class="col-md-4">
-    <label class="form-label">Filter Kegiatan</label>
-    <select
-  id="filterKegiatan"
-  class="form-select"
-  onchange="renderJadwalRekap()"
->
-  <option value="">Semua Kegiatan</option>
-  <option>KSA Padi</option>
-		  <option>KSA Jagung</option>
-		  <option>Ubinan Padi</option>
-		  <option>Ubinan Palawija</option>
-		  <option>SIMPTP</option>
-		  <option>LPTB</option>
-		  <option>Perusahaan Peternakan Unggas (LTU)</option>
-		  <option>Perusahaan Peternakan Besar Kecil (LTT)</option>
-		  <option>Perusahaan Peternakan Sapi Perah (LTS)</option>
-		  <option>SKB Tahunan</option>
-		  <option>Sedapp</option>
-		  <option>VN-Horti</option>
-		  <option>PP-TPI</option>
-		  <option>LTP</option>
-		  <option>LTB</option>
-		  <option>DKT Prov</option>
-		  <option>HPHT</option>
-		  <option>VT-TSL</option>
-		  <option>IBS Tahunan</option>
-		  <option>IBS Bulanan</option>
-		  <option>IMK Tahunan</option>
-		  <option>IMK Triwulanan</option>
-		  <option>Pengutipan IBS</option>
-		  <option>Update DPA</option>
-		  <option>Pengutipan Konstruksi</option>
-		  <option>Updating Direktori Perusahaan</option>
-		  <option>Survei Konstruksi Tahunan (SKTH)</option>
-		  <option>Survei Konstruksi Triwulnan (SKTR)</option>
-		  <option>Air Bersih Tahunan</option>
-		  <option>Air Bersih Triwulanan</option>
-		  <option>Listrik</option>
-		  <option>Captive Power</option>
-		  <option>Galian Tahunan</option>
-		  <option>Galian Triwulanan</option>
-		  <option>Gas</option>
-		  <option>Migas</option>
-		  <option>Non Migas</option>
-		  <option>Geothermal</option>
-		  <option>UDPE</option>
-		  <option>Pengutipan PE</option>
-</select>
-
-  </div>
-</div>
-		
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Tgl Mulai</th>
-              <th>Tgl Selesai</th>
-              <th>Kegiatan</th>
-              <th>Tahapan</th>
-              <th>Subsektor</th>
-              <th>PIC</th>
-            </tr>
-          </thead>
-          <tbody id="jadwalBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ================= KALENDER JADWAL ================= -->
-<div class="tab-pane fade" id="jadwalKalender">
-  <div class="card p-3">
-    <h4>📅 Kalender Jadwal</h4>
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <button class="btn btn-primary" onclick="jadwalPrevMonth()">◀ Bulan Sebelumnya</button>
-      <h3 id="jadwalCalendarTitle" class="mb-0"></h3>
-      <button class="btn btn-primary" onclick="jadwalNextMonth()">Bulan Berikutnya ▶</button>
-    </div>
-
-    <div class="calendar-grid" id="jadwalCalendarGrid"></div>
-  </div>
-</div>
-
-<!-- MODAL DETAIL JADWAL -->
-<div class="modal fade" id="modalJadwalDetail" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered jadwal-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">📋 Jadwal Kegiatan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body" id="jadwalDetailBody">
-        <!-- isi via JS -->
+        <h5 class="card-title">Petunjuk Penggunaan (Juknis)</h5>
+        <p class="card-text">
+          <!-- Placeholder untuk konten Juknis. Ganti dengan konten aktual jika ada. -->
+          Berikut adalah petunjuk penggunaan aplikasi DAUN PADI: Deteksi Anomali Ubinan Padi.<br>
+          1. Login menggunakan kode user dan password yang sama.<br>
+          2. Pilih sheet data yang ingin dilihat.<br>
+          3. Gunakan filter untuk menyaring data berdasarkan Subround dan Kabupaten.<br>
+          4. Pada tab Tabel, lihat data anomali dengan kolom merah menunjukkan anomali.<br>
+          5. Pada tab Grafik, lihat visualisasi data.<br>
+          6. Pada tab Peta, lihat peta Indonesia dengan filter Kabupaten dan Subround.<br>
+          7. Pada tab Juknis, baca petunjuk ini.<br>
+          <!-- Tambahkan lebih banyak konten jika diperlukan -->
+        </p>
       </div>
     </div>
   </div>
 </div>
-
 
 
 <script>
+/* ================= LOGIN ================= */
+const users=[];
+for(let i=3301;i<=3329;i++) users.push(String(i));
+for(let i=3371;i<=3376;i++) users.push(String(i));
 
-// =====================
-// API CAPAIAN KINERJA
-// =====================
-const API_PERTANIAN = "https://script.google.com/macros/s/AKfycbzAyCeRHb66exgIQhWYpGSLFk4TJcACpTxMexXjJatD2OXjGVBJ7PuZyvp0fDOE7WWxfA/exec";
-const API_INDUSTRI  = "https://script.google.com/macros/s/AKfycbynBNdU--bcKUo0bnQTt5N0Be5stEwF288AqbjI_AU7633_SQeUKWuVZaeuhwi28hZh/exec";
+function doLogin(){
+  if(users.includes(loginUser.value)&&loginUser.value===loginPass.value){
+    sessionStorage.setItem("login","1");
+    loginOverlay.style.display="none";
+    dashboard.style.display="block";
+  }else loginError.classList.remove("d-none");
+}
+function logout(){sessionStorage.clear();location.reload();}
+if(sessionStorage.getItem("login")==="1"){
+  loginOverlay.style.display="none";
+  dashboard.style.display="block";
+}
 
-const programData = {
-
-  /* ===============================
-     PROGRAM INPEK
-     =============================== */
-  progInpek:{
-    title:"Akses Program INPEK",
-    items:[
-      {
-        nama:"IBS Tahunan",
-        logo:"img/inpek/ibs.svg",
-        link:"http://webentry.bps.go.id/ibs"
-      },
-      {
-        nama:"IBS Bulanan",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-      {
-        nama:"IMK Tahunan",
-        logo:"img/inpek/imk.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-      {
-        nama:"IMK Triwulanan",
-        logo:"img/inpek/imk.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"SKTH",
-        logo:"img/inpek/ibs.png",
-        link:"https://pengolahan.bps.go.id/produksi/konstruksi/"
-      },
-	  {
-        nama:"SKTR",
-        logo:"img/inpek/ibs.png",
-        link:"https://pengolahan.bps.go.id/produksi/konstruksi/"
-      },
-	  {
-        nama:"Galian Tahunan",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Galian Triwulanan",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Listrik",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Air Bersih",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Gas",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Migas",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Non Migas",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Geotermal",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Captive Power",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"UDPE",
-        logo:"img/inpek/ibs.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-      {
-        nama:"SK Industri",
-        logo:"img/inpek/industri.png",
-        link:"https://pengolahan.bps.go.id/"
-      }
-    ]
-  },
-
-  /* ===============================
-     PROGRAM PERTANIAN
-     =============================== */
-  progPertanian:{
-    title:"Akses Program Pertanian",
-    items:[
-      {
-        nama:"KSA Padi",
-        logo:"img/pertanian/padi.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Ganti Segmen KSA Padi",
-        logo:"img/pertanian/jagung.png",
-        link:"https://ksapro-manajemen.bps.go.id/sampel/"
-      },
-      {
-        nama:"KSA Jagung",
-        logo:"img/pertanian/jagung.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Ganti Segmen KSA Jagung",
-        logo:"img/pertanian/jagung.png",
-        link:"https://ksapro-manajemen.bps.go.id/sampel/"
-      },
-      {
-        nama:"Ubinan",
-        logo:"img/pertanian/horti.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Dashboard Ubinan",
-        logo:"img/pertanian/horti.png",
-        link:"https://fasih-dashboard.bps.go.id/superset/dashboard/178/"
-      },
-	  {
-        nama:"Hortikultura SPH",
-        logo:"img/pertanian/horti.png",
-        link:"https://pengolahan.bps.go.id/produksi/hortikultura/sph2021/"
-      },
-	  {
-        nama:"SiPedas (Sistem Penyediaan Data Statistik Pertanian Hortikultura)",
-        logo:"img/pertanian/horti.png",
-        link:"SiPedas (Sistem Penyediaan Data Statistik Pertanian Hortikultura)"
-      },
-      {
-        nama:"SEDAPP Online SKB Bulanan ",
-        logo:"img/pertanian/kebun.png",
-        link:"https://skb.bps.go.id/pb"
-      },
-	  {
-        nama:"Dashboard SEDAPP Online ",
-        logo:"img/pertanian/kebun.png",
-        link:"https://dashboard.bps.go.id/sedapp"
-      },
-	  {
-        nama:"SKB Tahunan",
-        logo:"img/pertanian/kebun.png",
-        link:"https://pengolahan.bps.go.id/produksi/perkebunan/SKB_tahunan/"
-      },
-	  {
-        nama:"LPTB",
-        logo:"img/pertanian/kebun.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-	  {
-        nama:"Dashboard LPTB 2025",
-        logo:"img/pertanian/kebun.png",
-        link:"https://fasih-dashboard.bps.go.id/superset/dashboard/180/"
-      },
-	  {
-        nama:"Perkanan Triwulanan",
-        logo:"img/pertanian/kebun.png",
-        link:"https://ipd.bps.go.id/perikanan/"
-      },
-	  {
-        nama:"Upload Dokumen Perikanan (link Pusat)",
-        logo:"img/pertanian/kebun.png",
-        link:"https://s.id/Pendataan_Perikanan_2025"
-      },
-	  {
-        nama:"Si Dekat Online",
-        logo:"img/pertanian/kebun.png",
-        link:"https://fasih-sm.bps.go.id/"
-      },
-      {
-        nama:"Kehutanan Tahunan dan Prov",
-        logo:"img/pertanian/ternak.png",
-        link:"https://webentry.bps.go.id/kehutanan"
-      }
-    ]
-  },
-
-  /* ===============================
-     PROGRAM MANAJEMEN
-     =============================== */
-  progManajemen:{
-    title:"Akses Program Manajemen",
-    items:[
-      {
-        nama:"Manajemen Resiko",
-        logo:"img/manajemen/simpeg.png",
-        link:"https://risiko.web.bps.go.id/"
-      },
-      {
-        nama:"Quality Gate",
-        logo:"img/manajemen/eoffice.png",
-        link:"https://webapps.bps.go.id/nqaf/qgate/"
-      },
-      {
-        nama:"EVITA",
-        logo:"img/manajemen/sakti.png",
-        link:"https://webapps.bps.go.id/jateng/evita/index.php/admin/login"
-      },
-      {
-        nama:"Gojags",
-        logo:"img/manajemen/sipeka.png",
-        link:"https://gojags.web.bps.go.id/"
-      },
-      {
-        nama:"LAPOR",
-        logo:"img/manajemen/lapor.png",
-        link:"https://www.lapor.go.id/"
-      }
-    ]
-  }
-
+/* ================= API ================= */
+const API_URL_MAIN="https://script.google.com/macros/s/AKfycbz5mA_cLvAEiCV2zile4fio9EkCa4nZy9aahc0wO4xAeJw5UqJGj1ctKC9ouVhBcHgkZQ/exec";
+const API_URL_MAP = "https://script.google.com/macros/s/AKfycbw1yAeI0KFwBQIjJEa8Ft0V9CAghFfN1p5jO9oH_0wn0RLn4kaEQdMjChHdcox9-LAN/exec"; // Untuk data peta (Alokasi, Realisasi) - dari spreadsheet kedua
+/* ================= WARNING TEXT ================= */
+const warningText = {
+  r108: "berisi '2. Ubinan Prakarsa/Daerah' atau '3. Ubinan Lainnya'",
+  r111: "berisi '2. Padi Ladang'",
+  r111_r702: "r111 '1. Padi Sawah'  tapi r702 '5. Bukan Sawah atau r111 '2. Padi Ladang' tapi r702 '1. Sawah Irigas",
+  r205_r206: "r205<17 tahun, tapi r206 '5. Akademi/D1/D2/D3 atau r205<20 tahun tapi r206 '6. Perguruan Tinggi/D4/S1/S2/S3 ",
+  r601_bulanmaster: " selisih pelaksanaan ubinan dan perkiraan bulan panen lebih dari 1 bulan",
+  r602: "r602<70 hari atau r602>130 hari",
+  r604a: "r604a>=0.2kg",
+  r604c: "- r604c<1 kg atau r604c>7.5kg",
+  r701b: "r701b berisi 'Lainnya' namun sebenarnya masih bisa dimasukkan ke pilihan yang tersedia",
+  r701c: "r701c berisi '5. Beras Lainnya'",
+  r706: "berisi kurang dari 100 m2",
+  r707b: "penggunaan benih per hektar di luar rentang 10-86 kg/ha",
+  r708b: "penggunaan pupuk per hektar di luar rentang 150-1.000 kg/ha",
+  r709: "r709a berisi '2. Tidak atau r709c berisi '4. Lainnya",
+  r710: "r710b berisi lebih dari 3 kali",
+  r801b: "r801b berisi '5. Lainnya'",
+  r802b: "r802b berisi '5. Lainnya'",
+  r803c: "r803c berisi 'Lainnya' namun sebenarnya masih bisa dimasukkan ke pilihan yang tersedia",
+  r804c: "jika besarnya dampak lebih dari 50 persen",
+  r805b: "r805b berisi '4. Lainnya' namun sebenarnya masih bisa dimasukkan ke pilihan yang tersedia",
+  r805c: "jika besarnya dampak lebih dari 50 persen",
+  r901: "r901 berisi '2. Ubinan Dinas atau r901 berisi '3. Ubinan Bersama"
 };
 
+/* ================= SHEET KHUSUS ================= */
+const fullSheet=["Progress","Penjelasan Anomali","Rekap Anomali","Subsegmen Anomali"];
 
-function showProgram(key, el){
-  hideAllPages();
-  setActiveMenu(el);
+/* ================= RED COLUMNS ================= */
+const redColumns = [
+  "r108",
+  "r111",
+  "r111_r702",
+  "r205_r206",
+  "r601_bulanmaster",
+  "r602",
+  "r604a",
+  "r604c",
+  "r605",
+  "r701b",
+  "r701c",
+  "r703",
+  "r706",
+  "r707b",
+  "r708b",
+  "r709",
+  "r710b",
+  "r801b",
+  "r802b",
+  "r803c",
+  "r804c",
+  "r805b",
+  "r805c",
+  "r901"
+];
 
-  const data = programData[key];
-  document.getElementById("programTitle").innerText = data.title;
+let rawData=[],header=[],chart;
 
-  const grid = document.getElementById("programGrid");
-  grid.innerHTML = "";
+/* ================= LOAD SHEET ================= */
+fetch(API_URL_MAIN+"?action=sheets")
+.then(r=>r.json())
+.then(list=>{
+  sheetSelect.innerHTML=list.filter(s=>s.toLowerCase()!=="raw data")
+    .map(s=>`<option>${s}</option>`).join("");
+  loadData();
+});
+sheetSelect.onchange=loadData;
 
-  data.items.forEach(p=>{
-    grid.innerHTML += `
-      <div class="program-card">
-        <img src="${p.logo}">
-        <div>
-          <strong>${p.nama}</strong><br>
-          <a href="${p.link}" target="_blank">${p.link}</a>
-        </div>
-      </div>
-    `;
+/* ================= WARNING HANDLER ================= */
+function updateWarning(){
+  const key = sheetSelect.value.toLowerCase(); // Ubah key menjadi lowercase untuk match dengan warningText
+  if(warningText[key]){
+    sheetWarning.textContent = warningText[key];
+    sheetWarning.classList.remove("d-none");
+  }else{
+    sheetWarning.classList.add("d-none");
+  }
+}
+
+/* ================= LOAD DATA ================= */
+function loadData(){
+  updateWarning();
+
+  fetch(API_URL_MAIN+"?action=data&sheet="+sheetSelect.value)
+  .then(r=>r.json())
+  .then(res=>{
+    header=[...res.header];
+    rawData=[...res.data];
+
+    if(sheetSelect.value === "Subsegmen Anomali"){
+      const totalIdx = header.indexOf("TOTAL");
+      if(totalIdx !== -1){
+        rawData = rawData.filter(r => Number(r[totalIdx]) > 0);
+      }
+    } else if(!fullSheet.includes(sheetSelect.value)){
+      rawData=rawData.filter(r=>r[header.indexOf("flag_2")]==1);
+    }
+
+    if(rawData.length===0){
+      noDataAlert.classList.remove("d-none");
+      dataTable.tHead.innerHTML="";
+      dataTable.tBodies[0].innerHTML="";
+      if(chart) chart.destroy();
+      return;
+    }else noDataAlert.classList.add("d-none");
+
+    buildFilters();
+    renderTable();
+    buildChart();
   });
+}
 
-  document.getElementById("programPage").style.display = "block";
+/* ================= FILTER ================= */
+function buildFilters(){
+  fill(filterSubround, 6); // Kolom ke 7 (indeks 6)
+  fill(filterKab, 1); // Kolom ke 2 (indeks 1)
+}
+function fill(sel,idx){
+  const u=[...new Set(rawData.map(r=>r[idx]).filter(Boolean))];
+  sel.innerHTML='<option value="ALL">Semua</option>'+u.map(v=>`<option>${v}</option>`).join('');
+}
+filterSubround.onchange=()=>{renderTable(); buildChart();};
+filterKab.onchange=()=>{renderTable(); buildChart();};
+
+/* ================= GET FILTERED DATA ================= */
+function getFilteredData(){
+  let data=[...rawData];
+  if(filterSubround.value!="ALL") data=data.filter(r=>r[6]==filterSubround.value); // Indeks 6 untuk subround
+  if(filterKab.value!="ALL") data=data.filter(r=>r[1]==filterKab.value); // Indeks 1 untuk kabupaten
+  return data;
 }
 
 
+/* ================= LOCAL STORAGE FOR CHECKBOX ================= */
+function getCheckboxKey(sheet, subround, kab, index){
+  return `checkbox-${sheet}-${subround}-${kab}-${index}`;
+}
+function saveCheckbox(sheet, subround, kab, index, type, checked){
+  const key = getCheckboxKey(sheet, subround, kab, index) + `-${type}`;
+  localStorage.setItem(key, checked ? "1" : "0");
+}
+function loadCheckbox(sheet, subround, kab, index, type){
+  const key = getCheckboxKey(sheet, subround, kab, index) + `-${type}`;
+  return localStorage.getItem(key) === "1";
+}
 
-// =====================
-// 1️⃣ Judul + Breadcrumb
-// =====================
-const pages = {
-    ksaPadi:"Tanaman Pangan > KSA Padi",
-    ksaJagung:"Tanaman Pangan > KSA Jagung",
-    ubinanPadi:"Tanaman Pangan > Ubinan Padi",
-    ubinanPalawija:"Tanaman Pangan > Ubinan Palawija",
-	simtp:"Tanaman Pangan > SIMTP",
+/* ================= TABLE ================= */
+function renderTable(){
+  let data=getFilteredData();
+  let head=[...header];
+  let rows=data.map(r=>[...r]);
 
-    sphSbs:"Hortikultura > SPH - SBS",
-    sphBst:"Hortikultura > SPH - BST",
-    sphTbf:"Hortikultura > SPH - TBF",
-    sphTh:"Hortikultura > SPH - TH",
-    vpHorti:"Hortikultura > VP-Horti",
-    vnHorti:"Hortikultura > VN-Horti",
-
-    skb:"Perkebunan > SKB",
-    dpp:"Perkebunan > DPP / DUTL",
-	komstrat:"Perkebunan > Komstrat",
-
-    lptb:"Peternakan > LPTB",
-    ppt:"Peternakan > Pendataan Perusahaan Peternakan Tahunan",
-
-    pptpi1:"Perikanan > PP-TPI",
-    pptpi2:"Perikanan > PP-TPI",
-    ltp:"Perikanan > LTP",
-    ltb:"Perikanan > LTB",
-
-    dkt:"Kehutanan > DKT Prov",
-    hpht:"Kehutanan > HPHT",
-    vtTsl:"Kehutanan > VT TSL",
-
-	ibsTahunan: "Statistik Industri > Industri Besar Sedang Tahunan",
-	ibsBulanan: "Statistik Industri > Industri Besar Sedang Bulanan",
-	mikroTahunan: "Statistik Industri > Industri Mikro Kecil Tahunan",
-	mikroTriwulan: "Statistik Industri > Industri Mikro Kecil Triwulanan",
-	pengutipanIBS: "Statistik Industri > Pengutipan Industri Besar Sedang (IBS)",
-	updateDPA: "Statistik Industri > Update DPA",
-
-
-// === STATISTIK KONSTRUKSI ===
-konsPengutipan:"Statistik Konstruksi > Pengutipan",
-konsUpdating:"Statistik Konstruksi > Updating Direktori Perusahaan",
-konsGround:"Statistik Konstruksi > Ground Check",
-skth:"Statistik Konstruksi > Survei Konstruksi Tahunan (SKTH)",
-sktr:"Statistik Konstruksi > Survei Konstruksi Triwulanan (SKTR)",
-
-// === STATISTIK PERTAMBANGAN & ENERGI ===
-airTahunan:"Statistik Pertambangan & Energi > Air Bersih Tahunan",
-airTriwulanan:"Statistik Pertambangan & Energi > Air Bersih Triwulanan",
-listrik:"Statistik Pertambangan & Energi > Listrik",
-captive:"Statistik Pertambangan & Energi > Captive Power",
-
-galianTahunan:"Statistik Pertambangan & Energi > Galian Tahunan",
-galianTriwulanan:"Statistik Pertambangan & Energi > Galian Triwulanan",
-galianUrt:"Statistik Pertambangan & Energi > Galian URT",
-
-gas:"Statistik Pertambangan & Energi > Gas",
-migas:"Statistik Pertambangan & Energi > Migas",
-nonMigas:"Statistik Pertambangan & Energi > Non Migas",
-geothermal:"Statistik Pertambangan & Energi > Geothermal",
-udpe:"Statistik Pertambangan & Energi > UDPE",
-tambangPengutipan:"Statistik Pertambangan & Energi > Pengutipan",
-
-    homeMenu : "Beranda",
-
-    adhoc1:"Kegiatan Adhoc > Kegiatan Adhoc 1",
-    adhoc2:"Kegiatan Adhoc > Kegiatan Adhoc 2",
-    adhoc3:"Kegiatan Adhoc > Kegiatan Adhoc 3",
-
-    progInpek:"Akses Program > Program INPEK",
-    progPertanian:"Akses Program > Program Pertanian",
-    progManajemen:"Akses Program > Program Manajemen",
-
-
-};
-
-
-
-// =====================
-// 2️⃣ Link Dokumen Per Kegiatan
-// =====================
-const docs = {
-
-    ksaPadi:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/drive/folders/14HX8n-3A0VOW6WXpIKdIbPGlWz56YZZq?usp=sharing",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/143yDmxwsssA7Z_UxcYoCmPva3yk8k8R_?usp=sharing",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/147iQDfdVm6rKF0VwSQUbmnzMMlFaZlGz?usp=sharing",
-		"Paparan": "https://drive.google.com/drive/folders/14-JocrtwCDvacBWFNPPy00C2C1vvGHk8?usp=sharing",
-		"Kuesioner": "https://drive.google.com/drive/folders/14996zx37sYdrGl9ic2X6stxPjuB2mcfv?usp=sharing",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/13ysynb_7wbNTNWLm5yIB9n0U1nEKlc8I?usp=sharing",
-		"Backup Data":"https://drive.google.com/drive/folders/140XMb8rMTL08Q0witKi2bSdaZtvQznPB?usp=sharing",
-		"Berita Acara":"https://drive.google.com/drive/folders/13xPXSfZt4lY2uWfRH_e5xckXFJzSsynW?usp=sharing",
-		"Fenomena": "https://drive.google.com/drive/folders/13u9PkUp84gayiRHEsyNqnO77MeYcb7rU?usp=sharing",
-		"Apresiasi": "https://drive.google.com/drive/folders/13rmJE9BoR6x0gRES8SWycVH56m2yJLE7?usp=sharing",
-    },
-
-    ksaJagung:{
-        "Surat":
-"https://drive.google.com/drive/folders/1AIfeLAVvj2lI5VBB2QWPz7bSCIlIF9-D?usp=sharing",
-        "Pedoman":
-"https://drive.google.com/drive/folders/152HhzKJ4LPDHE8gf01Wkg9hZVVnyeVbd?usp=sharing",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/14kNiY8g1fasbNHf74xxMRfppA4keV8jL?usp=sharing",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/14kz8cAGF5IPVFXuetiILti1IpEaZkNQz?usp=sharing",
-		"Paparan":
-"https://drive.google.com/drive/folders/14WrTa4ecyk2t8zMBZ42Ktle78E0X8IXk?usp=sharing",
-		"Kuesioner":
-"https://drive.google.com/drive/folders/14yplq-uPn-j-_yWU9x2v-h4k_yuowXMe?usp=sharing",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/14RwMDU57pr3c4bZ13_9avsWIFtbGm6aU?usp=sharing",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/drive/folders/14QojxlvPpPPESzM00BKgvEOhu3RyXSxb?usp=sharing",
-		"Fenomena":
-"https://drive.google.com/drive/folders/14NFuAMrvTV940Fl2aipGnAS4K3N-YGDv?usp=sharing",
-		"Apresiasi":
-"https://drive.google.com/drive/folders/14KzZyw9bFwUFrguBGGbxKIVvuowioc7d?usp=sharing",
-    },
-
-    ubinanPadi:{
-        "Surat":
-"https://drive.google.com/drive/folders/1nk9v0CYpG_ZQLbl8t_Fs1yY8gWRtavHD?usp=sharing",
-        "Pedoman":
-"https://drive.google.com/drive/folders/16EpSsFA2IYInQHomAed4TSXbcJzMWfTL?usp=sharing",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/15zvSftoNOPsg4-F4HYzSpjluxHySuoHs?usp=sharing",
-		"Paparan":
-"https://drive.google.com/drive/folders/15fbF9_Dfcd8yrG0McG2we4Iq_3_e5se6?usp=sharing",
-		"Kuesioner":
-"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/15LL-tkxWkM6MQ5Ro2UdUwx2sg3o3t5qY?usp=sharing",
-		"Backup Data":"https://drive.google.com/drive/folders/15qf2as7Ofjmogk-dxoT8zw7mqnWQuN7_?usp=sharing",
-		"Berita Acara":"https://drive.google.com/drive/folders/15GBmC0gx8ezv_QcJv2yjvZ7DoppzZh9N?usp=sharing",
-		"Fenomena":
-"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
-		"Apresiasi":
-"https://drive.google.com/drive/folders/156v5DLWZ-WUNHleqjwnRKcVCEfuf6_e9?usp=sharing",
-    },
-
-		ubinanPalawija:{
-        "Surat": "https://drive.google.com/drive/folders/1nk9v0CYpG_ZQLbl8t_Fs1yY8gWRtavHD?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/16EpSsFA2IYInQHomAed4TSXbcJzMWfTL?usp=sharing",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/1euHr5CesB-y7L-At5c0FnLVYAkFju5KV?usp=sharing",
-		"Paparan": "https://drive.google.com/drive/folders/15fbF9_Dfcd8yrG0McG2we4Iq_3_e5se6?usp=sharing",
-		"Kuesioner":"https://drive.google.com/drive/folders/165R_YxEoFccRD3NZ9GKl9mS7EdaU7I2R?usp=sharing",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/15LL-tkxWkM6MQ5Ro2UdUwx2sg3o3t5qY?usp=sharing",
-		"Backup Data":"https://drive.google.com/drive/folders/15qf2as7Ofjmogk-dxoT8zw7mqnWQuN7_?usp=sharing",
-		"Berita Acara":"https://drive.google.com/drive/folders/15GBmC0gx8ezv_QcJv2yjvZ7DoppzZh9N?usp=sharing",
-		"Fenomena":"https://drive.google.com/drive/folders/157PRHpM-_I_XopvpN6HocGa1p1Au6y3D?usp=sharing",
-		"Apresiasi":"https://drive.google.com/drive/folders/15P4m3nXXXpoYKhTVntB8WMFw3bBa5Un3?usp=sharing",
-    },
-	simtp:{
-        "Surat": "https://drive.google.com/drive/folders/1va8QKfoz9jEGxdUNRD9LSruBARgSEpud?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/16tV8eobLxRZEvoNWMqFvLxaXF_br-Xxr?usp=sharing",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/15rztLbh_Tx3Np6svmAjkBYtElZxzt_s1?usp=sharing",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/16ljWKauYsTijE_Rkn2nZHldxN-PPLWQ8?usp=sharing",
-		"Paparan": "https://drive.google.com/drive/folders/16jUJ__2XiKszxlWMOr6IEwmKb_32WT_A?usp=sharing",
-		"Kuesioner":"https://drive.google.com/drive/folders/16n84C0luwChdbBl7WQCVmThMRyE3qRow?usp=sharing",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/16hSGjqqTL-tvZxU1XaM9Yh68-mEDj6Z2?usp=sharing",
-		"Backup Data":"https://drive.google.com/drive/folders/16kLwbXfVO3i2XDbbM00wNH5kZMDcjs24?usp=sharing",
-		"Berita Acara":"https://drive.google.com/drive/folders/16au2S-rk0jmQFuCAyEqb1R4sapMF208p?usp=sharing",
-		"Fenomena":"https://drive.google.com/drive/folders/16VzDmsCSCpyvnVtIEkbygKOqhyakn4n3?usp=sharing",
-		"Apresiasi":"https://drive.google.com/drive/folders/16S-X-EC0eRGw3ghkX0zPa4jkHA80ArDI?usp=sharing",
-    },
-	
-	sphSbs:{
-        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":
-"https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	sphBst:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	sphTbf:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	sphTh:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	vpHorti:{
-        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/10OZXXQ2u9Tho-ClUBVH8QBwJL6GAigQK?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	vnHorti:{
-        "Surat": "https://drive.google.com/drive/folders/1TKARt6LGyUagOIGhUQ9oePa4MrBEQx6x?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/10cRB1gWOII8_XavV3ATT3wpODXzOAM7r?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/10VQpxQl3RVVh_-zwZvWYRA4g1QUXeR0V?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10afo0ZFFtsS5pKgl4l9G9lYNApkYqHy1?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/10OZXXQ2u9Tho-ClUBVH8QBwJL6GAigQK?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/10apa7VrhSn2CHxPGFDg5h4ZUFeRRF3L9?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/10KUKkN4bl8uFnpEnHT9CcCV6QZUkvHL5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/10TbimEmKBRcwfCGJMCIDWpIkSA3g4RMD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/13orH-3z_kB6-i_wxGkEDlz0QaKjcL-XR?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/13qrLcGE--YZVMCGDE0T7vnJeCspLA0ZH?usp=drive_link",
-    },
-	skb:{
-        "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/19uC8QkS-O830D2ELV9tbnbwNyNVIgeAm?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/19n27H3XvVgakabUtyo6CjhQpD1EpSWJM?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/19ve0AetH51IVBBhTtKzdf2v-poc-WnA5?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/19VcMpU7RaEg-zKy45z822BfbpPnDrzNq?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/19n4D9eo-V2j3t0DAn3lTJIRFwrpDv_Am?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/19V3S1Shl80M7kKb1hdcuzDSQVa1LqQNl?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
-    },
-	dpp:{
-        "Surat": "https://drive.google.com/drive/folders/1jc4d4demSCaRXwvkUiL7QFIFpwnKJnxM?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/1A44GPzxy56LeY31g3YU6VjZzNTIpBFQH?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/19qkTCurbIJxQjU7JrhBOVbHAB1k-aoJe?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/19uC8QkS-O830D2ELV9tbnbwNyNVIgeAm?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/19n27H3XvVgakabUtyo6CjhQpD1EpSWJM?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/19ve0AetH51IVBBhTtKzdf2v-poc-WnA5?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/19VcMpU7RaEg-zKy45z822BfbpPnDrzNq?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/19n4D9eo-V2j3t0DAn3lTJIRFwrpDv_Am?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/19V3S1Shl80M7kKb1hdcuzDSQVa1LqQNl?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/19KWJ2kWE4BAJEzi8v7I-_tkLn0rctdtC?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/19EdrG_aYX71o2IyqugrFCAvge3qFXHOL?usp=drive_link",
-    },
-	lptb:{
-        "Surat": "https://drive.google.com/drive/folders/1gKjRtKtmd4k2ExZOfDH7roJsn4kGOeT9?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/16QS4j-bqMMDyy6EQP3-iKdRdZNxVMQTL?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/16K_cLYj9WY94w0673pa-vEkt2ZzeAaUO?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/16Ns3bINtoBCfnTl01AfTPOV-xciWeCkC?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/17Kw5MMJYkfkye4T3cY3N_MiC35JqLXXt?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/16PCUAOzoyID0V9sJGJ0cXkwQbH6rDKET?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/drive/folders/17PDQvTK3uLaGgaujbewiowLKNMeOWOj4?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/1739MLd1DogN7mkGT1hfoAMyEIbSyrWbA?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/16zGK2j00j5VcVqBhKOO1vTFmW0UBs3mH?usp=drive_link",
-		"Apresiasi":"https://drive.google.com/xxx",
-    },
-	ppt:{
-        "Surat": "https://drive.google.com/drive/folders/1gKjRtKtmd4k2ExZOfDH7roJsn4kGOeT9?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/11A8_eGwgL1pO7gNxEe0ZbKF-MbdymiAQ?usp=sharing",
-        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1rH8GMCx821TsuGhwseKcHUR32XkCHB3m/edit?usp=sharing&ouid=114514626323711488284&rtpof=true&sd=true",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/10z37EbY3dt4LTChI6Hca57Zt8FSles_0?usp=sharing",
-		"Paparan": "https://drive.google.com/drive/folders/10ulDnAJJIFS-IUigflU9WhIpo2xrdyf-?usp=sharing",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/1iM4-ehfurTOdtOOI4omqJXVaTkTPGEEH?usp=sharing",
-		"Backup Data":"https://drive.google.com/drive/folders/1RIXTmFY-ou4qZTsK_adNutvBS49BYKsZ?usp=share_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/1S-22BSzUuOSiIcChdwJtr4aKNDRtXNod?usp=share_link",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-    },
-	pptpi1:{
-        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
-        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1BTAPtpmDcnXKSbbWMUb4avWhK-MwfM8p/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
-    },
-	pptpi2:{
-        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
-        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1VBlWsJExqxSUa5uO3q4kTnnNgcK0Lcl1/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
-    },
-	ltp:{
-        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
-        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1OLhpCxmEjGTULdGaltXpkbfKU2d5yzh7/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
-    },
-	ltb:{
-        "Surat": "https://drive.google.com/drive/folders/1H2lbLnzf53soSfwK0o21sdTZc8jned58?usp=sharing",
-        "Pedoman": "https://drive.google.com/drive/folders/17wvKAH7dgMKq7mHh62BbrtjlRcyiZLA5?usp=drive_link",
-        "Daftar Sampel":"https://docs.google.com/spreadsheets/d/1vEvjq7FSVlLZaBowPZhZhaGyDf1LDZS-/edit?usp=sharing&ouid=111012616639089712055&rtpof=true&sd=true",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/17w2AQWMXKrw6oFJACV1Y2j7QTo3BdxWL?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/17qbDpki4ZMPMAzwunWWXMYizRsr72UIS?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/17wDPCbOdDTF7GdM2ae01TCrOASVOutVz?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/17WSXV0ckbEmZfyQFdFs1tpSghpfx1dy5?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/17rFc_D0fFWIZTBiIPn5IqSdXrB35ROUD?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/17VpOuDIcZ4Jl4DqrrYZaRwgh9I79Ry8U?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/17V0pqZV2aeQd9GgdLX7DXnlyxpYH8GVc?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/17UVLbtDRh87GH17G6Pa0Q6WLCl0HewU3?usp=drive_link",
-    },
-	dkt:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
-    },
-	hpht:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
-    },
-	vtTsl:{
-        "Surat":"https://drive.google.com/xxx",
-        "Pedoman": "https://drive.google.com/drive/folders/18tOYhTApbarC9uCZ2UdXYSAOQMBWrYWx?usp=drive_link",
-        "Daftar Sampel":"https://drive.google.com/drive/folders/18hVmjurCGzt2Y0scqsd85Cy7ORys_CZg?usp=drive_link",
-		"Bahan Ajar":"https://drive.google.com/drive/folders/18hcujRKSMzHqQYp1-WRy8F935YWZp-Tc?usp=drive_link",
-		"Paparan": "https://drive.google.com/drive/folders/18TSs8-KGF2rHDxc6EM6zKsJ5oQhi1fKW?usp=drive_link",
-		"Kuesioner": "https://drive.google.com/drive/folders/18kfbsMRtGhnqeyPPBHeAASUmLwvvm_VJ?usp=drive_link",
-		"Upload Dokumen":"https://drive.google.com/drive/folders/18GpWFiRVGjVjcwsqFe4-QPnr3qPE-Gef?usp=drive_link",
-		"Backup Data":"https://drive.google.com/drive/folders/18VSAo9izCUD-n1tDOvos6ujwvYAnX0r1?usp=drive_link",
-		"Berita Acara":"https://drive.google.com/drive/folders/18Fi2u6zDNVDQtnwB48yWoGQCJTOOefvG?usp=drive_link",
-		"Fenomena": "https://drive.google.com/drive/folders/187mfVYYfacDn6zvLr7yPHr6AaN6HMToF?usp=drive_link",
-		"Apresiasi": "https://drive.google.com/drive/folders/185V9BFDyw9a4BoS7PaLywZOCX9scdtBV?usp=drive_link",
-    },
-	 ibsTahunan:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
-        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-D6RqAQ3tvTj5ftEju_K16_DPE8j2W4i&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1H-4YG63SXONDDDbWuMPCp6QqueAzuM&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GNfG9NiRqN8gzqvwa6uBw4_vIHqUS2D&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-GMzs9Dkq8gpvxS-p4KA2FkA3gNPHdvo&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1ailWuCRKMvUdq3tJbFGQWUwm2IRKRM1i&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-65LhhoQYre2cl_KvxtY7CAdCODUu702&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9idpQqpHNF0CUJ7NP19GzdS1CHWDR6W&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-AETbh1ZinMk-CylTRl2EzIYPa0P40sy&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4qhvKpTa21FX6QNFUAcg-Hkr0ZzwE0E&usp=drive_fs",
-    },
-
-    ibsBulanan:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing ",
-        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-D6RqAQ3tvTj5ftEju_K16_DPE8j2W4i&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GNfG9NiRqN8gzqvwa6uBw4_vIHqUS2D&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-GMzs9Dkq8gpvxS-p4KA2FkA3gNPHdvo&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1nXvtzAlliaXRgfMo4WULOFQybhQBpvAK&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-65LhhoQYre2cl_KvxtY7CAdCODUu702&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9idpQqpHNF0CUJ7NP19GzdS1CHWDR6W&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-AETbh1ZinMk-CylTRl2EzIYPa0P40sy&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4qhvKpTa21FX6QNFUAcg-Hkr0ZzwE0E&usp=drive_fs",
-    },
-
-    mikroTahunan:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
-        "Pedoman": "https://drive.google.com/open?id=1-08YEy-AVZolmzzZLzK3nF7N1CLnm6yz&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-DvVNa-ErpFHunPUk7a9SUql7trVs_NQ&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1u15oPevOc1JZkBsqu5JN1XRdUROQTa&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-H7DK20t4yUUmv4UGPm8mHP0Fi52LSWe&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-F6BSBge6OhDLeZpVZ8Fv2QYnNsy-0sU&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1Wh02zs1hRHL0d_VEQNq7OK4NUagOHzNc&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-5oZ89NMERAYnTbx1T86nPjaejuOjKOa&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9ZpnyPSKD6h-_jjXGXFeiAlWvvaDGuD&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-A7yZ8r97Gqu1dr3qZHLgyGP2_16Xhbm&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4hkAE4gE8u5Bvn7UYlk1uxJJ0Y9eW_3&usp=drive_fs",
-    },
-	updateDPA:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
-        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Paparan": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Kuesioner": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Upload Dokumen":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Backup Data":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Berita Acara":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Fenomena": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Apresiasi": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-    },
-	pengutipanIBS:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
-        "Pedoman": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
-        "Daftar Sampel":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Bahan Ajar":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Paparan": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Kuesioner": "https://drive.google.com/open?id=1-0BpIVm8__dcaLBeSj5dl3S8gzMy6SJI&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1xSEjKCSutXCaT109m1XdK8oBZMY79GaH&usp=drive_fs",
-		"Backup Data":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Berita Acara":"https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Fenomena": "https://sites.google.com/d/11DV24_nwSFdp51qlAD1IEqRT6gU3eDQu/p/15MY1TaU7r_DNb1emXSfoWW08SIxK1FMQ/edit",
-		"Apresiasi": "https://drive.google.com/drive/folders/1MewTyX8reg_hj58GZAjRVLFg0YGbKUoF?usp=sharing",
-    },
-	mikroTriwulan:{
-        "Surat": "https://drive.google.com/drive/folders/1SqnhQIkBIgIbfHPq5NNBTkSWZzwRE-iy?usp=sharing",
-        "Pedoman": "https://drive.google.com/open?id=1-08YEy-AVZolmzzZLzK3nF7N1CLnm6yz&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-DvVNa-ErpFHunPUk7a9SUql7trVs_NQ&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1u15oPevOc1JZkBsqu5JN1XRdUROQTa&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-H7DK20t4yUUmv4UGPm8mHP0Fi52LSWe&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-F6BSBge6OhDLeZpVZ8Fv2QYnNsy-0sU&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1CBmTZQm0Jw8E06Q_AZaiIwrI9Mq0U6Wr&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-5oZ89NMERAYnTbx1T86nPjaejuOjKOa&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9ZpnyPSKD6h-_jjXGXFeiAlWvvaDGuD&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-A7yZ8r97Gqu1dr3qZHLgyGP2_16Xhbm&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4hkAE4gE8u5Bvn7UYlk1uxJJ0Y9eW_3&usp=drive_fs",
-    },
-	homeMenu:{
-    "Surat":"https://drive.google.com/xxx"
-},
-
-adhoc1:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-adhoc2:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-adhoc3:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-
-progInpek:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-progPertanian:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-progManajemen:{
-    "Surat":"https://drive.google.com/xxx",
-        "Pedoman":"https://drive.google.com/xxx",
-        "Daftar Sampel":"https://drive.google.com/xxx",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/xxx",
-		"Backup Data":"https://drive.google.com/xxx",
-		"Berita Acara":"https://drive.google.com/xxx",
-		"Fenomena":"https://drive.google.com/xxx",
-		"Apresiasi":"https://drive.google.com/xxx",
-},
-
-konsPengutipan:{
-      "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/xxx",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/open?id=1V-f0U_cqOkOZL63K5dDJNuyeGvvoYQ05&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
-},
-konsUpdating:{
-       "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
-},
-konsGround:{
-       "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
-		"Paparan":"https://drive.google.com/xxx",
-		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
-},
-skth:{
-     "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-ElSaakGx3dibJkRrqfFfBOenJROQUTE&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
-},
-
-sktr:{
-    "Pedoman": "https://drive.google.com/open?id=1qNI9-yefUNhWIF99kpT-d3N6HHiqVJ39&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1XxIbduv_a5jkMzoYVjHwSAx7RsiWkDi9&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1dLtEuBQaueTZ_lIaCwVox2PVE1erQC&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GytC82CLOJgWvMjljpYTubyKFooqKWL&usp=drive_fs",
-		"Kuesioner":"https://drive.google.com/xxx",
-		"Upload Dokumen":"https://drive.google.com/open?id=1aNbhgoDuwoeR7rCshlPAb5dFw_Bgvw0Y&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-4rXSWOUc_kP8_7jge_0pLZZAwX5IMYy&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9IWEj2KzcwrK4-IstGsLZPoAGSO3oUK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-9rEoFAkPLtaKEZ4v2en9L9pyN2QTGiB&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4TiVgAAj60ZakWKEFtcq7WEcYDvC5fH&usp=drive_fs",
-},
-airTahunan:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-airTriwulanan:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-listrik:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-captive:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-galianTahunan:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-galianTriwulanan:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-galianUrt:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-gas:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-migas:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-nonMigas:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-geothermal:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-udpe:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-tambangPengutipan:{
-    "Pedoman": "https://drive.google.com/open?id=1-0TCHsE4ZmllX-56Dx9yFTGCsMVLzAi2&usp=drive_fs",
-        "Daftar Sampel":"https://drive.google.com/open?id=1-CWSZmI8238ooNTrTxQrVWUOoN3DCWGb&usp=drive_fs",
-		"Bahan Ajar":"https://drive.google.com/open?id=1-1SILbzhGNuL0QoANBwPeMmpj8eMAXZA&usp=drive_fs",
-		"Paparan": "https://drive.google.com/open?id=1-GaHti_DYH3nfOdv8Q-lrmO1kdh_2Y3u&usp=drive_fs",
-		"Kuesioner": "https://drive.google.com/open?id=1-EidifUMFzuZyaLYIQC2WK07LNmmKNxP&usp=drive_fs",
-		"Upload Dokumen":"https://drive.google.com/open?id=1h-SGxlXEUKgw6dhAPYgDgG7YbUw0xbZ6&usp=drive_fs",
-		"Backup Data":"https://drive.google.com/open?id=1-6878jVBPDbJSoXGOPdoepoIEC9y2jdq&usp=drive_fs",
-		"Berita Acara":"https://drive.google.com/open?id=1-9kMM9TFlXo-ruLxAVa-c50N9l8MYUmK&usp=drive_fs",
-		"Fenomena": "https://drive.google.com/open?id=1-BMDWsPX30Z6iJnIkG576-UXX-lLkIMq&usp=drive_fs",
-		"Apresiasi": "https://drive.google.com/open?id=1-4JPb7PMPsGUGfsHSG9OFMVFOkMjVrTb&usp=drive_fs",
-},
-
-
-    // tinggal lanjutkan sendiri ya 👌
-};
-
-
-
-// =====================
-// SHOW HALAMAN UTAMA
-// =====================
-
-
-function show(id, el){
-
-    // sembunyikan semua halaman
-    document.querySelectorAll('.page').forEach(p=>{
-        p.style.display = "none";
+  if(!fullSheet.includes(sheetSelect.value)){
+    const idx=header.indexOf("flag_2");
+    head.splice(idx+1,0,"Sesuai Lapangan","Butuh Perbaikan");
+    rows=rows.map((r, i)=>{
+      const subround = r[6]; // Indeks 6 untuk subround
+      const kab = r[1]; // Indeks 1 untuk kabupaten
+      const checked1 = loadCheckbox(sheetSelect.value, subround, kab, i, "sesuai") ? "checked" : "";
+      const checked2 = loadCheckbox(sheetSelect.value, subround, kab, i, "perbaikan") ? "checked" : "";
+      r.splice(idx+1,0,
+        `<input type="checkbox" ${checked1} onchange="handleCheckbox(this, '${sheetSelect.value}', '${subround}', '${kab}', ${i}, 'sesuai')">`,
+        `<input type="checkbox" ${checked2} onchange="handleCheckbox(this, '${sheetSelect.value}', '${subround}', '${kab}', ${i}, 'perbaikan')">`
+      );
+      return r;
     });
+  }
 
-    // hapus active menu lama
-    document.querySelectorAll('.submenu div').forEach(d=>{
-        d.classList.remove("active-menu");
+  dataTable.tHead.innerHTML="<tr>"+head.map(h=>`<th>${h}</th>`).join("")+"</tr>";
+  dataTable.tBodies[0].innerHTML=rows.map(r=>"<tr>"+r.map((c, j)=>{
+    let className = "";
+    if (sheetSelect.value !== "Rekap Anomali" && redColumns.includes(head[j]) && Number(c) === 1) {
+      className = "bg-danger text-white";
+    }
+    return `<td class="${className}">${c??""}</td>`;
+  }).join("")+"</tr>").join("");
+}
+
+/* ================= HANDLE CHECKBOX ================= */
+function handleCheckbox(cb, sheet, subround, kab, index, type){
+  saveCheckbox(sheet, subround, kab, index, type, cb.checked);
+}
+
+/* ================= CHART ================= */
+function buildChart(){
+  if(chart) chart.destroy();
+  if(sheetSelect.value === "Progress"){
+    const data = getFilteredData();
+    const kabIdx = 1; // Kolom ke 2 (indeks 1) untuk kabupaten
+    const targetIdx = 3; // Kolom D
+    const realisasiIdx = 4; // Kolom E
+    if(data.length === 0){
+      console.log("Data kosong untuk Progress.");
+      return;
+    }
+    const grouped = {};
+    data.forEach(r => {
+      const kab = r[kabIdx];
+      if(kab !== "00"){ // Skip kabupaten 00
+        if(!grouped[kab]) grouped[kab] = {target: 0, realisasi: 0};
+        grouped[kab].target += Number(r[targetIdx]) || 0;
+        grouped[kab].realisasi += Number(r[realisasiIdx]) || 0;
+      }
     });
-
-    // aman jika el undefined
-    if(el){
-        el.classList.add("active-menu");
-    }
-
-    // =============================
-    // 1️⃣ KHUSUS KALENDER & AGENDA
-    // =============================
-    if(id === "kalenderPage"){
-        document.getElementById("pageTemplate").style.display = "none";
-        document.getElementById("capaianPage").style.display = "none";
-        document.getElementById("kalenderPage").style.display = "block";
-        return;
-    }
-
-    // =============================
-    // 2️⃣ DEFAULT : TEMPLATE DOKUMEN
-    // =============================
-    let title = Object.keys(pages).includes(id) ? pages[id].split(" > ").pop() : "";
-    document.getElementById("pageTitle").innerText = title;
-    document.getElementById("pagePath").innerText = "Statistik Pertanian > " + pages[id];
-
-    document.getElementById("pageTemplate").style.display = "block";
-
-    // Isi link tombol download
-    const buttons = document.querySelectorAll(".btn-doc");
-
-    buttons.forEach(btn=>{
-        let text = btn.innerText.trim();
-
-        if(docs[id] && docs[id][text]){
-            btn.href = docs[id][text];
-            btn.style.display = "block";
-        } else {
-            btn.href = "#";
-            btn.style.display = "none";
+    const labels = Object.keys(grouped).sort((a,b)=>Number(a)-Number(b));
+    chart = new Chart(chartKab, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Target",
+            data: labels.map(l => grouped[l].target),
+            backgroundColor: "#90EE90" // Hijau muda
+          },
+          {
+            label: "Realisasi",
+            data: labels.map(l => grouped[l].realisasi),
+            backgroundColor: "#228B22" // Hijau tua
+          }
+        ]
+      },
+      options: {
+        scales: {
+          x: { stacked: false },
+          y: { stacked: false }
         }
+      }
     });
-}
-
-
-// =====================
-// CAPAIAN KINERJA
-// =====================
-let activeAPI = "";
-
-function showCapaian(jenis, el){
-
-    document.querySelectorAll('.page').forEach(p=>p.style.display="none");
-    document.querySelectorAll('.submenu div').forEach(d=>d.classList.remove("active-menu"));
-    el.classList.add("active-menu");
-
-    document.getElementById("capaianPage").style.display = "block";
-    document.getElementById("pageTemplate").style.display = "none";
-
-    if(jenis === "pertanian"){
-        document.getElementById("capaianTitle").innerText = "📈 Capaian Kinerja Pertanian";
-        document.getElementById("capaianPath").innerText = "Capaian Kinerja > Pertanian";
-        activeAPI = API_PERTANIAN;
+  } else if(sheetSelect.value === "Subsegmen Anomali"){
+    const data = getFilteredData();
+    const kabIdx = 1; // Kolom ke 2 (indeks 1) untuk kabupaten
+    const totalIdx = header.indexOf("TOTAL");
+    if(totalIdx === -1 || data.length === 0){
+      console.log("Kolom TOTAL tidak ditemukan atau data kosong untuk Subsegmen Anomali.");
+      return;
     }
-    else{
-        document.getElementById("capaianTitle").innerText =
-            "📈 Capaian Kinerja Industri, Pertambangan, Energi & Konstruksi";
-        document.getElementById("capaianPath").innerText =
-            "Capaian Kinerja > Industri, Pertambangan, Energi & Konstruksi";
-        activeAPI = API_INDUSTRI;
-    }
-
-    loadSheetList();
-}
-
-function loadSheetList(){
-    fetch(activeAPI)
-      .then(res => res.json())
-      .then(data => {
-          const sel = document.getElementById("sheetSelect");
-          sel.innerHTML = "";
-
-          if(!data.sheets || data.sheets.length === 0){
-              sel.innerHTML = "<option>Tidak ada sheet</option>";
-              return;
-          }
-
-          data.sheets.forEach(s=>{
-              let opt = document.createElement("option");
-              opt.value = s;
-              opt.textContent = s;
-              sel.appendChild(opt);
-          });
-
-          loadSheetData();
-      });
-}
-
-function loadSheetData(){
-    const sel = document.getElementById("sheetSelect");
-    const sh = sel.value;
-
-    fetch(activeAPI + "?sheet=" + encodeURIComponent(sh))
-      .then(r => r.json())
-      .then(d => {
-          const t = document.getElementById("dataTable");
-          t.innerHTML = "";
-
-          if(!d.data || d.data.length === 0){
-              t.innerHTML = "<tr><td>Data kosong</td></tr>";
-              return;
-          }
-
-          let h = "<tr>";
-          Object.keys(d.data[0]).forEach(k => h += `<th>${k}</th>`);
-          h += "</tr>";
-          t.innerHTML += h;
-
-          d.data.forEach(r=>{
-              let tr = "<tr>";
-              Object.values(r).forEach(v => tr += `<td>${v}</td>`);
-              tr += "</tr>";
-              t.innerHTML += tr;
-          });
-      });
-}
-
-
-// =====================
-// TOGGLE SUBMENU
-// =====================
-function toggle(id){
-    let el = document.getElementById(id);
-    el.style.display = (el.style.display === "block") ? "none" : "block";
-}
-
-
-// =====================
-// INIT HOME
-// =====================
-function initHome(){
-
-    document.querySelectorAll('.page').forEach(p=>{
-        p.style.display = "none";
+    const grouped = {};
+    data.forEach(r => {
+      const kab = r[kabIdx];
+      if(!grouped[kab]) grouped[kab] = 0;
+      grouped[kab] += Number(r[totalIdx]) || 0;
     });
-
-    document.getElementById("home").style.display = "block";
-
-    document.querySelectorAll('.submenu div').forEach(d=>{
-        d.classList.remove("active-menu");
+    const labels = Object.keys(grouped).sort((a,b)=>Number(a)-Number(b));
+    chart = new Chart(chartKab, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [{
+          label: "TOTAL",
+          data: labels.map(l => grouped[l]),
+          backgroundColor: "#FFD700" // Warna kuning untuk TOTAL
+        }]
+      },
+      options: {
+        scales: {
+          x: { stacked: false },
+          y: { stacked: false }
+        }
+      }
     });
-
-    document.querySelectorAll('.submenu').forEach(s=>{
-        s.style.display = "none";
+  } else if(!fullSheet.includes(sheetSelect.value)){
+    const data = getFilteredData();
+    const c = {};
+    data.forEach(r => c[r[1]] = (c[r[1]] || 0) + 1); // Indeks 1 untuk kabupaten
+    const labels = Object.keys(c).sort((a,b)=>Number(a)-Number(b));
+    chart = new Chart(chartKab, {
+      type: "bar",
+      data: { labels, datasets: [{ label: "Jumlah Flag_2 = 1", data: labels.map(l => c[l]) }] }
     });
+  }
+}
+/* ================= PETA ================= */
+let map;
+let markers = [];
+let dataAlokasi = [];
+let dataRealisasi = [];
+let headerAlokasi = [];
+let headerRealisasi = [];
+
+// Fungsi helper untuk mencari indeks kolom (case-insensitive)
+function colIndex(header, name) {
+  return header.findIndex(h => h.toLowerCase() === name.toLowerCase());
 }
 
+function initMap() {
+  if (map) map.remove();
+  map = L.map('map').setView([-2.5, 118], 5); // Pusat Indonesia
 
-// =====================
-// SHOW HOME
-// =====================
-function showHome(){
+  // Layer untuk peta jalan dan satelit
+  const streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  });
 
-    document.querySelectorAll('.page').forEach(p=>p.style.display = "none");
-    document.getElementById("home").style.display = "block";
+  const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  });
 
-    document.querySelectorAll('.submenu div').forEach(d=>d.classList.remove("active-menu"));
-    document.querySelectorAll('.submenu').forEach(s=>s.style.display = "none");
-}
+  // Default ke streets
+  streets.addTo(map);
 
-
-// =====================
-// HOME LINKS
-// =====================
-const homeLinks = {
-    industri:{
-        surat:"https://drive.google.com/drive/folders/10pbwo4W4TvhHiw0oViy-r1t5vX6yhm_Q",
-        sop:"http://s.id/SOP-INTAN",
-        wa:"https://chat.whatsapp.com/IX5Q2jeNU3F1MetoEmkQQm",
-        grafik:"https://drive.google.com/ISI_LINK_GRAFIK_INDUSTRI"
-    },
-    pertanian:{
-        surat:"https://drive.google.com/drive/folders/14d5Ir8bIGIRqo8Iv_UMY2dhXQNFXoq8M?usp=sharing",
-        sop:"http://s.id/SOP-INTAN",
-        wa:"https://chat.whatsapp.com/DumHr77mzZt0aYOr8SaWcd",
-        grafik:"https://drive.google.com/ISI_LINK_GRAFIK_PERTANIAN"
-    }
-};
-
-function openHomeLink(sektor, jenis){
-    if(homeLinks[sektor] && homeLinks[sektor][jenis]){
-        window.open(homeLinks[sektor][jenis], '_blank');
+  // Event listener untuk mapType
+  mapType.onchange = function() {
+    map.eachLayer(function(layer) {
+      if (layer instanceof L.TileLayer) {
+        map.removeLayer(layer);
+      }
+    });
+    if (this.value === 'satellite') {
+      satellite.addTo(map);
     } else {
-        alert("Link belum tersedia");
+      streets.addTo(map);
     }
-}
-function submitAgenda(){
-
-    const url = "https://script.google.com/macros/s/AKfycbyRAmUTVSl7iArh_q_sz7NWY1U04VkangKsnwN0nPVRgdEsk6uGS4kc48goaJ0m8-P0/exec";
-
-    const data = {
-        action: "add",
-        date: document.getElementById("tgl").value,
-        title: document.getElementById("nama").value,
-		time: document.getElementById("waktu").value,
-        tempat: document.getElementById("tempat").value,
-        peserta: getPeserta(),
-        catatan: document.getElementById("catatan").value
-    };
-
-    fetch(url, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(data)
-    })
-    .then(()=>{
-        alert("Berhasil disimpan ke Google Sheet ✅");
-    })
-    .catch(()=>{
-        alert("Gagal menyimpan ❌");
-    });
-}
-function getPeserta(){
-
-    let cek = document.querySelectorAll('#pesertaList input[type="checkbox"]:checked');
-    let hasil = [];
-
-    cek.forEach(c => hasil.push(c.value));
-
-    return hasil.join(", ");
-}
-
-function submitAgenda(){
-
-  const tgl = document.getElementById("tgl").value;
-  const waktu = document.getElementById("waktu").value;
-  const nama = document.getElementById("nama").value;
-  const tempat = document.getElementById("tempat").value;
-  const catatan = document.getElementById("catatan").value;
-
-  const peserta = [...document.querySelectorAll("#pesertaList input:checked")]
-                   .map(cb => cb.value);
-
-  if(!tgl || !nama){
-    alert("Tanggal dan nama kegiatan wajib diisi");
-    return;
-  }
-
-  // 🔥 INI YANG PENTING (HUBUNGKAN KE REKAP)
-  agendaData.push({
-    tgl,
-    waktu,
-    nama,
-    tempat,
-    peserta,
-    catatan
-  });
-
-}
-function showProgram(key, el){
-  hideAllPages();
-  // setActiveMenu(el);  ← HAPUS INI
-
-  const data = programData[key];
-  document.getElementById("programTitle").innerText = data.title;
-
-  const grid = document.getElementById("programGrid");
-  grid.innerHTML = "";
-
-  data.items.forEach(p=>{
-    grid.innerHTML += `
-      <div class="program-card">
-        <img src="${p.logo}">
-        <div>
-          <strong>${p.nama}</strong><br>
-          <a href="${p.link}" target="_blank">${p.link}</a>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById("programPage").style.display = "block";
-}
-
-
-
-</script>
-<script>
-/* =====================================
-   KONFIGURASI API
-===================================== */
-const AGENDA_API = "https://script.google.com/macros/s/AKfycbyRAmUTVSl7iArh_q_sz7NWY1U04VkangKsnwN0nPVRgdEsk6uGS4kc48goaJ0m8-P0/exec";
-const JADWAL_API = "https://script.google.com/macros/s/AKfycbyMP16_tw9MJ58PN6P1NrYhbdood8LwktvlUdvROyKuSWvhNXgyZ_GSPoWlCnjMr6JCjQ/exec";
-/* =====================================
-   STATE
-===================================== */
-let agendaCache = [];
-let editId = null;
-let kalenderBulan = new Date().getMonth();
-let kalenderTahun = new Date().getFullYear();
-
-/* =====================================
-   FORMAT
-===================================== */
-function formatDate(d){
-  if(!d) return "";
-  if(typeof d === "string" && d.length === 10) return d;
-  const t = new Date(d);
-  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`;
-}
-
-function formatTime(v){
-  if(!v) return "-";
-  if(typeof v === "string" && v.match(/^\d{2}:\d{2}$/)) return v;
-  const d = new Date(v);
-  if(isNaN(d)) return v;
-  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-}
-
-/* =====================================
-   LOAD DATA
-===================================== */
-function loadAgenda(){
-  fetch(AGENDA_API + "?action=get")
-    .then(r=>r.json())
-    .then(data=>{
-      agendaCache = data;
-      renderKalender();
-      renderAgendaTable();
-    });
-}
-
-
-/* =====================================
-   RENDER KALENDER
-===================================== */
-function renderKalender(){
-  const grid = document.getElementById("kalenderGrid");
-  const title = document.getElementById("kalenderJudul");
-
-  grid.innerHTML = "";
-  title.innerText = new Date(kalenderTahun, kalenderBulan)
-      .toLocaleString("id-ID",{month:"long",year:"numeric"});
-
-  const firstDay = new Date(kalenderTahun, kalenderBulan, 1).getDay();
-  const totalDays = new Date(kalenderTahun, kalenderBulan+1, 0).getDate();
-
-  for(let i=0;i<firstDay;i++){
-    grid.innerHTML += `<div></div>`;
-  }
-
-  for(let d=1; d<=totalDays; d++){
-    const tgl = `${kalenderTahun}-${String(kalenderBulan+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    const events = agendaCache.filter(a=>formatDate(a.date)===tgl);
-
-    grid.innerHTML += `
-      <div class="hari ${events.length?'hari-ada':''}" onclick="lihatAgenda('${tgl}')">
-        <strong>${d}</strong>
-        ${events.length?`<div class="badge-agenda">${events.length} kegiatan</div>`:""}
-      </div>`;
-  }
-}
-
-function prevMonth(){
-  kalenderBulan--;
-  if(kalenderBulan<0){ kalenderBulan=11; kalenderTahun--; }
-  renderKalender();
-}
-function nextMonth(){
-  kalenderBulan++;
-  if(kalenderBulan>11){ kalenderBulan=0; kalenderTahun++; }
-  renderKalender();
-}
-
-/* =====================================
-   TABEL AGENDA DENGAN SORT
-===================================== */
-let sortDirection = 'asc'; // 'asc' atau 'desc'
-
-function renderAgendaTable(){
-  const tbody = document.querySelector("#agendaTable tbody");
-  tbody.innerHTML = "";
-
-  // Sort data berdasarkan tanggal
-  const sortedData = [...agendaCache].sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-  });
-
-  sortedData.forEach(r=>{
-    tbody.innerHTML += `
-      <tr>
-        <td>${formatDate(r.date)}</td>
-        <td>${r.title}</td>
-        <td>${formatTime(r.time)}</td>
-        <td>${r.tempat}</td>
-        <td>${r.peserta}</td>
-        <td>${r.catatan||""}</td>
-        <td>
-          <button onclick="editAgenda('${r.id}')">Edit</button>
-          <button onclick="hapusAgenda('${r.id}')">Hapus</button>
-        </td>
-      </tr>`;
-  });
-}
-
-// Tambahkan event listener untuk sort pada header tabel
-document.addEventListener("DOMContentLoaded", () => {
-  const thTanggal = document.querySelector("#agendaTable thead th:first-child");
-  if (thTanggal) {
-    thTanggal.style.cursor = "pointer";
-    thTanggal.innerHTML += ' <span id="sortIcon">⬆️</span>'; // Icon sort awal
-    thTanggal.addEventListener("click", () => {
-      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-      const icon = document.getElementById("sortIcon");
-      icon.innerText = sortDirection === 'asc' ? '⬆️' : '⬇️';
-      renderAgendaTable();
-    });
-  }
-});
-
-/* =====================================
-   KLIK TANGGAL
-===================================== */
-function lihatAgenda(tgl){
-  const list = agendaCache.filter(a=>formatDate(a.date)===tgl);
-  if(!list.length){ alert("Tidak ada agenda"); return; }
-
-  let txt = `Agenda ${tgl}\n\n`;
-  list.forEach(a=>{
-    txt += `• ${a.title} (${a.tempat}) ${a.time||""}\n`;
-  });
-  alert(txt);
-}
-
-/* =====================================
-   SIMPAN
-===================================== */
-function getPeserta(){
-  let arr=[];
-  document.querySelectorAll("#pesertaList input:checked").forEach(c=>arr.push(c.value));
-  return arr.join(", ");
-}
-
-function submitAgenda(){
-  const password = prompt("Masukkan password untuk menyimpan agenda:");
-  if (password !== "123") {
-    alert("Password salah! Penyimpanan dibatalkan.");
-    return;
-  }
-
-  const data = {
-    action: editId?"edit":"add",
-    id: editId,
-    date: document.getElementById("tgl").value,
-    title: document.getElementById("nama").value,
-    time: document.getElementById("waktu").value,
-    tempat: document.getElementById("tempat").value,
-    peserta: getPeserta(),
-    catatan: document.getElementById("catatan").value
   };
 
-  fetch(AGENDA_API,{
-    method:"POST",
-    mode:"no-cors",
-    body:JSON.stringify(data)
-  }).then(()=>{
-    alert("Data tersimpan");
-    editId=null;
-    loadAgenda();
-  });
+  // Muat data dari sheet Alokasi dan Realisasi menggunakan API_URL_MAP
+  Promise.all([
+    fetch(API_URL_MAP + "?action=data&sheet=Alokasi").then(r => r.json()),
+    fetch(API_URL_MAP + "?action=data&sheet=Realisasi").then(r => r.json())
+  ]).then(([resAlokasi, resRealisasi]) => {
+    headerAlokasi = [...resAlokasi.header];
+    dataAlokasi = [...resAlokasi.data];
+    headerRealisasi = [...resRealisasi.header];
+    dataRealisasi = [...resRealisasi.data];
+
+    // Debug: Log header untuk verifikasi
+    console.log("headerAlokasi:", headerAlokasi);
+    console.log("headerRealisasi:", headerRealisasi); // Tambahan: Lihat nama kolom yang sebenarnya
+
+    // Build filters untuk peta (gunakan data gabungan untuk fill options, asumsikan header serupa)
+    const allData = [...dataAlokasi, ...dataRealisasi];
+    const allHeader = headerAlokasi.length > 0 ? headerAlokasi : headerRealisasi; // Fallback ke headerAlokasi
+    // Hitung indeks secara dinamis (case-insensitive)
+    const kabIdx = colIndex(allHeader, "kabupaten") !== -1 ? colIndex(allHeader, "kabupaten") : 1;
+    const subroundIdx = colIndex(allHeader, "subround") !== -1 ? colIndex(allHeader, "subround") : 6;
+    const subsegmenIdx = colIndex(allHeader, "subsegmen") !== -1 ? colIndex(allHeader, "subsegmen") : 7;
+    const bulanIdx = colIndex(allHeader, "bulan") !== -1 ? colIndex(allHeader, "bulan") : 8;
+
+    // Debug indeks
+    console.log("kabIdx:", kabIdx, "subroundIdx:", subroundIdx, "subsegmenIdx:", subsegmenIdx, "bulanIdx:", bulanIdx);
+
+    fill(filterKabPeta, kabIdx);
+    fill(filterSubroundPeta, subroundIdx);
+    fill(filterSubsegmenPeta, subsegmenIdx);
+    fill(filterBulanPeta, bulanIdx);
+
+    // Event listeners untuk filter
+    filterKabPeta.onchange = updateMap;
+    filterSubroundPeta.onchange = updateMap;
+    filterSubsegmenPeta.onchange = updateMap;
+    filterBulanPeta.onchange = updateMap;
+
+    updateMap();
+  }).catch(err => console.error("Error loading map data:", err));
 }
 
-/* =====================================
-   EDIT & HAPUS
-===================================== */
-function editAgenda(id){
-  fetch(AGENDA_API+"?action=get")
-    .then(r=>r.json())
-    .then(data=>{
-      const row = data.find(r=>r.id==id);
-      editId=id;
-      document.getElementById("tgl").value = formatDate(row.date);
-      document.getElementById("nama").value = row.title;
-      document.getElementById("waktu").value = row.time||"";
-      document.getElementById("tempat").value = row.tempat;
-      document.getElementById("catatan").value = row.catatan||"";
-
-      document.querySelectorAll("#pesertaList input").forEach(c=>c.checked=false);
-      if(row.peserta){
-        row.peserta.split(",").map(p=>p.trim()).forEach(p=>{
-          document.querySelectorAll("#pesertaList input").forEach(c=>{
-            if(c.value===p) c.checked=true;
-          });
-        });
-      }
-    });
-}
-
-function hapusAgenda(id){
-  const password = prompt("Masukkan password untuk menghapus agenda:");
-  if (password !== "123") {
-    alert("Password salah! Penghapusan dibatalkan.");
-    return;
+function colLetterToIndex(letter) {
+  let col = 0;
+  for (let i = 0; i < letter.length; i++) {
+    col = col * 26 + (letter.charCodeAt(i) - 64);
   }
-
-  if(!confirm("Hapus agenda ini?")) return;
-  fetch(AGENDA_API,{
-    method:"POST",
-    mode:"no-cors",
-    body:JSON.stringify({action:"delete",id:id})
-  }).then(()=>loadAgenda());
-}
-
-/* =====================================
-   INIT
-===================================== */
-loadAgenda();
-
-// Ganti fungsi buildRekap() dengan ini (untuk menerima filter dan menerapkan logika filter):
-function buildRekap(filterBulan = "", filterTahun = "", filterPeserta = ""){
-  const tbody = document.getElementById("rekapBody");
-  tbody.innerHTML = "";
-
-  let totalKegiatan = 0;
-  const hitungPeserta = {};
-
-  agendaData.forEach(row => {
-    // 🔥 TAMBAHKAN FILTER: Cek bulan, tahun, dan peserta
-    const tgl = new Date(row.date);
-    const bulan = tgl.getMonth() + 1; // 1-12
-    const tahun = tgl.getFullYear();
-
-    if (filterBulan && bulan != filterBulan) return;
-    if (filterTahun && tahun != filterTahun) return;
-
-    const pesertaText = row.peserta || "";
-    if (!pesertaText.trim()) return;
-
-    totalKegiatan++;
-
-    pesertaText
-      .split(",")
-      .map(p => p.trim())
-      .filter(Boolean)
-      .forEach(p => {
-        if (filterPeserta && p !== filterPeserta) return; // 🔥 FILTER PESERTA: Hanya hitung jika cocok
-        hitungPeserta[p] = (hitungPeserta[p] || 0) + 1;
-      });
-  });
-
-  let no = 1;
-  for (const [nama, jumlah] of Object.entries(hitungPeserta)) {
-    tbody.innerHTML += `
-      <tr>
-        <td>${no++}</td>
-        <td>${nama}</td>
-        <td class="text-center">
-          <span class="badge bg-primary">${jumlah}</span>
-        </td>
-        <td class="text-center">
-          <span class="badge ${jumlah > 1 ? 'bg-success' : 'bg-warning text-dark'}">
-            ${jumlah > 1 ? 'Aktif' : 'Kurang Aktif'}
-          </span>
-        </td>
-      </tr>`;
-  }
-
-  if (no === 1) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="4" class="text-center text-muted">
-          Tidak ada data
-        </td>
-      </tr>`;
-  }
-
-  document.getElementById("statTotal").innerText = totalKegiatan;
-  document.getElementById("statAktif").innerText = Object.keys(hitungPeserta).length;
-  document.getElementById("statRata").innerText =
-    Object.keys(hitungPeserta).length
-      ? (totalKegiatan / Object.keys(hitungPeserta).length).toFixed(1)
-      : 0;
-}
-
-// Tambahkan fungsi untuk mengisi dropdown filter (panggil saat data dimuat atau tab dibuka):
-function populateFilters(){
-  // 🔥 ISI BULAN (1-12)
-  const bulanSelect = document.getElementById("rekapBulan");
-  bulanSelect.innerHTML = '<option value="">Semua Bulan</option>';
-  for (let i = 1; i <= 12; i++) {
-    bulanSelect.innerHTML += `<option value="${i}">${new Date(0, i-1).toLocaleString('id-ID', {month: 'long'})}</option>`;
-  }
-
-  // 🔥 ISI TAHUN (2026-2035)
-  const tahunSelect = document.getElementById("rekapTahun");
-  tahunSelect.innerHTML = '';
-  for (let y = 2026; y <= 2035; y++) {
-    tahunSelect.innerHTML += `<option value="${y}">${y}</option>`;
-  }
-
-  // 🔥 ISI PESERTA (unik dari agendaData)
-  const pesertaSelect = document.getElementById("rekapPeserta");
-  pesertaSelect.innerHTML = '<option value="">Semua Peserta</option>';
-  const pesertaUnik = new Set();
-  agendaData.forEach(row => {
-    const pesertaText = row.peserta || "";
-    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => pesertaUnik.add(p));
-  });
-  pesertaUnik.forEach(p => {
-    pesertaSelect.innerHTML += `<option value="${p}">${p}</option>`;
-  });
-}
-
-// Tambahkan event listener untuk filter (di akhir script, setelah DOMContentLoaded):
-document.addEventListener("DOMContentLoaded", () => {
-  // Event listener untuk tab rekap
-  const rekapTab = document.querySelector('[data-bs-target="#tabRekap"]');
-  if (rekapTab) {
-    rekapTab.addEventListener("shown.bs.tab", () => {
-      if (agendaLoaded) {
-        populateFilters();  // 🔥 TAMBAHKAN INI: Isi dropdown saat tab dibuka
-        buildRekap();  // Panggil buildRekap tanpa filter (semua)
-      } else {
-        loadAgenda();  // Jika belum dimuat, load dulu
-      }
-    });
-  }
-
-  // 🔥 TAMBAHKAN EVENT LISTENER UNTUK FILTER
-  document.getElementById("rekapBulan").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-
-  document.getElementById("rekapTahun").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-
-  document.getElementById("rekapPeserta").addEventListener("change", () => {
-    const bulan = document.getElementById("rekapBulan").value;
-    const tahun = document.getElementById("rekapTahun").value;
-    const peserta = document.getElementById("rekapPeserta").value;
-    buildRekap(bulan, tahun, peserta);
-  });
-});
-
-function showProgramPertanian() {
-    hideAllPages();
-
-    const page = document.getElementById("pageTemplate");
-    page.style.display = "block";
-
-    page.querySelector("#pageTitle").innerText = "🌾 Program Pertanian";
-    page.querySelector("#pagePath").innerText = "Akses Program > Program Pertanian";
-
-    const grid = page.querySelector(".grid");
-
-    grid.innerHTML = `
-    <div class="row g-3">
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-sm">
-          <div class="card-header bg-success text-white fw-bold">🌾 Tanaman Pangan</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-success">KSA Padi</a>
-            <a href="#" class="btn btn-outline-success">Ganti Segmen KSA Padi</a>
-            <a href="#" class="btn btn-success">KSA Jagung</a>
-            <a href="#" class="btn btn-outline-success">Ganti Segmen KSA Jagung</a>
-            <a href="#" class="btn btn-success">Ubinan</a>
-            <a href="#" class="btn btn-primary">Dashboard Ubinan</a>
-            <a href="#" class="btn btn-warning">Daun Padi</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-sm">
-          <div class="card-header bg-info text-white fw-bold">🥬 Hortikultura</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-info text-white">Hortikultura (SPH)</a>
-            <a href="#" class="btn btn-outline-info">Sipedas</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-xl-4">
-        <div class="card shadow-sm">
-          <div class="card-header bg-warning fw-bold">🌴 Perkebunan</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-warning">SEDAPP Online SKB Bulanan</a>
-            <a href="#" class="btn btn-outline-warning">Dashboard SEDAPP Online</a>
-            <a href="#" class="btn btn-dark">SKB Tahunan</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-danger text-white fw-bold">🐄 Peternakan</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-danger">LPTB</a>
-            <a href="#" class="btn btn-outline-danger">Dashboard LPTB 2025</a>
-            <a href="#" class="btn btn-secondary">Perusahaan Peternakan</a>
-            <a href="#" class="btn btn-outline-secondary">Dashboard Perusahaan Peternakan</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white fw-bold">🐟 Perikanan</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-primary">Perikanan Triwulanan</a>
-            <a href="#" class="btn btn-outline-primary">Upload Dokumen Perikanan (Pusat)</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <div class="card shadow-sm">
-          <div class="card-header bg-success-subtle fw-bold">🌲 Kehutanan</div>
-          <div class="card-body d-grid gap-2">
-            <a href="#" class="btn btn-success">Si Dekat Online</a>
-            <a href="#" class="btn btn-outline-success">Kehutanan Tahunan dan Prov</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    `;
-}
-
-function loadAgenda(){
-  fetch(AGENDA_API + "?action=get")
-    .then(r => r.json())
-    .then(data => {
-      agendaCache = data;
-      agendaData = data;  // 🔥 TAMBAHKAN INI: Simpan ke agendaData global untuk rekap
-
-      agendaLoaded = true; // 🔴 PENTING
-
-      renderKalender();
-      renderAgendaTable();
-
-      // 🔥 TAMBAHKAN INI: Jika tab rekap sudah aktif, panggil buildRekap()
-      const rekapBtn = document.querySelector('[data-bs-target="#tabRekap"]');
-      if (rekapBtn && rekapBtn.classList.contains("active")) {
-        buildRekap();
-      }
-    })
-    .catch(err => console.error(err));
+  return col - 1; // zero-based index
 }
 
 
 
-function showProgramInpek(){
-    hideAllPages();
+function updateMap() {
 
-    const page = document.getElementById("pageTemplate");
-    page.style.display = "block";
+  markers.forEach(marker => map.removeLayer(marker));
+  markers = [];
 
-    page.querySelector("#pageTitle").innerText = "Program INPEK";
-    page.querySelector("#pagePath").innerText = "Akses Program > Program INPEK";
-    page.querySelector(".grid").innerHTML = "<p>Halaman ini masih kosong.</p>";
-}
+  let allData = [
+    ...dataAlokasi.map(row => ({ ...row, sheet: "Alokasi" })),
+    ...dataRealisasi.map(row => ({ ...row, sheet: "Realisasi" }))
+  ];
 
-function showProgramManajemen(){
-    hideAllPages();
+  // INDEX HEADER
+  const kabIdxAlokasi = colIndex(headerAlokasi, "kabupaten");
+  const subroundIdxAlokasi = colIndex(headerAlokasi, "subround");
+  const subsegmenIdxAlokasi = colIndex(headerAlokasi, "subsegmen");
+  const bulanIdxAlokasi = colIndex(headerAlokasi, "bulan");
 
-    const page = document.getElementById("pageTemplate");
-    page.style.display = "block";
+  const kabIdxRealisasi = colIndex(headerRealisasi, "kabupaten");
+  const subroundIdxRealisasi = colIndex(headerRealisasi, "subround");
+  const subsegmenIdxRealisasi = colIndex(headerRealisasi, "subsegmen");
+  const bulanIdxRealisasi = colIndex(headerRealisasi, "bulan");
 
-    page.querySelector("#pageTitle").innerText = "Program Manajemen";
-    page.querySelector("#pagePath").innerText = "Akses Program > Program Manajemen";
-    page.querySelector(".grid").innerHTML = "<p>Halaman ini masih kosong.</p>";
-}
+  // KOLOM REALISASI STATUS
+  let fkIdx = colIndex(headerRealisasi, "realisasi");
 
-function showProgram(key, el){
-  hideAllPages();
+  // FILTER
+  if (filterKabPeta.value !== "ALL")
+    allData = allData.filter(r => r[(r.sheet==="Alokasi"?kabIdxAlokasi:kabIdxRealisasi)] == filterKabPeta.value);
 
-  const data = programData[key];
-  document.getElementById("programTitle").innerText = data.title;
+  if (filterSubroundPeta.value !== "ALL")
+    allData = allData.filter(r => r[(r.sheet==="Alokasi"?subroundIdxAlokasi:subroundIdxRealisasi)] == filterSubroundPeta.value);
 
-  const grid = document.getElementById("programGrid");
-  grid.innerHTML = "";
+  if (filterSubsegmenPeta.value !== "ALL")
+    allData = allData.filter(r => r[(r.sheet==="Alokasi"?subsegmenIdxAlokasi:subsegmenIdxRealisasi)] == filterSubsegmenPeta.value);
 
-  data.items.forEach(p=>{
-    grid.innerHTML += `
-      <div class="program-card">
-        <img src="${p.logo}">
-        <div>
-          <strong>${p.nama}</strong><br>
-          <a href="${p.link}" target="_blank">${p.link}</a>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById("programPage").style.display = "block";
-}
+  if (filterBulanPeta.value !== "ALL")
+    allData = allData.filter(r => r[(r.sheet==="Alokasi"?bulanIdxAlokasi:bulanIdxRealisasi)] == filterBulanPeta.value);
 
 
-function hideAllPages(){
-  document.querySelectorAll(".page")
-    .forEach(p => p.style.display = "none");
-}
+  // LOOP DATA
+  allData.forEach((row, i) => {
 
-function showJadwal(el){
-  hideAllPages();
-  setActiveMenu(el);
-  document.getElementById("jadwalPage").style.display = "block";
-  loadRekapJadwal(); // 🔥 WAJIB
-}
+    let lat, lng;
+    let markerColor = "blue";
+    let popupData = [];
 
-function setActiveMenu(el){
-  document.querySelectorAll(".menu-item")
-    .forEach(m => m.classList.remove("active"));
+    // ================= ALOKASI =================
+    if (row.sheet === "Alokasi") {
+      const xIdx = colIndex(headerAlokasi, "x");
+      const yIdx = colIndex(headerAlokasi, "y");
 
-  el.classList.add("active");
-}
-function simpanJadwal(){
-  const page = document.getElementById("jadwalPage");
+      lng = parseFloat(row[xIdx]);
+      lat = parseFloat(row[yIdx]);
+      markerColor = "blue";
 
-  const data = {
-    jmMulai: page.querySelector("#jmMulai").value,
-    jmSelesai: page.querySelector("#jmSelesai").value,
-    jmKegiatan: page.querySelector("#jmKegiatan").value,
-    jmTahapan: page.querySelector("#jmTahapan").value,
-    jmSubsektor: page.querySelector("#jmSubsektor").value,
-    jmPIC: page.querySelector("#jmPIC").value
-  };
+      // kolom H, I, J, M, AA
+      let idxH  = colLetterToIndex("H");
+      let idxI  = colLetterToIndex("I");
+      let idxJ  = colLetterToIndex("J");
+      let idxM  = colLetterToIndex("M");
+      let idxAA = colLetterToIndex("AA");
 
-  if(!data.jmMulai || !data.jmKegiatan){
-    alert("Tanggal Mulai & Kegiatan wajib diisi");
-    return;
-  }
-
-  fetch(JADWAL_API, {
-    method: "POST",
-    body: JSON.stringify(data) // 🔥 TANPA HEADERS
-  })
-  .then(r => r.json())
-  .then(res => {
-    if(res.status === "ok"){
-      alert("✅ Jadwal tersimpan");
-      resetFormJadwal();
-      loadRekapJadwal();
-    } else {
-      alert(res.message || "Gagal menyimpan");
+      popupData = [
+        row[idxH],
+        row[idxI],
+        row[idxJ],
+        row[idxM],
+        row[idxAA]
+      ];
     }
-  })
-  .catch(err => {
-    console.error(err);
-    alert("❌ Error koneksi API");
-  });
-}
-function loadRekapJadwal(){
-  fetch(JADWAL_API)
-    .then(r => r.json())
-    .then(data => {
-      console.log("DATA REKAP:", data); // DEBUG
-
-      jadwalData = data;  // 🔥 TAMBAHKAN INI: Simpan data ke jadwalData global
-
-      const tbody = document.getElementById("jadwalBody");
-      if(!tbody){
-        console.warn("jadwalBody tidak ditemukan");
-        return;
-      }
-
-      tbody.innerHTML = "";
-
-      if(!Array.isArray(data) || data.length === 0){
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center">Belum ada data</td>
-          </tr>`;
-        return;
-      }
-
-      data.forEach(d => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${d.jmMulai || ""}</td>
-          <td>${d.jmSelesai || ""}</td>
-          <td>${d.jmKegiatan || ""}</td>
-          <td>${d.jmTahapan || ""}</td>
-          <td>${d.jmSubsektor || ""}</td>
-          <td>${d.jmPIC || ""}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      renderJadwalRekap();  // 🔥 TAMBAHKAN INI: Panggil render setelah data dimuat
-    })
-    .catch(err => {
-      console.error("Gagal load rekap:", err);
-    });
-}
 
 
-function resetFormJadwal(){
-  const page = document.getElementById("jadwalPage");
-  ["jmMulai","jmSelesai","jmKegiatan","jmTahapan","jmSubsektor","jmPIC"]
-    .forEach(id => page.querySelector("#"+id).value = "");
-}
+    // ================= REALISASI =================
+    if (row.sheet === "Realisasi") {
+      let aqIdx = colIndex(headerRealisasi, "AQ");
+      let arIdx = colIndex(headerRealisasi, "AR");
+      if (aqIdx === -1) aqIdx = 42;
+      if (arIdx === -1) arIdx = 43;
 
-let jadwalCurrentDate = new Date();
-let jadwalData = [];
+      lng = parseFloat(row[aqIdx]);
+      lat = parseFloat(row[arIdx]);
 
-function loadKalenderJadwal(){
-  fetch(JADWAL_API)
-    .then(r => r.json())
-    .then(data => {
-      jadwalData = data;
-      renderKalenderJadwal();
-    });
-}
+      let fk = fkIdx !== -1 ? String(row[fkIdx]).trim().toLowerCase() : "";
 
-function renderKalenderJadwal(){
-  const grid = document.getElementById("jadwalCalendarGrid");
-  const title = document.getElementById("jadwalCalendarTitle");
-  grid.innerHTML = "";
+      if (fk === "alokasi") markerColor = "yellow";
+      else if (fk === "tambahan") markerColor = "red";
+      else markerColor = "gray";
 
-  const year  = jadwalCurrentDate.getFullYear();
-  const month = jadwalCurrentDate.getMonth();
+      // kolom FF, FG, FH, FJ
+      let idxFF = colLetterToIndex("FF");
+      let idxFG = colLetterToIndex("FG");
+      let idxFH = colLetterToIndex("FH");
+      let idxFJ = colLetterToIndex("FJ");
 
-  title.innerText = jadwalCurrentDate.toLocaleDateString("id-ID", {
-    month: "long",
-    year: "numeric"
+      popupData = [
+        row[idxFF],
+        row[idxFG],
+        row[idxFH],
+        row[idxFJ]
+      ];
+    }
+
+
+    // ================= DRAW MARKER =================
+    if (!isNaN(lat) && !isNaN(lng)) {
+
+      const m = L.circleMarker([lat, lng], {
+        color: markerColor,
+        fillColor: markerColor,
+        fillOpacity: 0.85,
+        radius: 5
+      }).addTo(map);
+
+      // popup tanpa nama kolom
+      let popupHTML = popupData
+        .filter(v => v !== undefined && v !== "")
+        .join("<br>");
+
+      m.bindPopup(popupHTML);
+
+      markers.push(m);
+    }
   });
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  // spacer awal
-  for(let i = 0; i < firstDay; i++){
-    grid.appendChild(document.createElement("div"));
-  }
-
-  for(let day = 1; day <= daysInMonth; day++){
-    const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-
-    const events = jadwalData.filter(j =>
-      dateStr >= j.jmMulai && dateStr <= j.jmSelesai
-    );
-
-    const cell = document.createElement("div");
-cell.className = "calendar-day" + (events.length ? " has-event" : "");
-
-cell.innerHTML = `
-  <div class="date">${day}</div>
-  ${events.length ? `<span class="badge bg-primary">${events.length} kegiatan</span>` : ""}
-`;
-
-cell.addEventListener("click", () => {
-  showJadwalPopup(dateStr, events);
-});
-
-grid.appendChild(cell);
-  }
-}
-
-function jadwalPrevMonth(){
-  jadwalCurrentDate.setMonth(jadwalCurrentDate.getMonth() - 1);
-  renderKalenderJadwal();
-}
-
-function jadwalNextMonth(){
-  jadwalCurrentDate.setMonth(jadwalCurrentDate.getMonth() + 1);
-  renderKalenderJadwal();
-}
-
-let kalenderJadwalLoaded = false;
-
-document.addEventListener("DOMContentLoaded", () => {
-  const tabKalenderJadwal = document.querySelector(
-    '[data-bs-target="#jadwalKalender"]'
-  );
-
-  if (tabKalenderJadwal) {
-    tabKalenderJadwal.addEventListener("shown.bs.tab", () => {
-      if (!kalenderJadwalLoaded) {
-        loadKalenderJadwal();
-        kalenderJadwalLoaded = true;
-      }
-    });
-  }
-});
-
-function showJadwalPopup(dateStr, events){
-  const body = document.getElementById("jadwalDetailBody");
-
-  if(!events || events.length === 0){
-    body.innerHTML = `
-      <p class="text-muted">
-        Tidak ada jadwal pada tanggal <b>${dateStr}</b>
-      </p>
-    `;
-  } else {
-    let html = `<h6>Tanggal: ${dateStr}</h6><ul class="list-group">`;
-
-    events.forEach(e => {
-      html += `
-        <li class="list-group-item">
-          <b>${e.jmKegiatan}</b><br>
-          <small>
-            Tahapan: ${e.jmTahapan}<br>
-            Subsektor: ${e.jmSubsektor}<br>
-            PIC: ${e.jmPIC}<br>
-            Periode: ${e.jmMulai} s/d ${e.jmSelesai}
-          </small>
-        </li>
-      `;
-    });
-
-    html += `</ul>`;
-    body.innerHTML = html;
-  }
-
-  new bootstrap.Modal(
-    document.getElementById("modalJadwalDetail")
-  ).show();
-}
-
-function toggleSidebar(){
-  document.querySelector('.sidebar').classList.toggle('show');
+  console.log("Total markers:", markers.length);
 }
 
 
-let dataJadwal = [];
+// ... (kode setelahnya tetap sama)
 
-function initDataJadwal() {
-  const tbody = document.getElementById("jadwalBody");
-  if (!tbody) {
-    console.error("tbody #jadwalBody tidak ditemukan");
-    return;
-  }
+// Panggil initMap saat tab peta aktif
+document.querySelector('a[href="#tabPeta"]').addEventListener('shown.bs.tab', initMap);
 
-  const rows = tbody.querySelectorAll("tr");
-
-  dataJadwal = Array.from(rows).map(row => {
-    const cols = row.querySelectorAll("td");
-    return {
-      mulai: cols[0]?.innerText.trim() || "",
-      selesai: cols[1]?.innerText.trim() || "",
-      kegiatan: cols[2]?.innerText.trim() || "",
-      tahapan: cols[3]?.innerText.trim() || "",
-      subsektor: cols[4]?.innerText.trim() || "",
-      pic: cols[5]?.innerText.trim() || ""
-    };
-  });
-
-  console.log("INIT DATA:", dataJadwal);
+// Pastikan map diinisialisasi saat load data pertama kali jika tab aktif
+if (sessionStorage.getItem("login") === "1") {
+  setTimeout(() => {
+    if (document.querySelector('a[href="#tabPeta"]').classList.contains('active')) {
+      initMap();
+    }
+  }, 100);
 }
-
-
-
-function renderJadwalRekap() {
-  const tbody = document.getElementById("jadwalBody");
-  const filterKegiatan = document.getElementById("filterKegiatan").value;
-
-  tbody.innerHTML = "";
-
-  jadwalData.forEach(item => {
-    // FILTER DROPDOWN: Gunakan properti yang benar (jmKegiatan)
-    if (filterKegiatan && item.jmKegiatan !== filterKegiatan) return;
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${item.jmMulai}</td>
-      <td>${item.jmSelesai}</td>
-      <td>${item.jmKegiatan}</td>
-      <td>${item.jmTahapan}</td>
-      <td>${item.jmSubsektor}</td>
-      <td>${item.jmPIC}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-
-  // Jika tidak ada data setelah filter
-  if (tbody.innerHTML === "") {
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data yang cocok</td></tr>`;
-  }
-}
-
-function populateRekapPeserta() {
-  const select = document.getElementById("rekapPeserta");
-  select.innerHTML = '<option value="">Semua Peserta</option>';  // Reset opsi
-
-  const uniquePeserta = new Set();
-  agendaData.forEach(row => {
-    const pesertaText = row.peserta || "";
-    pesertaText.split(",").map(p => p.trim()).filter(Boolean).forEach(p => uniquePeserta.add(p));
-  });
-
-  uniquePeserta.forEach(nama => {
-    const opt = document.createElement("option");
-    opt.value = nama;
-    opt.textContent = nama;
-    select.appendChild(opt);
-  });
-}
-
-
-
-
-
-
-
 </script>
 
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
